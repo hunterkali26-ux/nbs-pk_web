@@ -1,0 +1,14 @@
+"use client";
+
+import { Pencil, Trash2 } from "lucide-react";
+import { useActionState, useState, useTransition } from "react";
+
+import { addCategory, deleteCategory, updateCategory } from "@/app/admin/actions";
+import type { Category } from "@/types/database";
+
+export function CategoryManager({ categories }: { categories: Category[] }) {
+  const [state, action, pending] = useActionState(addCategory, {});
+  const [editing, setEditing] = useState<string | null>(null);
+  const [removePending, start] = useTransition();
+  return <div className="grid gap-8 lg:grid-cols-[320px_1fr]"><form action={action} className="h-fit bg-[#172a2a] p-6 text-white"><p className="mb-5 text-xs font-semibold uppercase tracking-widest text-[#d4b06a]">New category</p><input name="name" placeholder="e.g. Accessories" className="w-full border-b border-white/20 bg-transparent px-0 py-3 text-sm outline-none placeholder:text-white/30 focus:border-[#d4b06a]" required /><button disabled={pending} className="mt-6 w-full bg-[#d4b06a] px-4 py-3 text-xs font-semibold uppercase tracking-widest text-[#172a2a]">{pending ? "Adding" : "Add category"}</button>{state.error ? <p className="mt-4 text-sm text-red-200">{state.error}</p> : null}{state.success ? <p className="mt-4 text-sm text-emerald-200">{state.success}</p> : null}</form><div className="divide-y divide-black/10 border border-black/10 bg-white">{categories.map((category) => editing === category.id ? <form key={category.id} action={async (formData) => { await updateCategory({}, formData); setEditing(null); }} className="flex gap-3 p-5"><input type="hidden" name="id" value={category.id} /><input name="name" defaultValue={category.name} className="flex-1 border-b border-black/20 bg-transparent px-0 py-2 text-sm outline-none" /><button className="text-xs font-semibold uppercase tracking-widest text-[#b58a3a]">Save</button></form> : <div key={category.id} className="flex items-center justify-between p-5"><div><p className="text-sm font-semibold">{category.name}</p><p className="mt-1 text-xs text-black/40">/{category.slug}</p></div><div className="flex gap-4"><button type="button" onClick={() => setEditing(category.id)} aria-label="Edit category" className="text-[#b58a3a]"><Pencil className="size-4" /></button><button type="button" disabled={removePending} onClick={() => start(async () => { await deleteCategory(category.id); })} aria-label="Delete category" className="text-red-600"><Trash2 className="size-4" /></button></div></div>)}</div></div>;
+}
