@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+:root {
+	--brand: #0f766e;
+	--brand-bright: #059669;
+	--ink: #0f172a;
+	--muted: #64748b;
+	--line: #e2e8f0;
+	--wash: #f8fafc;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--wash); color: var(--ink); }
+a, button { -webkit-tap-highlight-color: transparent; }

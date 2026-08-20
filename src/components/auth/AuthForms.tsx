@@ -7,13 +7,13 @@ import { useActionState } from "react";
 import { signIn, signUp } from "@/app/auth/actions";
 
 const inputClassName =
-  "mt-2 w-full border-b border-black/15 bg-transparent px-0 py-3 text-sm outline-none transition placeholder:text-black/30 focus:border-[#b58a3a]";
+  "mt-2 w-full border-b border-slate-200 bg-transparent px-0 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-600";
 
 function SubmitButton({ label }: { label: string }) {
   return (
     <button
       type="submit"
-      className="group mt-8 flex w-full items-center justify-center gap-3 bg-[#172a2a] px-5 py-4 text-sm font-semibold text-white transition hover:bg-[#284444] disabled:cursor-wait disabled:opacity-60"
+      className="group mt-8 flex w-full items-center justify-center gap-3 rounded-lg bg-emerald-700 px-5 py-4 text-sm font-semibold text-white transition hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60"
     >
       <span>{label}</span>
       <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -37,7 +37,7 @@ function Field({
   return (
     <label
       suppressHydrationWarning
-      className="block text-xs font-semibold uppercase tracking-[0.14em] text-black/65"
+      className="block text-xs font-semibold uppercase tracking-[0.14em] text-slate-600"
     >
       {label}
       <input
@@ -54,7 +54,7 @@ function Field({
 
 function ActionError({ message }: { message?: string }) {
   return message ? (
-    <p role="alert" className="mt-5 border border-red-900/15 bg-red-50 px-4 py-3 text-sm leading-5 text-red-900">
+    <p role="alert" className="mt-5 border border-red-200 bg-red-50 px-4 py-3 text-sm leading-5 text-red-900">
       {message}
     </p>
   ) : null;
@@ -71,11 +71,11 @@ export function LoginForm() {
       </div>
       <ActionError message={state.error} />
       <div className="flex justify-end pt-3">
-        <Link href="/signup" className="text-xs font-semibold uppercase tracking-[0.12em] text-[#b58a3a] hover:text-[#8d6928]">
+        <Link href="/signup" className="text-xs font-semibold uppercase tracking-[0.12em] text-emerald-700 hover:text-emerald-800">
           Create an account
         </Link>
       </div>
-      {pending ? <LoaderCircle className="mx-auto mt-8 size-5 animate-spin text-[#b58a3a]" /> : <SubmitButton label="Sign in" />}
+      {pending ? <LoaderCircle className="mx-auto mt-8 size-5 animate-spin text-emerald-700" /> : <SubmitButton label="Sign in" />}
     </form>
   );
 }
@@ -92,7 +92,7 @@ export function SignupForm() {
         <Field name="phone_number" label="Phone number" type="tel" placeholder="+92 300 0000000" />
         <label
           suppressHydrationWarning
-          className="block text-xs font-semibold uppercase tracking-[0.14em] text-black/65"
+          className="block text-xs font-semibold uppercase tracking-[0.14em] text-slate-600"
         >
           Delivery address
           <textarea
@@ -108,7 +108,7 @@ export function SignupForm() {
       <div className="mt-6 text-center text-xs leading-5 text-black/45">
         By creating an account, you agree to shop with VEXIS pk.
       </div>
-      {pending ? <LoaderCircle className="mx-auto mt-8 size-5 animate-spin text-[#b58a3a]" /> : <SubmitButton label="Create account" />}
+      {pending ? <LoaderCircle className="mx-auto mt-8 size-5 animate-spin text-emerald-700" /> : <SubmitButton label="Create account" />}
     </form>
   );
 }

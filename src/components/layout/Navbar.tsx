@@ -1,0 +1,12 @@
+"use client";
+
+import Link from "next/link";
+import { Menu, Search, ShoppingBag, UserRound, X } from "lucide-react";
+import { useState } from "react";
+
+const links = [["Home", "/"], ["Shop", "/#featured"], ["About", "/#about"], ["Categories", "/#categories"]];
+
+export function Navbar() {
+  const [open, setOpen] = useState(false);
+  return <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur"><div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8"><button className="p-2 lg:hidden" onClick={() => setOpen(!open)} aria-label="Toggle menu">{open ? <X /> : <Menu />}</button><Link href="/" className="shrink-0 text-xl font-black tracking-tight text-slate-900">VEXIS <span className="text-emerald-600">pk</span></Link><div className="hidden items-center gap-5 lg:flex">{links.map(([label, href]) => <Link key={label} href={href} className="text-sm font-medium text-slate-600 transition hover:text-emerald-700">{label}</Link>)}</div><form className="ml-auto hidden max-w-xl flex-1 items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50 sm:flex"><Search className="ml-3 size-4 text-slate-400" /><input aria-label="Search products" placeholder="Search watches, perfumes, shoes..." className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm outline-none" /><button className="bg-emerald-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-800">Search</button></form><div className="ml-auto flex items-center gap-1 sm:ml-0"><Link href="/#cart" className="relative rounded-lg p-2 text-slate-600 hover:bg-slate-100"><ShoppingBag className="size-5" /><span className="absolute -right-0.5 -top-0.5 grid size-4 place-items-center rounded-full bg-emerald-600 text-[9px] font-bold text-white">0</span></Link><Link href="/login" className="hidden items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:border-emerald-600 hover:text-emerald-700 sm:flex"><UserRound className="size-4" />Sign in</Link></div></div>{open ? <nav className="border-t border-slate-200 bg-white px-5 py-3 lg:hidden">{links.map(([label, href]) => <Link onClick={() => setOpen(false)} key={label} href={href} className="block border-b border-slate-100 py-3 text-sm font-semibold text-slate-700">{label}</Link>)}<Link href="/login" className="block py-3 text-sm font-semibold text-emerald-700">Sign in</Link></nav> : null}</header>;
+}

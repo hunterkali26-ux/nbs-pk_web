@@ -7,13 +7,13 @@ import { addProduct } from "@/app/admin/actions";
 import type { Category } from "@/types/database";
 
 const fieldClassName =
-  "mt-2 w-full border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/25 focus:border-[#d4b06a]";
+  "mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-600";
 
 export function AddProductForm({ categories }: { categories: Category[] }) {
   const [state, action, pending] = useActionState(addProduct, {});
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={action} className="space-y-5 text-slate-600">
       <div>
         <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50">
           Product title
@@ -47,15 +47,15 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
 
       <label className="block cursor-pointer border border-dashed border-white/15 bg-white/[0.02] p-5 text-center transition hover:border-[#d4b06a]/70">
         <ImagePlus className="mx-auto mb-3 size-6 text-[#d4b06a]" />
-        <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-white/70">Product image</span>
-        <span className="mt-1 block text-xs text-white/35">PNG, JPG, WEBP up to 5 MB</span>
+          <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-slate-700">Product image</span>
+        <span className="mt-1 block text-xs text-slate-400">PNG, JPG, WEBP up to 5 MB</span>
         <input name="image" required type="file" accept="image/png,image/jpeg,image/webp" className="sr-only" />
       </label>
 
       {state.error ? <p role="alert" className="border border-red-300/20 bg-red-400/10 px-4 py-3 text-sm text-red-200">{state.error}</p> : null}
       {state.success ? <p role="status" className="border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{state.success}</p> : null}
 
-      <button type="submit" disabled={pending} className="flex w-full items-center justify-center gap-2 bg-[#d4b06a] px-5 py-4 text-sm font-semibold text-[#172a2a] transition hover:bg-[#e1c589] disabled:cursor-wait disabled:opacity-60">
+      <button type="submit" disabled={pending} className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-5 py-4 text-sm font-semibold text-white transition hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60">
         {pending ? <LoaderCircle className="size-4 animate-spin" /> : <Plus className="size-4" />}
         {pending ? "Uploading product..." : "Add to inventory"}
       </button>

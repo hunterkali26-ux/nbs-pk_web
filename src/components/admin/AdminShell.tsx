@@ -9,16 +9,16 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-[#f1efe9]">
+    <div className="flex min-h-screen bg-slate-50">
       <AdminSidebar isCollapsed={isCollapsed} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center border-b border-black/10 bg-[#f1efe9]/95 px-5 backdrop-blur lg:px-8">
+        <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center border-b border-slate-200 bg-white/95 px-5 backdrop-blur lg:px-8">
           <button
             type="button"
             onClick={() => setIsCollapsed((collapsed) => !collapsed)}
             aria-label={isCollapsed ? "Expand admin sidebar" : "Collapse admin sidebar"}
             title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-            className="inline-flex size-9 items-center justify-center text-[#172a2a] transition hover:bg-black/5"
+            className="inline-flex size-9 items-center justify-center text-slate-700 transition hover:bg-slate-100"
           >
             <PanelLeft className="size-5" />
           </button>
