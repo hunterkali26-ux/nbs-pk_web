@@ -26,7 +26,7 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
         <textarea name="description" required placeholder="A considered essential for every day." className={`${fieldClassName} min-h-24 resize-y`} />
       </label>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50">
           Price (PKR)
           <input name="price" required min="0" step="0.01" type="number" placeholder="24999" className={fieldClassName} />
@@ -47,8 +47,8 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
 
       <label className="block cursor-pointer border border-dashed border-white/15 bg-white/[0.02] p-5 text-center transition hover:border-[#d4b06a]/70">
         <ImagePlus className="mx-auto mb-3 size-6 text-[#d4b06a]" />
-          <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-slate-700">Product image</span>
-        <span className="mt-1 block text-xs text-slate-400">PNG, JPG, WEBP up to 5 MB</span>
+          <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-white/90">Product image</span>
+        <span className="mt-1 block text-xs text-white/50">PNG, JPG, WEBP up to 5 MB</span>
         <input name="image" required type="file" accept="image/png,image/jpeg,image/webp" className="sr-only" />
       </label>
 

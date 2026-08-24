@@ -31,6 +31,12 @@ export interface Database {
         Update: OrderItemUpdate;
         Relationships: DatabaseRelationship[];
       };
+      cart_items: {
+        Row: CartItem;
+        Insert: CartItemInsert;
+        Update: CartItemUpdate;
+        Relationships: DatabaseRelationship[];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -61,7 +67,6 @@ export interface Profile {
   phone_number: string | null;
   address: string | null;
   role: "customer" | "admin";
-  avatar_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -72,7 +77,6 @@ export interface ProfileInsert {
   phone_number?: string | null;
   address?: string | null;
   role?: Profile["role"];
-  avatar_url?: string | null;
   created_at?: string;
   updated_at?: string;
 }
@@ -119,9 +123,14 @@ export type CategoryUpdate = Partial<CategoryInsert>;
 export interface Order {
   id: string;
   user_id: string;
+  customer_name: string;
+  customer_phone: string;
   status: "pending" | "shipped" | "delivered" | "cancelled";
   total_amount: number;
-  shipping_address: ShippingAddress;
+  /** Plain text address line as stored in the live orders table. */
+  shipping_address: string;
+  city: string;
+  notes?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -129,9 +138,13 @@ export interface Order {
 export interface OrderInsert {
   id?: string;
   user_id: string;
+  customer_name: string;
+  customer_phone: string;
   status?: Order["status"];
   total_amount: number;
-  shipping_address: ShippingAddress;
+  shipping_address: string;
+  city: string;
+  notes?: string | null;
   created_at?: string;
   updated_at?: string;
 }
@@ -143,7 +156,7 @@ export interface OrderItem {
   order_id: string;
   product_id: string;
   quantity: number;
-  unit_price: number;
+  price_at_purchase: number;
   created_at: string;
 }
 
@@ -152,7 +165,7 @@ export interface OrderItemInsert {
   order_id: string;
   product_id: string;
   quantity: number;
-  unit_price: number;
+  price_at_purchase: number;
   created_at?: string;
 }
 
@@ -170,3 +183,21 @@ export interface ShippingAddress {
 
 export type Tables<T extends keyof Database["public"]["Tables"]> =
   Database["public"]["Tables"][T]["Row"];
+
+export interface CartItem {
+  id: string;
+  user_id: string;
+  product_id: string;
+  quantity: number;
+  created_at: string;
+}
+
+export interface CartItemInsert {
+  id?: string;
+  user_id: string;
+  product_id: string;
+  quantity: number;
+  created_at?: string;
+}
+
+export type CartItemUpdate = Partial<CartItemInsert>;

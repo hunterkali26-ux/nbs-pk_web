@@ -243,12 +243,64 @@ export async function deleteCategory(id: string): Promise<ProductActionState> {
 }
 
 export async function updateOrderStatus(orderId: string, status: string): Promise<ProductActionState> {
-  if (!["pending", "shipped", "delivered", "cancelled"].includes(status)) return { error: "Invalid order status." };
+  const normalized = ["pending", "shipped", "delivered", "cancelled"].includes(status) ? status : null;
+  if (!normalized) return { error: "Invalid order status." };
   try {
     const supabase = await requireAdmin();
-    const { error } = await supabase.from("orders").update({ status } as never).eq("id", orderId);
-    if (error) return { error: "The order status could not be updated." };
-    revalidatePath("/admin/orders"); revalidatePath("/admin");
-    return { success: "Order updated." };
-  } catch { return { error: "You are not authorized to manage orders." }; }
+
+    // The live orders table has NO updated_at column, and a touch-trigger on
+    // it is broken (42703: record "new" has no field "updated_at"). NEVER send
+    // updated_at in the payload — only ever { status } — and fall back between
+    // lowercase / Title-case to satisfy whatever CHECK constraint exists.
+    let lastMessage = "unknown error";
+    const titleCase = normalized.charAt(0).toUpperCase() + normalized.slice(1);
+    const attempts: { status: string }[] = [
+      { status: normalized },
+      { status: titleCase },
+    ];
+    for (const payload of attempts) {
+      const { error } = await supabase
+        .from("orders")
+        .update(payload as never)
+        .eq("id", orderId);
+      if (!error) {
+        return { success: `Order marked ${payload.status}.` };
+      }
+      lastMessage = `${error.code ?? ""} ${error.message}`.trim();
+      console.error("Order status update failed:", {
+        payload,
+        lastMessage,
+        hint:
+          lastMessage.includes("updated_at")
+            ? "A broken trigger on the orders table references a missing updated_at column — drop or recreate that trigger in the Supabase SQL Editor."
+            : undefined,
+      });
+    }
+    return { error: `The order status could not be saved (${lastMessage}).` };
+  } catch {
+    return { error: "You are not authorized to manage orders." };
+  }
+}
+
+/**
+ * Permanently remove an order and all of its lines. Admin-only; customers have
+ * no delete path (their history page only hides rows locally).
+ */
+export async function deleteOrder(orderId: string): Promise<ProductActionState> {
+  if (!orderId) return { error: "Order not found." };
+  try {
+    const supabase = await requireAdmin();
+    // Lines first, then the parent — keeps the DB consistent even if the FK
+    // lacks an ON DELETE cascade in the live schema.
+    const { error: itemsError } = await supabase.from("order_items").delete().eq("order_id", orderId);
+    if (itemsError) return { error: "The order items could not be deleted." };
+    const { error: orderError } = await supabase.from("orders").delete().eq("id", orderId);
+    if (orderError) return { error: "The order could not be deleted." };
+    revalidatePath("/admin/orders");
+    revalidatePath("/account/orders");
+    revalidatePath("/admin");
+    return { success: "Order deleted permanently." };
+  } catch {
+    return { error: "You are not authorized to manage orders." };
+  }
 }

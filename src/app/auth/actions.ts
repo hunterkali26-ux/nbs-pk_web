@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 import { createClient } from "@/lib/supabase/server";
-import type { ProfileInsert } from "@/types/database";
+import type { ProfileInsert, Product } from "@/types/database";
 
 export type AuthActionState = {
   error?: string;
@@ -13,12 +13,19 @@ export type AuthActionState = {
 const valueFromForm = (formData: FormData, name: string) =>
   String(formData.get(name) ?? "").trim();
 
+/** Only allow same-app relative paths — blocks open redirects like "//evil.com". */
+function safeRedirectPath(raw: string): string {
+  const value = raw.trim();
+  return value.startsWith("/") && !value.startsWith("//") ? value : "/";
+}
+
 export async function signIn(
   _previousState: AuthActionState,
   formData: FormData,
 ): Promise<AuthActionState> {
   const email = valueFromForm(formData, "email");
   const password = String(formData.get("password") ?? "");
+  const redirectTo = safeRedirectPath(String(formData.get("redirect") ?? ""));
 
   if (!email || !password) {
     return { error: "Enter your email and password to continue." };
@@ -40,7 +47,7 @@ export async function signIn(
     return { error: "We couldn't sign you in. Check your email and password and try again." };
   }
 
-  redirect("/");
+  redirect(redirectTo);
 }
 
 export async function signUp(
@@ -52,6 +59,7 @@ export async function signUp(
   const password = String(formData.get("password") ?? "");
   const phoneNumber = valueFromForm(formData, "phone_number");
   const address = valueFromForm(formData, "address");
+  const redirectTo = safeRedirectPath(String(formData.get("redirect") ?? ""));
 
   if (!fullName || !email || !password || !phoneNumber || !address) {
     return { error: "Complete every field to create your VEXIS pk account." };
@@ -66,7 +74,14 @@ export async function signUp(
     email,
     password,
     options: {
-      data: { full_name: fullName, phone_number: phoneNumber, address },
+      data: {
+        full_name: fullName,
+        phone_number: phoneNumber,
+        address,
+        // Stamped at signup so the Navbar/admin role lookup can resolve from
+        // auth metadata even when the profiles row is missing or RLS-hidden.
+        role: "customer",
+      },
     },
   });
 
@@ -122,11 +137,28 @@ export async function signUp(
     return { error: "Your account was created, but your profile could not be saved." };
   }
 
-  redirect("/");
+  redirect(redirectTo);
 }
 
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/");
+}
+
+export async function getProducts(
+  page: number = 0,
+  limit: number = 12,
+  category?: string,
+  sort: string = "created_at"
+) {
+  const supabase = await createClient();
+  const offset = page * limit;
+  let query = supabase.from("products").select("*", { count: "exact" });
+  if (category) query = query.eq("category", category);
+  const { data, count, error } = await query
+    .order(sort, { ascending: sort === "title" })
+    .range(offset, offset + limit - 1);
+  if (error) console.error("Product fetch failed:", error);
+  return { products: (data ?? []) as Product[], total: count ?? 0, error };
 }

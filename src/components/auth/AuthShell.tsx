@@ -17,7 +17,7 @@ export function AuthShell({
   footer,
 }: AuthShellProps) {
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
+    <main className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <div className="grid min-h-screen lg:grid-cols-[0.9fr_1.1fr]">
         <aside className="relative hidden overflow-hidden bg-emerald-800 p-12 text-white lg:flex lg:flex-col lg:justify-between">
           <div className="absolute -right-32 -top-32 size-96 rounded-full border border-emerald-300/20" />
@@ -29,7 +29,7 @@ export function AuthShell({
             <p className="mb-5 text-xs uppercase tracking-[0.3em] text-[#d4b06a]">
               Curated for your presence
             </p>
-            <p className="font-serif text-5xl leading-[1.05]">
+            <p className="font-serif text-5xl leading-[1.05] text-white">
               The details that make the moment.
             </p>
             <p className="mt-6 max-w-xs text-sm leading-6 text-white/65">

@@ -7,7 +7,7 @@ import { useActionState } from "react";
 import { signIn, signUp } from "@/app/auth/actions";
 
 const inputClassName =
-  "mt-2 w-full border-b border-slate-200 bg-transparent px-0 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-600";
+  "mt-2 w-full border-b border-slate-200 bg-transparent px-0 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-600 dark:border-slate-700 dark:text-slate-100 dark:placeholder:text-slate-500";
 
 function SubmitButton({ label }: { label: string }) {
   return (
@@ -37,7 +37,7 @@ function Field({
   return (
     <label
       suppressHydrationWarning
-      className="block text-xs font-semibold uppercase tracking-[0.14em] text-slate-600"
+      className="block text-xs font-semibold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300"
     >
       {label}
       <input
@@ -60,11 +60,12 @@ function ActionError({ message }: { message?: string }) {
   ) : null;
 }
 
-export function LoginForm() {
+export function LoginForm({ redirectTo }: { redirectTo: string }) {
   const [state, action, pending] = useActionState(signIn, {});
 
   return (
     <form suppressHydrationWarning action={action}>
+      <input type="hidden" name="redirect" value={redirectTo} />
       <div className="space-y-6">
         <Field name="email" label="Email address" type="email" placeholder="you@example.com" />
         <Field name="password" label="Password" type="password" placeholder="Your password" />
@@ -80,11 +81,12 @@ export function LoginForm() {
   );
 }
 
-export function SignupForm() {
+export function SignupForm({ redirectTo }: { redirectTo: string }) {
   const [state, action, pending] = useActionState(signUp, {});
 
   return (
     <form suppressHydrationWarning action={action}>
+      <input type="hidden" name="redirect" value={redirectTo} />
       <div className="space-y-6">
         <Field name="full_name" label="Full name" placeholder="Your name" />
         <Field name="email" label="Email address" type="email" placeholder="you@example.com" />
@@ -92,7 +94,7 @@ export function SignupForm() {
         <Field name="phone_number" label="Phone number" type="tel" placeholder="+92 300 0000000" />
         <label
           suppressHydrationWarning
-          className="block text-xs font-semibold uppercase tracking-[0.14em] text-slate-600"
+          className="block text-xs font-semibold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300"
         >
           Delivery address
           <textarea
@@ -105,7 +107,7 @@ export function SignupForm() {
         </label>
       </div>
       <ActionError message={state.error} />
-      <div className="mt-6 text-center text-xs leading-5 text-black/45">
+      <div className="mt-6 text-center text-xs leading-5 text-black/45 dark:text-slate-500">
         By creating an account, you agree to shop with VEXIS pk.
       </div>
       {pending ? <LoaderCircle className="mx-auto mt-8 size-5 animate-spin text-emerald-700" /> : <SubmitButton label="Create account" />}

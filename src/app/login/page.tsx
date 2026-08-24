@@ -3,22 +3,33 @@ import Link from "next/link";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { LoginForm } from "@/components/auth/AuthForms";
 
-export default function LoginPage() {
+type SearchParams = Promise<{ redirect?: string }>;
+
+export default async function LoginPage({ searchParams }: { searchParams: SearchParams }) {
+  const { redirect: requested } = await searchParams;
+  // Same-app paths only — mirrors safeRedirectPath on the server action.
+  const redirectTo =
+    typeof requested === "string" && requested.startsWith("/") && !requested.startsWith("//")
+      ? requested
+      : "/";
+  const signupHref =
+    redirectTo === "/" ? "/signup" : `/signup?redirect=${encodeURIComponent(redirectTo)}`;
+
   return (
     <AuthShell
       eyebrow="Welcome back"
       title="Good to see you again."
-      description="Sign in to keep your edit close and continue where you left off."
+      description="Sign in to track orders, check out faster, and keep your essentials close."
       footer={
         <>
           New to VEXIS pk?{" "}
-          <Link href="/signup" className="font-semibold text-[#b58a3a] hover:text-[#8d6928]">
-            Join the edit
+          <Link href={signupHref} className="font-semibold text-[#b58a3a] hover:text-[#8d6928]">
+            Create an account
           </Link>
         </>
       }
     >
-      <LoginForm />
+      <LoginForm redirectTo={redirectTo} />
     </AuthShell>
   );
 }
