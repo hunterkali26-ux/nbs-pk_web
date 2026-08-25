@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Instagram, Truck } from "lucide-react";
+import { Facebook, Instagram, Music2, Truck } from "lucide-react";
 
 export function Footer() {
   return (
     <footer id="about" className="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
+      {/* Compact mobile grid: side-by-side 2 columns (short scroll), growing
+          to 4 across on large screens. */}
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-10 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
         <div>
           <Link href="/" className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
             VEXIS <span className="text-emerald-600">pk</span>
@@ -32,6 +34,15 @@ export function Footer() {
               className="rounded-full bg-slate-100 p-2 text-slate-600 transition hover:bg-emerald-600 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-emerald-600 dark:hover:text-white"
             >
               <Facebook className="size-4" />
+            </a>
+            <a
+              href="https://tiktok.com/@vexis.pk"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="VEXIS pk on TikTok (opens in a new tab)"
+              className="rounded-full bg-slate-100 p-2 text-slate-600 transition hover:bg-emerald-600 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-emerald-600 dark:hover:text-white"
+            >
+              <Music2 className="size-4" />
             </a>
           </div>
         </div>

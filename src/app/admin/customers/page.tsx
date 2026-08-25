@@ -1,11 +1,68 @@
+import { AdminCustomersView, type AdminCustomer } from "@/components/admin/AdminCustomersView";
 import { createClient } from "@/lib/supabase/server";
-import type { Profile } from "@/types/database";
+import type { Order, Profile } from "@/types/database";
 
 export const dynamic = "force-dynamic";
 
 export default async function CustomersPage() {
   const supabase = await createClient();
-  const { data } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
-  const customers = (data ?? []) as Profile[];
-  return <main className="min-h-screen bg-[#f1efe9] px-4 py-8 sm:px-6 sm:py-12 lg:px-10 lg:py-14 dark:bg-slate-950"><div className="mx-auto max-w-[1250px]"><p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#b58a3a]">People</p><h1 className="mt-3 font-serif text-4xl sm:text-5xl">Customers</h1><div className="mt-10 overflow-hidden border border-black/10 bg-white dark:border-white/10 dark:bg-slate-900"><table className="w-full text-left text-sm"><thead className="border-b border-black/10 text-[10px] uppercase tracking-widest text-black/40 dark:border-white/10 dark:text-slate-500"><tr><th className="px-4 py-4 sm:px-5">Full name</th><th className="px-4 py-4 sm:px-5">Phone</th><th className="hidden px-4 py-4 md:table-cell sm:px-5">Address</th><th className="px-4 py-4 sm:px-5">Role</th><th className="hidden whitespace-nowrap px-4 py-4 sm:table-cell sm:px-5">Registered</th></tr></thead><tbody>{customers.map((customer) => <tr key={customer.id} className="border-b border-black/8 last:border-0 dark:border-white/10"><td className="max-w-[160px] truncate px-4 py-4 font-semibold sm:px-5">{customer.full_name || "Unnamed"}</td><td className="whitespace-nowrap px-4 py-4 text-black/60 sm:px-5 dark:text-slate-300">{customer.phone_number || "—"}</td><td className="hidden max-w-[220px] truncate px-4 py-4 text-black/60 md:table-cell sm:px-5 dark:text-slate-300">{customer.address || "—"}</td><td className="whitespace-nowrap px-4 py-4 capitalize text-[#b58a3a] sm:px-5">{customer.role}</td><td className="hidden whitespace-nowrap px-4 py-4 text-black/50 sm:table-cell sm:px-5 dark:text-slate-400">{new Date(customer.created_at).toLocaleDateString("en-PK")}</td></tr>)}</tbody></table>{customers.length === 0 ? <p className="p-12 text-center text-sm text-black/45 dark:text-slate-400">No registered users yet.</p> : null}</div></div></main>;
+
+  // Fetch every profile plus every order in parallel. The modal joins them by
+  // user id so each row opens with live order history/stats from Supabase.
+  const [{ data: profileRows }, { data: orderRows }] = await Promise.all([
+    supabase.from("profiles").select("*").order("created_at", { ascending: false }),
+    supabase
+      .from("orders")
+      .select("id, user_id, total_amount, status, city, created_at")
+      .order("created_at", { ascending: false }),
+  ]);
+
+  // The profiles table has no email column — the row may carry one only if a
+  // future migrations adds it. Existing rows fall back to "Not on file".
+  const profiles = (profileRows ?? []) as (Profile & { email?: string | null })[];
+  const orders = (orderRows ?? []) as Pick<Order, "id" | "user_id" | "total_amount" | "status" | "city" | "created_at">[];
+
+  const ordersByUser = new Map<string, AdminCustomer["orders"]>();
+  for (const order of orders) {
+    const list = ordersByUser.get(order.user_id) ?? [];
+    list.push({
+      id: order.id,
+      created_at: order.created_at,
+      total_amount: Number(order.total_amount || 0),
+      status: String(order.status ?? "pending"),
+      city: order.city ?? "",
+    });
+    ordersByUser.set(order.user_id, list);
+  }
+
+  const customers: AdminCustomer[] = profiles.map((profile) => {
+    const userOrders = ordersByUser.get(profile.id) ?? [];
+    return {
+      id: profile.id,
+      full_name: profile.full_name,
+      email: profile.email ?? null,
+      phone_number: profile.phone_number,
+      address: profile.address,
+      role: profile.role,
+      created_at: profile.created_at,
+      orderCount: userOrders.length,
+      totalSpend: userOrders.reduce((sum, order) => sum + order.total_amount, 0),
+      orders: userOrders,
+    };
+  });
+
+  return (
+    <main className="min-h-screen bg-[#f1efe9] px-4 py-8 sm:px-6 sm:py-12 lg:px-10 lg:py-14 dark:bg-slate-950">
+      <div className="mx-auto max-w-[1250px]">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#b58a3a]">People</p>
+        <h1 className="mt-3 font-serif text-4xl sm:text-5xl">Customers</h1>
+        <p className="mt-2 text-sm text-black/50 dark:text-slate-400">
+          Click any row for a full profile with live order history and spend stats.
+        </p>
+        <div className="mt-8">
+          <AdminCustomersView customers={customers} />
+        </div>
+      </div>
+    </main>
+  );
 }

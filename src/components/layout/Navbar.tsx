@@ -41,6 +41,7 @@ const dropdownItemClass =
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [session, setSession] = useState<NavSession | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const { count } = useCart();
@@ -169,6 +170,16 @@ export function Navbar() {
           </button>
         </form>
         <div className="ml-auto flex items-center gap-1 sm:ml-0">
+          {/* Mobile-only search toggle (the desktop form appears from sm+). */}
+          <button
+            type="button"
+            onClick={() => setSearchOpen((open) => !open)}
+            aria-label={searchOpen ? "Close search" : "Search products"}
+            aria-expanded={searchOpen}
+            className="sm:hidden inline-flex size-9 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+          >
+            <Search className="size-5" />
+          </button>
           <DarkModeToggle />
           <Link
             href="/cart"
@@ -186,7 +197,7 @@ export function Navbar() {
           {!session ? (
             <Link
               href="/login"
-              className="hidden items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 sm:flex dark:border-slate-700 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
+              className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
             >
               <UserRound className="size-4" />
               Sign in
@@ -198,7 +209,7 @@ export function Navbar() {
                 onClick={() => setMenuOpen((open) => !open)}
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
-                className="flex items-center gap-2 rounded-lg border border-slate-200 px-2.5 py-1.5 transition hover:border-emerald-600 dark:border-slate-700 dark:hover:border-emerald-500"
+                className="hidden items-center gap-2 rounded-lg border border-slate-200 px-2.5 py-1.5 transition hover:border-emerald-600 md:flex dark:border-slate-700 dark:hover:border-emerald-500"
               >
                 {session.avatarUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -285,6 +296,22 @@ export function Navbar() {
           )}
         </div>
       </div>
+
+      {/* Expandable mobile search — a full-width input revealed by the
+          magnifier button in the mobile header rail. */}
+      {searchOpen && (
+        <form action="/shop" method="get" className="mx-4 pb-3 lg:hidden">
+          <label className="flex items-center gap-2 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 dark:border-slate-700 dark:bg-slate-900">
+            <Search className="size-4 shrink-0 text-slate-400" />
+            <input
+              name="q"
+              aria-label="Search products"
+              placeholder="Search watches, perfumes, shoes…"
+              className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400 dark:text-slate-100"
+            />
+          </label>
+        </form>
+      )}
 
       {mobileOpen && (
         <nav className="border-t border-slate-200 bg-white px-5 py-3 lg:hidden dark:border-slate-800 dark:bg-slate-950">

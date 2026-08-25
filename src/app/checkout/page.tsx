@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useActionState, useRef, useState, type ChangeEvent } from "react";
-import { LockKeyhole, PackageCheck } from "lucide-react";
+import { Info, LockKeyhole, PackageCheck } from "lucide-react";
 
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -243,6 +243,34 @@ export default function CheckoutPage() {
               {state.error && (
                 <p role="alert" className="mt-4 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">{state.error}</p>
               )}
+            </div>
+
+            {/* Payment method — COD is the only live option today. The radio is
+                disabled (non-interactive) and pre-selected so it reads clearly
+                as the checkout default without inviting other methods. */}
+            <div className="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300">Payment method</h2>
+              <label className="mt-4 flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3.5 dark:border-emerald-900 dark:bg-emerald-950/40">
+                <input
+                  type="radio"
+                  name="payment_method"
+                  value="cod"
+                  defaultChecked
+                  disabled
+                  aria-label="Cash on Delivery (COD)"
+                  className="mt-1 size-4 accent-emerald-700"
+                />
+                <span className="block text-sm">
+                  <span className="block font-bold text-slate-900 dark:text-white">Cash on Delivery (COD)</span>
+                  <span className="mt-0.5 block text-slate-500 dark:text-slate-400">
+                    Pay in cash when your order arrives at your door.
+                  </span>
+                </span>
+              </label>
+              <p role="status" className="mt-4 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
+                <Info className="mt-0.5 size-4 shrink-0" />
+                <span>Online payment methods coming soon. Currently, only Cash on Delivery (COD) is available.</span>
+              </p>
             </div>
             <div className="sticky top-24 h-fit rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
               <h3 className="text-sm font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300">Order summary</h3>
