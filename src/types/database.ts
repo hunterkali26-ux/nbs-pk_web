@@ -37,6 +37,18 @@ export interface Database {
         Update: CartItemUpdate;
         Relationships: DatabaseRelationship[];
       };
+      product_reviews: {
+        Row: ProductReview;
+        Insert: ProductReviewInsert;
+        Update: ProductReviewUpdate;
+        Relationships: DatabaseRelationship[];
+      };
+      wishlist: {
+        Row: Wishlist;
+        Insert: WishlistInsert;
+        Update: WishlistUpdate;
+        Relationships: DatabaseRelationship[];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -83,6 +95,21 @@ export interface ProfileInsert {
 
 export type ProfileUpdate = Partial<ProfileInsert>;
 
+export interface ProductSpec {
+  key: string;
+  label: string;
+  value: string;
+}
+
+/**
+ * A single gallery item for the product detail carousel. `images`/`image_url`
+ * are stored separately for backward compatibility, but consumers can flatten
+ * them into this unified sequence (image, video, image, video, …).
+ */
+export type ProductMedia =
+  | { type: "image"; url: string }
+  | { type: "video"; url: string };
+
 export interface Product {
   id: string;
   title: string;
@@ -91,17 +118,31 @@ export interface Product {
   price: number;
   stock: number;
   image_url: string | null;
+  /** Advanced catalog fields (nullable until the migration is applied). */
+  brand: string | null;
+  original_price: number | null;
+  color_family: string | null;
+  images: string[] | null;
+  /** Public video URLs shown as video slides in the alternating gallery. */
+  videos: string[] | null;
+  specs: ProductSpec[] | null;
   created_at: string;
   updated_at: string;
 }
 
 export interface ProductInsert {
   title: string;
-  description: string;
+  description?: string | null;
   price: number;
   category: string;
   stock: number;
-  image_url: string;
+  image_url?: string | null;
+  brand?: string | null;
+  original_price?: number | null;
+  color_family?: string | null;
+  images?: string[] | null;
+  videos?: string[] | null;
+  specs?: ProductSpec[] | null;
 }
 
 export type ProductUpdate = Partial<ProductInsert>;
@@ -111,11 +152,17 @@ export interface Category {
   name: string;
   slug: string;
   created_at: string;
+  /** Attribute keys enabled for products in this category. */
+  fields: string[] | null;
+  /** Cover image served from the public `categories` storage bucket. */
+  image_url: string | null;
 }
 
 export interface CategoryInsert {
   name: string;
   slug: string;
+  fields?: string[] | null;
+  image_url?: string | null;
 }
 
 export type CategoryUpdate = Partial<CategoryInsert>;
@@ -131,6 +178,10 @@ export interface Order {
   shipping_address: string;
   city: string;
   notes?: string | null;
+  /** Optional delivery reference (landmark / near area) set at checkout. */
+  near_landmark?: string | null;
+  /** Courier tracking number entered by the admin once the order ships. */
+  tracking_number?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -145,6 +196,8 @@ export interface OrderInsert {
   shipping_address: string;
   city: string;
   notes?: string | null;
+  near_landmark?: string | null;
+  tracking_number?: string | null;
   created_at?: string;
   updated_at?: string;
 }
@@ -201,3 +254,44 @@ export interface CartItemInsert {
 }
 
 export type CartItemUpdate = Partial<CartItemInsert>;
+
+export interface ProductReview {
+  id: string;
+  product_id: string;
+  user_id: string;
+  author_name: string | null;
+  rating: number;
+  title: string | null;
+  comment: string | null;
+  created_at: string;
+}
+
+export interface ProductReviewInsert {
+  id?: string;
+  product_id: string;
+  user_id: string;
+  author_name?: string | null;
+  rating: number;
+  title?: string | null;
+  comment?: string | null;
+  created_at?: string;
+}
+
+export type ProductReviewUpdate = Partial<ProductReviewInsert>;
+
+/** One saved favorite — mirrors the `wishlist` table. */
+export interface Wishlist {
+  id: string;
+  user_id: string;
+  product_id: string;
+  created_at: string;
+}
+
+export interface WishlistInsert {
+  id?: string;
+  user_id: string;
+  product_id: string;
+  created_at?: string;
+}
+
+export type WishlistUpdate = Partial<WishlistInsert>;

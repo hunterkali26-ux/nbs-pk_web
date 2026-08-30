@@ -1,8 +1,24 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useActionState, useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { EyeOff, LoaderCircle, PackageOpen, Phone, RotateCcw, X } from "lucide-react";
+import {
+  Check,
+  Copy,
+  ExternalLink,
+  EyeOff,
+  LoaderCircle,
+  Lock,
+  PackageOpen,
+  PackageSearch,
+  Pencil,
+  Phone,
+  RotateCcw,
+  X,
+} from "lucide-react";
+
+import { updateMyOrderDetails } from "@/app/account/actions";
 import type { Order } from "@/types/database";
 
 // Orders hidden from THIS browser's personal view only. Admin records in the
@@ -36,6 +52,245 @@ interface CustomerOrderItem {
   category: string | null;
 }
 
+const SUPPORT_MESSAGE =
+  "If you need to change your details, please contact us at 0320 8684757";
+
+// Message shown when the customer taps Track on a not-yet-shipped order.
+const NOT_SHIPPED_MESSAGE =
+  "Your order has not been shipped yet. Once it is shipped, you will receive your tracking number and details here.";
+
+/**
+ * Build the external courier tracking URL for a tracking number. Defaults to a
+ * TCS (Pakistan) tracking lookup — swap to any courier the store uses by
+ * changing this builder so a tracking number always opens where it can be traced.
+ */
+const courierTrackUrl = (trackingNumber: string) =>
+  `https://www.tcs.com.pk/tracking-result?tc_no=${encodeURIComponent(trackingNumber)}`;
+
+const ORDER_INPUT_CLASS =
+  "mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-emerald-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-emerald-500";
+
+/**
+ * Inline delivery-details editor — mounted inside the customer's detail modal
+ * ONLY while the database still reports the order as pending. Persists through
+ * the gated server action, then hands control back to the modal.
+ */
+function OrderEditForm({
+  order,
+  onDone,
+}: {
+  order: Order;
+  onDone: () => void;
+}) {
+  const router = useRouter();
+  const [state, action, pending] = useActionState(updateMyOrderDetails, {});
+
+  // Success closes the editor; the refreshed RSC payload carries new values.
+  useEffect(() => {
+    if (state.success) {
+      router.refresh();
+      onDone();
+    }
+  }, [state.success, router, onDone]);
+
+  return (
+    <form action={action} className="space-y-3">
+      <input type="hidden" name="order_id" value={order.id} />
+      <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400">
+        Editing delivery details
+      </p>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="block">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Full name</span>
+          <input name="customer_name" defaultValue={order.customer_name} required className={ORDER_INPUT_CLASS} />
+        </label>
+        <label className="block">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Phone</span>
+          <input name="customer_phone" defaultValue={order.customer_phone} required inputMode="tel" className={ORDER_INPUT_CLASS} />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Address</span>
+          <input name="shipping_address" defaultValue={order.shipping_address} required className={ORDER_INPUT_CLASS} />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">City</span>
+          <input name="city" defaultValue={order.city} required className={ORDER_INPUT_CLASS} />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Near Landmark</span>
+          <input
+            name="near_landmark"
+            defaultValue={order.near_landmark ?? ""}
+            className={ORDER_INPUT_CLASS}
+            placeholder="e.g. Opposite main gate, near Madina Market"
+          />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Notes (optional)</span>
+          <textarea
+            name="notes"
+            defaultValue={order.notes ?? ""}
+            rows={2}
+            className={ORDER_INPUT_CLASS}
+            placeholder="Landmark, gate code, …"
+          />
+        </label>
+      </div>
+
+      {state.error ? (
+        <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 dark:bg-red-950/40 dark:text-red-300">
+          {state.error}
+        </p>
+      ) : null}
+
+      <div className="flex items-center justify-end gap-2 pt-1">
+        <button
+          type="button"
+          onClick={onDone}
+          className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          disabled={pending}
+          className="inline-flex items-center gap-2 rounded-lg bg-emerald-700 px-5 py-2 text-sm font-bold text-white transition hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60"
+        >
+          {pending ? <LoaderCircle className="size-4 animate-spin" /> : null}
+          {pending ? "Saving…" : "Save changes"}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+/** Clean contact prompt shown when a locked (non-pending) order is edited. */
+function LockedOrderNotice({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="locked-order-title"
+        onClick={(event) => event.stopPropagation()}
+        className="relative w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl dark:bg-slate-900"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Dismiss notice"
+          className="absolute right-3 top-3 rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+        >
+          <X className="size-5" />
+        </button>
+
+        <span
+          aria-hidden="true"
+          className="mx-auto grid size-14 place-items-center rounded-full bg-emerald-50 dark:bg-emerald-950/40"
+        >
+          <Lock className="size-7 text-emerald-700 dark:text-emerald-400" />
+        </span>
+
+        <h4
+          id="locked-order-title"
+          className="mt-4 text-lg font-black text-slate-900 dark:text-white"
+        >
+          This order is already being processed
+        </h4>
+        <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+          {SUPPORT_MESSAGE}
+        </p>
+
+        <a
+          href="tel:03208684757"
+          className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
+        >
+          <Phone className="size-4" />
+          Call 0320 8684757
+        </a>
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-2.5 w-full rounded-xl px-5 py-2 text-xs font-semibold uppercase tracking-widest text-slate-400 transition hover:text-slate-600 dark:hover:text-slate-300"
+        >
+          Got it
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/** Informative modal shown when a customer taps Track on a pending order. */
+function NotShippedNotice({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="not-shipped-title"
+        onClick={(event) => event.stopPropagation()}
+        className="relative w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl dark:bg-slate-900"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Dismiss notice"
+          className="absolute right-3 top-3 rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+        >
+          <X className="size-5" />
+        </button>
+
+        <span
+          aria-hidden="true"
+          className="mx-auto grid size-14 place-items-center rounded-full bg-emerald-50 dark:bg-emerald-950/40"
+        >
+          <PackageSearch className="size-7 text-emerald-700 dark:text-emerald-400" />
+        </span>
+
+        <h4 id="not-shipped-title" className="mt-4 text-lg font-black text-slate-900 dark:text-white">
+          Your order is on its way to being prepared
+        </h4>
+        <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+          {NOT_SHIPPED_MESSAGE}
+        </p>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-5 w-full rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
+        >
+          Got it
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /** Full order detail modal with a clear X close button. */
 function OrderDetailModal({
   order,
@@ -49,6 +304,23 @@ function OrderDetailModal({
   onHide: (orderId: string) => void;
 }) {
   const itemsTotal = items.reduce((sum, item) => sum + item.price_at_purchase * item.quantity, 0);
+  const [editing, setEditing] = useState(false);
+  const [lockedNotice, setLockedNotice] = useState(false);
+  const [notShippedNotice, setNotShippedNotice] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const trackingNumber = order.tracking_number?.trim();
+  const isPending = String(order.status ?? "").toLowerCase() === "pending";
+
+  const copyTracking = async () => {
+    if (!trackingNumber) return;
+    try {
+      await navigator.clipboard.writeText(trackingNumber);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* clipboard unavailable — no-op */
+    }
+  };
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
@@ -76,6 +348,11 @@ function OrderDetailModal({
           </button>
         </div>
 
+        {editing ? (
+          <div className="px-6 py-5">
+            <OrderEditForm order={order} onDone={() => setEditing(false)} />
+          </div>
+        ) : (
         <div className="space-y-5 px-6 py-5">
           <div className="grid gap-3 text-sm sm:grid-cols-2">
             <div>
@@ -90,8 +367,66 @@ function OrderDetailModal({
               <div className="sm:col-span-2">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Delivered to</p>
                 <p className="mt-1 text-slate-600 dark:text-slate-300">{order.shipping_address}</p>
+                {order.city ? <p className="text-slate-500 dark:text-slate-400">{order.city}</p> : null}
+                {order.near_landmark ? (
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    Near: {order.near_landmark}
+                  </p>
+                ) : null}
               </div>
             ) : null}
+          </div>
+
+          {/* Tracking — status-driven: not-shipped notice, live tracking with
+              copy + external courier link, or "preparing" fallback. */}
+          <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Tracking</p>
+            {isPending ? (
+              <div className="mt-2 flex items-center justify-between gap-3">
+                <p className="text-sm text-slate-500 dark:text-slate-400">Not shipped yet.</p>
+                <button
+                  type="button"
+                  onClick={() => setNotShippedNotice(true)}
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-emerald-200 px-3 py-1.5 text-xs font-bold text-emerald-700 transition hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-950/40"
+                >
+                  <PackageSearch className="size-3.5" />
+                  Track order
+                </button>
+              </div>
+            ) : trackingNumber ? (
+              <div className="mt-2">
+                <p className="break-all font-mono text-sm font-semibold text-slate-900 dark:text-white">
+                  {trackingNumber}
+                </p>
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={copyTracking}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                  >
+                    {copied ? (
+                      <Check className="size-3.5 text-emerald-600" />
+                    ) : (
+                      <Copy className="size-3.5" />
+                    )}
+                    {copied ? "Copied" : "Copy"}
+                  </button>
+                  <a
+                    href={courierTrackUrl(trackingNumber)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-700 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-emerald-800"
+                  >
+                    <ExternalLink className="size-3.5" />
+                    Track on Courier Website
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+                Preparing tracking info...
+              </p>
+            )}
           </div>
 
           <div>
@@ -127,6 +462,7 @@ function OrderDetailModal({
             </span>
           </div>
         </div>
+        )}
 
         <div className="sticky bottom-0 flex items-center justify-between gap-3 border-t border-slate-200 bg-white/95 px-6 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
           {/* Always rendered — any order can be hidden from personal view. */}
@@ -141,15 +477,55 @@ function OrderDetailModal({
             <EyeOff className="size-4" />
             Hide from my history
           </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="ml-auto rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
-          >
-            Close
-          </button>
+          <div className="ml-auto flex items-center gap-3">
+            {isPending ? (
+              editing ? (
+                <button
+                  type="button"
+                  onClick={() => setEditing(false)}
+                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                >
+                  <X className="size-4" />
+                  Cancel
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setEditing(true)}
+                  className="inline-flex items-center gap-2 rounded-lg border border-emerald-200 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-950/40"
+                >
+                  <Pencil className="size-4" />
+                  Edit details
+                </button>
+              )
+            ) : (
+              <button
+                type="button"
+                onClick={() => setLockedNotice(true)}
+                title="This order is no longer editable"
+                className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-500 transition hover:bg-slate-50 hover:text-slate-700 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+              >
+                <Lock className="size-4" />
+                Editing locked
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
+
+      {lockedNotice ? (
+        <LockedOrderNotice onClose={() => setLockedNotice(false)} />
+      ) : null}
+      {notShippedNotice ? (
+        <NotShippedNotice onClose={() => setNotShippedNotice(false)} />
+      ) : null}
     </div>
   );
 }

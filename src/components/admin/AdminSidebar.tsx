@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -42,9 +43,29 @@ function SidebarNav({
         <Link
           href="/admin"
           onClick={onClose}
-          className="whitespace-nowrap text-lg font-semibold tracking-[0.25em]"
+          aria-label="VEXIS pk admin dashboard"
+          className={`flex items-center ${isCollapsed ? "justify-center" : ""}`}
         >
-          {isCollapsed ? "V" : <>VEXIS <span className="text-[#d4b06a]">pk</span></>}
+          {isCollapsed ? (
+            /* Collapsed rail: the square admin icon centers in the narrow
+               20px rail, rendered cleanly in both light and dark themes
+               (transparent background) so it reads at a glance. */
+            <Image
+              src="/images/admin-icon.png"
+              alt="VEXIS pk"
+              width={32}
+              height={32}
+              className="size-8 object-contain"
+            />
+          ) : (
+            <Image
+              src="/images/brand-logo.png"
+              alt="VEXIS pk"
+              width={732}
+              height={218}
+              className="h-10 w-auto object-contain"
+            />
+          )}
         </Link>
         {onClose ? (
           <button

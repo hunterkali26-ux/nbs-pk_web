@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Instagram, Music2, Truck } from "lucide-react";
+import { Facebook, Instagram, Truck } from "lucide-react";
 
 export function Footer() {
   return (
@@ -42,7 +42,14 @@ export function Footer() {
               aria-label="VEXIS pk on TikTok (opens in a new tab)"
               className="rounded-full bg-slate-100 p-2 text-slate-600 transition hover:bg-emerald-600 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-emerald-600 dark:hover:text-white"
             >
-              <Music2 className="size-4" />
+              {/* Perfect Proportional TikTok SVG Icon */}
+              <svg
+                className="size-4 fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002-.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.836 4.836 0 0 1-1.003-.104z" />
+              </svg>
             </a>
           </div>
         </div>
@@ -68,7 +75,7 @@ export function Footer() {
               href="tel:+923208684757"
               className="block transition hover:text-emerald-700 dark:hover:text-emerald-400"
             >
-              03208684757
+              0320 8684757
             </a>
             <p>Mon - Sat, 10am - 6pm</p>
           </div>

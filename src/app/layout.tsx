@@ -3,10 +3,14 @@ import "./globals.css";
 
 import { BottomNav } from "@/components/layout/BottomNav";
 import { CartProvider } from "@/lib/cart-context";
+import { WishlistProvider } from "@/lib/wishlist-context";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ThemeScript } from "@/components/layout/ThemeScript";
 
 export const metadata: Metadata = {
+  // Site favicon — served from src/app/icon.png via the App Router file
+  // convention. Next.js auto-generates <link rel="icon"> (plus touch icons)
+  // from this file for every route; no manual icons entry needed here.
   metadataBase: new URL("https://vexis.pk"),
   title: "VEXIS pk — Premium watches, perfumes & shoes",
   description: "Luxury everyday essentials, delivered across Pakistan.",
@@ -21,10 +25,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="bg-white text-slate-900 antialiased transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100">
         <ThemeProvider>
           <CartProvider>
-            {/* Mobile bottom nav is fixed to the viewport — clear safe room
-                so page content is never hidden behind it. */}
-            <div className="pb-[68px] md:pb-0">{children}</div>
-            <BottomNav />
+            <WishlistProvider>
+              {/* Mobile bottom nav is fixed to the viewport — clear safe room
+                  so page content is never hidden behind it. */}
+              <div className="pb-[68px] md:pb-0">{children}</div>
+              <BottomNav />
+            </WishlistProvider>
           </CartProvider>
         </ThemeProvider>
       </body>

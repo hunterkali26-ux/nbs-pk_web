@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useActionState, useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, MoreVertical, Trash2, X } from "lucide-react";
+import { Eye, MoreVertical, Pencil, Trash2, X } from "lucide-react";
 
-import { deleteOrder, updateOrderStatus } from "@/app/admin/actions";
+import { deleteOrder, updateOrderAsAdmin, updateOrderStatus } from "@/app/admin/actions";
 
 export interface AdminOrderItem {
   title: string;
@@ -21,6 +21,9 @@ export interface AdminOrderRow {
   customer_phone: string;
   shipping_address: string;
   city: string;
+  notes?: string | null;
+  near_landmark?: string | null;
+  tracking_number?: string | null;
   total_amount: number;
   status: string;
   items: AdminOrderItem[];
@@ -38,6 +41,133 @@ const formatDateTime = (iso: string) =>
 
 const formatPKR = (value: number) =>
   `PKR ${Number(value || 0).toLocaleString("en-PK")}`;
+
+/** Input styling shared by the admin edit form — matches the admin theme. */
+const ADMIN_INPUT_CLASS =
+  "mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-[#d4b06a] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-[#d4b06a]";
+
+/**
+ * Full-access admin editor for an order's parcel details AND status. There is
+ * NO status gate here: any order — pending, shipped, delivered or cancelled —
+ * can be edited at any time. Persists through updateOrderAsAdmin (gated server
+ * side by requireAdmin()), then revalidates the affected routes.
+ */
+function AdminEditForm({
+  order,
+  onDone,
+}: {
+  order: AdminOrderRow;
+  onDone: () => void;
+}) {
+  const router = useRouter();
+  const [state, action, pending] = useActionState(updateOrderAsAdmin, {});
+  const status = (order.status ?? "pending").toLowerCase();
+
+  useEffect(() => {
+    if (state.success) {
+      router.refresh();
+      onDone();
+    }
+  }, [state.success, router, onDone]);
+
+  return (
+    <form action={action} className="space-y-3">
+      <input type="hidden" name="order_id" value={order.id} />
+      <p className="text-[10px] font-bold uppercase tracking-widest text-[#d4b06a]">
+        Editing order details
+      </p>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="block">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Full name</span>
+          <input
+            name="customer_name"
+            defaultValue={order.customer_name}
+            required
+            className={ADMIN_INPUT_CLASS}
+          />
+        </label>
+        <label className="block">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Phone</span>
+          <input
+            name="customer_phone"
+            defaultValue={order.customer_phone}
+            required
+            inputMode="tel"
+            className={ADMIN_INPUT_CLASS}
+          />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Address</span>
+          <input
+            name="shipping_address"
+            defaultValue={order.shipping_address}
+            required
+            className={ADMIN_INPUT_CLASS}
+          />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Near Landmark</span>
+          <input
+            name="near_landmark"
+            defaultValue={order.near_landmark ?? ""}
+            className={ADMIN_INPUT_CLASS}
+            placeholder="e.g. Opposite main gate, near Madina Market"
+          />
+        </label>
+        <label className="block">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">City</span>
+          <input name="city" defaultValue={order.city} required className={ADMIN_INPUT_CLASS} />
+        </label>
+        <label className="block">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Status</span>
+          <select name="status" defaultValue={status} className={ADMIN_INPUT_CLASS}>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </label>
+        <label className="block">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Tracking number</span>
+          <input
+            name="tracking_number"
+            defaultValue={order.tracking_number ?? ""}
+            className={ADMIN_INPUT_CLASS}
+            placeholder="e.g. TCS123456789"
+          />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Notes</span>
+          <textarea
+            name="notes"
+            defaultValue={order.notes ?? ""}
+            rows={2}
+            className={`${ADMIN_INPUT_CLASS} resize-y`}
+          />
+        </label>
+      </div>
+
+      {state.success ? (
+        <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">{state.success}</p>
+      ) : null}
+      {state.error ? (
+        <p className="text-sm font-semibold text-red-600 dark:text-red-400">{state.error}</p>
+      ) : null}
+
+      <div className="flex items-center justify-end gap-3 pt-1">
+        <button
+          type="submit"
+          disabled={pending}
+          className="inline-flex items-center gap-2 rounded-lg bg-[#d4b06a] px-5 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-[#c6a158] disabled:opacity-60"
+        >
+          {pending ? "Saving…" : "Save changes"}
+        </button>
+      </div>
+    </form>
+  );
+}
 
 /** Editable status dropdown that updates Supabase immediately. */
 function StatusSelect({ orderId, value }: { orderId: string; value: string }) {
@@ -88,13 +218,16 @@ function OrderDetailModal({
   order,
   onClose,
   onDeleted,
+  defaultEditing = false,
 }: {
   order: AdminOrderRow;
   onClose: () => void;
   onDeleted: (orderId: string) => void;
+  defaultEditing?: boolean;
 }) {
   const [pending, start] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [editing, setEditing] = useState(defaultEditing);
   const itemsTotal = order.items.reduce((sum, item) => sum + item.price_at_purchase * item.quantity, 0);
 
   return (
@@ -111,7 +244,7 @@ function OrderDetailModal({
       >
         <div className="sticky top-0 flex items-center justify-between border-b border-slate-200 bg-white/95 px-6 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#b58a3a]">Order details</p>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4b06a]">Order details</p>
             <h3 className="mt-1 font-mono text-lg font-bold text-slate-900 dark:text-white">#{order.id.slice(0, 8)}</h3>
           </div>
           <button
@@ -124,6 +257,11 @@ function OrderDetailModal({
           </button>
         </div>
 
+        {editing ? (
+          <div className="px-6 py-5">
+            <AdminEditForm order={order} onDone={() => setEditing(false)} />
+          </div>
+        ) : (
         <div className="space-y-6 px-6 py-5">
           <div className="grid gap-4 text-sm sm:grid-cols-2">
             <div>
@@ -143,6 +281,21 @@ function OrderDetailModal({
               <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Delivery address</p>
               <p className="mt-1 text-slate-600 dark:text-slate-300">{order.shipping_address}</p>
               <p className="text-slate-500 dark:text-slate-400">{order.city}</p>
+              {order.near_landmark ? (
+                <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                  Near: {order.near_landmark}
+                </p>
+              ) : null}
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Tracking</p>
+              {order.tracking_number ? (
+                <p className="mt-1 font-mono text-sm font-semibold text-slate-800 dark:text-slate-200">
+                  {order.tracking_number}
+                </p>
+              ) : (
+                <p className="mt-1 text-slate-500 dark:text-slate-400">Not entered</p>
+              )}
             </div>
           </div>
 
@@ -180,34 +333,61 @@ function OrderDetailModal({
 
           {error ? <p className="text-sm font-semibold text-red-600 dark:text-red-400">{error}</p> : null}
         </div>
+        )}
 
         <div className="sticky bottom-0 flex items-center justify-between gap-3 border-t border-slate-200 bg-white/95 px-6 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
-          <button
-            type="button"
-            disabled={pending}
-            onClick={() => {
-              if (!window.confirm(`Permanently delete order #${order.id.slice(0, 8)} and all of its items?`)) return;
-              start(async () => {
-                const result = await deleteOrder(order.id);
-                if (result.error) {
-                  setError(result.error);
-                  return;
-                }
-                onDeleted(order.id);
-              });
-            }}
-            className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:opacity-60 dark:border-red-900 dark:hover:bg-red-950/50"
-          >
-            <Trash2 className="size-4" />
-            {pending ? "Deleting…" : "Delete order"}
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
-          >
-            Close
-          </button>
+          {editing ? (
+            <button
+              type="button"
+              onClick={() => setEditing(false)}
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+            >
+              <X className="size-4" />
+              Cancel
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={pending}
+              onClick={() => {
+                if (!window.confirm(`Permanently delete order #${order.id.slice(0, 8)} and all of its items?`)) return;
+                start(async () => {
+                  const result = await deleteOrder(order.id);
+                  if (result.error) {
+                    setError(result.error);
+                    return;
+                  }
+                  onDeleted(order.id);
+                });
+              }}
+              className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:opacity-60 dark:border-red-900 dark:hover:bg-red-950/50"
+            >
+              <Trash2 className="size-4" />
+              {pending ? "Deleting…" : "Delete order"}
+            </button>
+          )}
+          <div className="ml-auto flex items-center gap-3">
+            {!editing ? (
+              <button
+                type="button"
+                disabled={pending}
+                onClick={() => setEditing(true)}
+                aria-haspopup="dialog"
+                aria-expanded={editing}
+                className="inline-flex items-center gap-2 rounded-lg bg-[#d4b06a] px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-[#c6a158] disabled:opacity-60"
+              >
+                <Pencil className="size-4" />
+                Edit Order
+              </button>
+            ) : null}
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -217,6 +397,7 @@ function OrderDetailModal({
 export function AdminOrdersView({ rows }: { rows: AdminOrderRow[] }) {
   const router = useRouter();
   const [detailId, setDetailId] = useState<string | null>(null);
+  const [editOnOpen, setEditOnOpen] = useState(false);
   // Floating menu rendered with FIXED coordinates at the document root of this
   // component — never inside the scrolling/clipping table container — so it
   // always appears fully on top and is never cut off.
@@ -379,6 +560,7 @@ export function AdminOrdersView({ rows }: { rows: AdminOrderRow[] }) {
             role="menuitem"
             onClick={() => {
               setMenu(null);
+              setEditOnOpen(false);
               setDetailId(menu.id);
             }}
             className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700"
@@ -393,12 +575,25 @@ export function AdminOrdersView({ rows }: { rows: AdminOrderRow[] }) {
           >
             <Trash2 className="size-4" /> Delete order
           </button>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              setMenu(null);
+              setEditOnOpen(true);
+              setDetailId(menu.id);
+            }}
+            className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-[#b5750f] transition hover:bg-amber-50 dark:text-[#d4b06a] dark:hover:bg-amber-950/30"
+          >
+            <Pencil className="size-4" /> Edit order
+          </button>
         </div>
       ) : null}
 
       {detailOrder ? (
         <OrderDetailModal
           order={detailOrder}
+          defaultEditing={editOnOpen}
           onClose={() => setDetailId(null)}
           onDeleted={(deletedId) => {
             setDetailId(null);

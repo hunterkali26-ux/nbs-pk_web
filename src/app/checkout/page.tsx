@@ -21,6 +21,7 @@ type Shipping = {
   city: string;
   postal_code: string;
   phone: string;
+  near_landmark: string;
 };
 
 const emptyShipping: Shipping = {
@@ -29,6 +30,7 @@ const emptyShipping: Shipping = {
   city: "",
   postal_code: "",
   phone: "",
+  near_landmark: "",
 };
 
 export default function CheckoutPage() {
@@ -239,6 +241,10 @@ export default function CheckoutPage() {
               <label className={labelClass}>
                 Phone number
                 <input name="phone" required type="tel" placeholder="0320 8684757" value={shipping.phone} onChange={updateShipping("phone")} className={inputClass} />
+              </label>
+              <label className={labelClass}>
+                Near Landmark
+                <input name="near_landmark" placeholder="e.g. Opposite main gate, near Madina Market" value={shipping.near_landmark} onChange={updateShipping("near_landmark")} className={inputClass} />
               </label>
               {state.error && (
                 <p role="alert" className="mt-4 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">{state.error}</p>

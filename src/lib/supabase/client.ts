@@ -19,6 +19,14 @@ export function createClient(): SupabaseClient<Database> {
     );
   }
 
-  browserClient = createBrowserClient<Database>(supabaseUrl, supabaseAnonKey);
+  browserClient = createBrowserClient<Database>(supabaseUrl, supabaseAnonKey, {
+    // Explicit session persistence + live refresh so the client always knows
+    // who is signed in and never drops the session across navigations.
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+    },
+  });
   return browserClient;
 }

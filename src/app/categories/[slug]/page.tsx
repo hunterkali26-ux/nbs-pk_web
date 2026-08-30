@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PackageCheck } from "lucide-react";
 
+import { WishlistButton } from "@/components/wishlist/WishlistButton";
 import { createClient } from "@/lib/supabase/server";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -93,6 +94,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold text-emerald-700 dark:bg-slate-900/90 dark:text-emerald-300">
                     {product.category}
                   </span>
+                  <WishlistButton productId={product.id} productTitle={product.title} />
                 </div>
                 <h3 className="mt-4 truncate text-sm font-bold text-slate-900 dark:text-white">{product.title}</h3>
                 <p className="mt-1 text-lg font-black text-emerald-700 dark:text-emerald-400">

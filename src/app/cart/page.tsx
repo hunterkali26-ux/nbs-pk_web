@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Minus, PackageOpen, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { useTransition, useState } from "react";
+import { LoaderCircle, Minus, PackageOpen, Plus, ShoppingBag, Trash2 } from "lucide-react";
 
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -14,6 +14,7 @@ export default function CartPage() {
   const { items, addItem, removeItem, updateQuantity, total, count } = useCart();
   const router = useRouter();
   const [pendingAuth, setPendingAuth] = useState(false);
+  const [navPending, startTransition] = useTransition();
 
   // Guests are bounced to sign-in with a return trip to /checkout; the guest
   // cart survives in localStorage and merges into their account on sign-in.
@@ -23,7 +24,9 @@ export default function CartPage() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    router.push(user ? "/checkout" : `/login?redirect=${encodeURIComponent("/checkout")}`);
+    startTransition(() =>
+      router.push(user ? "/checkout" : `/login?redirect=${encodeURIComponent("/checkout")}`)
+    );
   };
 
   if (items.length === 0) {
@@ -142,10 +145,13 @@ export default function CartPage() {
             <button
               type="button"
               onClick={handleProceedToCheckout}
-              disabled={pendingAuth}
+              disabled={pendingAuth || navPending}
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60"
             >
-              {pendingAuth ? "Checking your session…" : "Proceed to checkout"}
+              {pendingAuth || navPending ? (
+                <LoaderCircle className="size-4 animate-spin" />
+              ) : null}
+              {pendingAuth ? "Checking your session…" : navPending ? "Redirecting…" : "Proceed to checkout"}
             </button>
             <Link
               href="/#featured"

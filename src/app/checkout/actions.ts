@@ -39,6 +39,7 @@ export async function placeOrder(prevState: CheckoutState, formData: FormData): 
   const city = String(formData.get("city") ?? "").trim();
   const postal_code = String(formData.get("postal_code") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();
+  const nearLandmark = String(formData.get("near_landmark") ?? "").trim();
   const rawLines = String(formData.get("items") ?? "");
 
   if (!full_name || !address_line_1 || !city || !postal_code || !phone) {
@@ -103,6 +104,7 @@ export async function placeOrder(prevState: CheckoutState, formData: FormData): 
     shipping_address: shippingAddressText,
     city: city || "Multan",
     total_amount: Number(total_amount),
+    ...(nearLandmark ? { near_landmark: nearLandmark } : {}),
   };
 
   const { data: order, error: orderError } = await supabase

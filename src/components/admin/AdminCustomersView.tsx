@@ -80,7 +80,7 @@ export function AdminCustomersView({ customers }: { customers: AdminCustomer[] }
                 <td className="hidden max-w-[220px] truncate px-4 py-4 text-black/60 md:table-cell sm:px-5 dark:text-slate-300">
                   {customer.address || "—"}
                 </td>
-                <td className="whitespace-nowrap px-4 py-4 capitalize text-[#b58a3a] sm:px-5">{customer.role}</td>
+                <td className="whitespace-nowrap px-4 py-4 capitalize text-[#d4b06a] sm:px-5">{customer.role}</td>
                 <td className="hidden whitespace-nowrap px-4 py-4 text-black/50 sm:table-cell sm:px-5 dark:text-slate-400">
                   {formatDate(customer.created_at)}
                 </td>
@@ -116,7 +116,7 @@ export function AdminCustomersView({ customers }: { customers: AdminCustomer[] }
           >
             <div className="sticky top-0 flex items-center justify-between border-b border-slate-200 bg-white/95 px-6 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#b58a3a]">Customer profile</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4b06a]">Customer profile</p>
                 <h3 className="mt-1 text-lg font-bold text-slate-900 dark:text-white">
                   {detail.full_name || "Unnamed customer"}
                 </h3>

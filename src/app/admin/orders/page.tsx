@@ -4,25 +4,40 @@ import type { Order } from "@/types/database";
 
 export const dynamic = "force-dynamic";
 
+/** Cap the rows shipped to the admin orders table (newest-first) so payloads and
+ *  client hydration stay bounded regardless of how many orders exist. */
+const ORDER_PAGE_SIZE = 200;
+
 export default async function OrdersPage() {
   const supabase = await createClient();
-  const [{ data: orderData }, { data: itemData }] = await Promise.all([
-    supabase.from("orders").select("*").order("created_at", { ascending: false }),
-    // Plain select — embedded-resource joins silently return empty when the
-    // relationship can't be resolved, which wiped out titles/images. We merge
-    // products manually below instead.
-    supabase.from("order_items").select("order_id, product_id, quantity, price_at_purchase"),
-  ]);
+
+  // Fetch only the newest bounded page of orders (indexed by created_at) instead
+  // of the entire table. Then pull the lines + referenced products in indexed
+  // IN-clauses scoped to exactly those orders.
+  const { data: orderData } = await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(ORDER_PAGE_SIZE);
 
   const orders = (orderData ?? []) as Order[];
-  const items = (itemData ?? []) as unknown as {
+  const orderIds = orders.map((order) => order.id);
+
+  const itemRows = orderIds.length > 0
+    ? await supabase
+        .from("order_items")
+        .select("order_id, product_id, quantity, price_at_purchase")
+        .in("order_id", orderIds)
+    : { data: null };
+
+  const items = (itemRows.data ?? []) as unknown as {
     order_id: string;
     product_id: string | null;
     quantity: number;
     price_at_purchase: number | null;
   }[];
 
-  // Second pass: look up the referenced products directly by id.
+  // Resolve every referenced product in one indexed IN query (bounded set).
   const productIds = [
     ...new Set(items.map((item) => item.product_id).filter((id): id is string => Boolean(id))),
   ];
@@ -68,6 +83,9 @@ export default async function OrdersPage() {
     customer_phone: order.customer_phone ?? "",
     shipping_address: order.shipping_address ?? "",
     city: order.city ?? "",
+    notes: order.notes ?? null,
+    near_landmark: order.near_landmark ?? null,
+    tracking_number: order.tracking_number ?? null,
     total_amount: Number(order.total_amount || 0),
     status: String(order.status ?? "pending"),
     items: itemsByOrder.get(order.id) ?? [],
@@ -76,8 +94,8 @@ export default async function OrdersPage() {
   return (
     <main className="min-h-screen bg-[#f1efe9] px-4 py-8 sm:px-6 sm:py-12 lg:px-10 lg:py-14 dark:bg-slate-950">
       <div className="mx-auto max-w-[1400px]">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#b58a3a]">Commerce</p>
-        <h1 className="mt-3 font-serif text-4xl sm:text-5xl">Orders</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#d4b06a]">Commerce</p>
+        <h1 className="mt-3 font-serif font-black text-4xl sm:text-5xl">Orders</h1>
         <p className="mt-2 text-sm text-black/50 dark:text-slate-400">
           Click any row for full details · change status inline · use the ⋮ menu to delete.
         </p>

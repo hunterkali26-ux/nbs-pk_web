@@ -23,7 +23,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Search
       footer={
         <>
           New to VEXIS pk?{" "}
-          <Link href={signupHref} className="font-semibold text-[#b58a3a] hover:text-[#8d6928]">
+          <Link href={signupHref} className="font-semibold text-[#d4b06a] hover:text-[#8d6928]">
             Create an account
           </Link>
         </>

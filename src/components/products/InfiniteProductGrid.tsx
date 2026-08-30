@@ -6,6 +6,7 @@ import { PackageCheck } from "lucide-react";
 
 import { getProducts } from "@/app/auth/actions";
 import { useCart } from "@/lib/cart-context";
+import { WishlistButton } from "@/components/wishlist/WishlistButton";
 import type { Product } from "@/types/database";
 
 interface InfiniteProductGridProps {
@@ -85,7 +86,7 @@ export function InfiniteProductGrid({
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {products.map((product) => (
           <article key={product.id} className="group min-w-0">
-            <Link href={`/products/${product.id}`} className="block">
+            <Link href={`/products/${product.id}`} prefetch={true} className="block">
               <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-gradient-to-br from-emerald-100 to-slate-100 dark:from-slate-800 dark:to-slate-900">
                 <div className="absolute inset-0 grid place-items-center">
                   {product.image_url ? (
@@ -98,9 +99,10 @@ export function InfiniteProductGrid({
                     <PackageCheck className="size-20 text-slate-300 dark:text-slate-600" strokeWidth={1} />
                   )}
                 </div>
-                <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold text-emerald-700 dark:bg-slate-900/90 dark:text-emerald-400">
+                                <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold text-emerald-700 dark:bg-slate-900/90 dark:text-emerald-400">
                   {product.category}
                 </span>
+                <WishlistButton productId={product.id} productTitle={product.title} />
                 <button
                   onClick={(e) => {
                     e.preventDefault();

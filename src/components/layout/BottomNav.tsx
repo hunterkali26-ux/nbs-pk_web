@@ -52,7 +52,7 @@ export function BottomNav() {
             <span className="relative">
               <Icon className="size-5" strokeWidth={1.8} />
               {typeof badge === "number" && badge > 0 ? (
-                <span className="absolute -right-2 -top-1.5 grid min-w-4 place-items-center rounded-full bg-emerald-600 px-1 text-[8px] font-bold leading-4 text-white">
+                <span className="absolute -right-2 -top-1.5 z-20 grid min-w-4 place-items-center rounded-full bg-emerald-600 px-1 text-[8px] font-bold leading-4 text-white">
                   {badge > 9 ? "9+" : badge}
                 </span>
               ) : null}

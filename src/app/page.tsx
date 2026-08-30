@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { ArrowRight, Footprints, Gem, PackageCheck, Sparkles, Watch } from "lucide-react";
 
@@ -39,7 +40,7 @@ export default async function Home() {
   // Real data from Supabase: categories for the cards, page 0 of the product
   // feed is server-rendered so the home page always shows live inventory.
   const [{ data: categoryRows }, { data: productRows }] = await Promise.all([
-    supabase.from("categories").select("id, name, slug").order("name"),
+    supabase.from("categories").select("*").order("name"),
     supabase.from("products").select("*").order("created_at", { ascending: false }).limit(8),
   ]);
 
@@ -64,13 +65,13 @@ export default async function Home() {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
-                  href="#featured"
+                  href="/shop"
                   className="inline-flex items-center gap-2 rounded-lg bg-emerald-700 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-700/20 hover:bg-emerald-800"
                 >
                   Shop now <ArrowRight className="size-4" />
                 </Link>
                 <Link
-                  href="#categories"
+                  href="/categories"
                   className="rounded-lg border border-slate-300 bg-white px-5 py-3.5 text-sm font-bold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
                 >
                   Explore categories
@@ -79,9 +80,10 @@ export default async function Home() {
             </div>
             {/* Mobile-only live categories — replaces the hero graphic. A compact
                 3-column grid fed from the same Supabase categories query, so any
-                category added via the admin dashboard appears here instantly. The
-                categories schema has no image column, so each box shows a clean
-                icon (cycling on index) as the visual fallback. */}
+                category added via the admin dashboard appears here instantly.
+                Cards show the uploaded cover photo on top with the name neatly
+                underneath; the cycling icon is only a fallback when no photo has
+                been set yet. */}
             <div className="mt-2 md:hidden">
               {categories.length === 0 ? (
                 <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -96,12 +98,26 @@ export default async function Home() {
                       <Link
                         key={category.id}
                         href={`/categories/${category.slug}`}
-                        className={`group flex flex-col items-center gap-2 rounded-xl bg-gradient-to-br ${style.gradient} px-2 py-4 transition active:scale-[0.98]`}
+                        className="group overflow-hidden rounded-xl border border-slate-100 bg-white shadow-sm transition active:scale-[0.98] dark:border-slate-800 dark:bg-slate-900"
                       >
-                        <span className="grid size-11 place-items-center rounded-full bg-white/80 text-emerald-700 shadow-sm dark:bg-slate-900/70 dark:text-emerald-300">
-                          <Icon className="size-5" strokeWidth={1.6} />
+                        <span
+                          className={`relative block aspect-square w-full overflow-hidden bg-gradient-to-br ${style.gradient}`}
+                        >
+                          {category.image_url ? (
+                            <Image
+                              src={category.image_url}
+                              alt={category.name}
+                              fill
+                              sizes="(max-width: 767px) 31vw, 200px"
+                              className="object-cover transition duration-300 group-hover:scale-105"
+                            />
+                          ) : (
+                            <span className="absolute inset-0 grid place-items-center">
+                              <Icon className="size-7 text-emerald-600/70 dark:text-emerald-300/70" strokeWidth={1.5} />
+                            </span>
+                          )}
                         </span>
-                        <span className="max-w-full truncate text-xs font-semibold text-slate-900 dark:text-white">
+                        <span className="block truncate px-1.5 py-2 text-center text-xs font-bold capitalize text-slate-900 dark:text-white">
                           {category.name}
                         </span>
                       </Link>
@@ -110,18 +126,18 @@ export default async function Home() {
                 </div>
               )}
             </div>
-{/* Desktop-only hero graphic (hidden on mobile — the compact
-                categories grid above takes its place). */}
-            <div className="relative mx-auto hidden aspect-square w-full max-w-md md:block">
-              <div className="absolute inset-8 rotate-6 rounded-[2rem] bg-gradient-to-br from-emerald-800 via-teal-700 to-emerald-400 shadow-2xl shadow-emerald-900/25" />
-              <div className="absolute inset-16 -rotate-6 rounded-[2rem] border border-white/30 bg-white/10 backdrop-blur-sm" />
-              <div className="absolute inset-0 grid place-items-center">
-                <Watch className="size-32 text-white/90 drop-shadow-2xl" strokeWidth={1} />
-              </div>
-              <div className="absolute bottom-3 left-3 rounded-xl bg-white px-4 py-3 shadow-xl dark:bg-slate-900">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Watches · Perfumes · Shoes</p>
-                <p className="mt-1 text-sm font-bold text-slate-900 dark:text-white">Live collection</p>
-              </div>
+            {/* Desktop-only hero branding image (hidden on mobile & tablet — the
+                compact categories grid above takes its place). */}
+            <div className="relative mx-auto hidden w-full max-w-xl lg:block">
+              <Image
+                src="/images/hero-branding.jpeg"
+                alt="VEXIS pk — premium watches, perfumes and footwear"
+                width={1024}
+                height={683}
+                priority
+                sizes="(min-width: 1024px) 40vw, 576px"
+                className="h-auto w-full rounded-[2rem] object-cover shadow-2xl shadow-emerald-900/30 ring-1 ring-slate-900/10 dark:ring-white/10"
+              />
             </div>
           </div>
         </section>
@@ -165,11 +181,33 @@ export default async function Home() {
                   <Link
                     key={category.id}
                     href={`/categories/${category.slug}`}
-                    className={`group rounded-2xl bg-gradient-to-br ${style.gradient} p-6 transition hover:-translate-y-1 hover:shadow-lg`}
+                    className="group overflow-hidden rounded-2xl border border-slate-100 bg-white transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
                   >
-                    <Icon className="size-8 text-slate-700 transition group-hover:text-emerald-700 dark:text-slate-300" strokeWidth={1.5} />
-                    <h3 className="mt-16 text-xl font-black text-slate-900 dark:text-white">{category.name}</h3>
-                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">Shop the {category.name.toLowerCase()} collection.</p>
+                    <span
+                      className={`relative block aspect-[4/3] w-full overflow-hidden bg-gradient-to-br ${style.gradient}`}
+                    >
+                      {category.image_url ? (
+                        <Image
+                          src={category.image_url}
+                          alt={category.name}
+                          fill
+                          sizes="(max-width: 1023px) 45vw, 30vw"
+                          className="object-cover transition duration-500 group-hover:scale-105"
+                        />
+                      ) : (
+                        <span className="absolute inset-0 grid place-items-center">
+                          <Icon className="size-10 text-emerald-600/60 dark:text-emerald-300/60" strokeWidth={1.25} />
+                        </span>
+                      )}
+                    </span>
+                    <span className="block p-5">
+                      <span className="block text-lg font-black capitalize text-slate-900 dark:text-white">
+                        {category.name}
+                      </span>
+                      <span className="mt-0.5 block text-sm text-slate-500 dark:text-slate-400">
+                        Shop the {category.name.toLowerCase()} collection.
+                      </span>
+                    </span>
                   </Link>
                 );
               })

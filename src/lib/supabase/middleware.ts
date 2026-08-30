@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/types/database";
 
 export async function updateSession(request: NextRequest) {
-  let response = NextResponse.next({ request });
+  let supabaseResponse = NextResponse.next({ request });
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -20,20 +20,36 @@ export async function updateSession(request: NextRequest) {
         return request.cookies.getAll();
       },
       setAll(cookiesToSet) {
+        // Sync every auth cookie (access, refresh, PKCE code verifier) into the
+        // outgoing request AND the final response, so the browser persists the
+        // exact tokens the server just refreshed.
         cookiesToSet.forEach(({ name, value }) =>
           request.cookies.set(name, value),
         );
-
-        response = NextResponse.next({ request });
+        supabaseResponse = NextResponse.next({ request });
         cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, options),
+          supabaseResponse.cookies.set(name, value, options),
         );
       },
     },
   });
 
-  // Refreshes expired access tokens and synchronizes the auth cookie.
-  await supabase.auth.getUser();
+  // IMPORTANT: do not run code between createServerClient and getUser — the
+  // middleware MUST call getUser() so it can refresh an expired access token
+  // and re-issue the auth cookies on every full-page request.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return response;
+  // Signed-in users never need the auth screens — skip straight to the store
+  // so /login etc. cannot flicker a signed-out form during navigation.
+  const { pathname } = request.nextUrl;
+  if (user && (pathname === "/login" || pathname === "/signup")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
+  return supabaseResponse;
 }

@@ -4,13 +4,17 @@ import type { Order, Profile } from "@/types/database";
 
 export const dynamic = "force-dynamic";
 
+/** Bounded customer rows so the directory stays responsive at scale. */
+const CUSTOMER_PAGE_SIZE = 500;
+
 export default async function CustomersPage() {
   const supabase = await createClient();
 
-  // Fetch every profile plus every order in parallel. The modal joins them by
-  // user id so each row opens with live order history/stats from Supabase.
+  // Fetch profiles (bounded) plus every order's id/user_id in parallel. The
+  // order feed is what already joins per-user stats; a count/id projection keeps
+  // it lightweight.
   const [{ data: profileRows }, { data: orderRows }] = await Promise.all([
-    supabase.from("profiles").select("*").order("created_at", { ascending: false }),
+    supabase.from("profiles").select("*").order("created_at", { ascending: false }).limit(CUSTOMER_PAGE_SIZE),
     supabase
       .from("orders")
       .select("id, user_id, total_amount, status, city, created_at")
@@ -54,8 +58,8 @@ export default async function CustomersPage() {
   return (
     <main className="min-h-screen bg-[#f1efe9] px-4 py-8 sm:px-6 sm:py-12 lg:px-10 lg:py-14 dark:bg-slate-950">
       <div className="mx-auto max-w-[1250px]">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#b58a3a]">People</p>
-        <h1 className="mt-3 font-serif text-4xl sm:text-5xl">Customers</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#d4b06a]">People</p>
+        <h1 className="mt-3 font-serif font-black text-4xl sm:text-5xl">Customers</h1>
         <p className="mt-2 text-sm text-black/50 dark:text-slate-400">
           Click any row for a full profile with live order history and spend stats.
         </p>
