@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 import { BottomNav } from "@/components/layout/BottomNav";
@@ -36,6 +37,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </WishlistProvider>
           </CartProvider>
         </ThemeProvider>
+        {/* Vercel Web Analytics — no-ops in local dev, active on deployments. */}
+        <Analytics />
       </body>
     </html>
   );

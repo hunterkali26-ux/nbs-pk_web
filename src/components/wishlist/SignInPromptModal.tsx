@@ -1,12 +1,17 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Heart, LogIn, UserRoundPlus, X } from "lucide-react";
 
 /**
- * Shown when a guest taps a wishlist heart. Links preserve the page the guest
- * was on (returnTo) so auth bounces them straight back after signing in.
+ * Shown when a guest taps a wishlist heart. Buttons navigate to /login or
+ * /signup (preserving the page the guest was on via `returnTo` so auth bounces
+ * them straight back after signing in) and immediately dismiss the modal.
+ *
+ * Rendered at z-[120] — above the mobile nav drawer (z-[100]) and the search
+ * suggestions dropdown (z-[110]) — so no other overlay can ever sit on top of
+ * it and swallow clicks on the CTAs.
  */
 export function SignInPromptModal({
   open,
@@ -17,6 +22,8 @@ export function SignInPromptModal({
   returnTo: string;
   onClose: () => void;
 }) {
+  const router = useRouter();
+
   // Escape closes — matches the drawer/modal behaviour used elsewhere.
   useEffect(() => {
     if (!open) return;
@@ -38,9 +45,15 @@ export function SignInPromptModal({
       ? "/signup"
       : `/signup?redirect=${encodeURIComponent(returnTo)}`;
 
+  /** Close the modal first, then navigate — one explicit handler per CTA. */
+  const goTo = (href: string) => {
+    onClose();
+    router.push(href);
+  };
+
   return (
     <div
-      className="fixed inset-0 z-[90] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
       onClick={onClose}
       role="presentation"
     >
@@ -50,7 +63,7 @@ export function SignInPromptModal({
         aria-labelledby="wishlist-signin-title"
         aria-describedby="wishlist-signin-desc"
         onClick={(event) => event.stopPropagation()}
-        className="relative w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl dark:bg-slate-900"
+        className="pointer-events-auto relative w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl dark:bg-slate-900"
       >
         <button
           type="button"
@@ -83,26 +96,26 @@ export function SignInPromptModal({
         </p>
 
         <div className="mt-6 space-y-2.5">
-          <Link
-            href={loginHref}
-            prefetch={true}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
+          <button
+            type="button"
+            onClick={() => goTo(loginHref)}
+            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
           >
             <LogIn className="size-4" />
             Sign in to continue
-          </Link>
-          <Link
-            href={signupHref}
-            prefetch={true}
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
+          </button>
+          <button
+            type="button"
+            onClick={() => goTo(signupHref)}
+            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
           >
             <UserRoundPlus className="size-4" />
             Create account
-          </Link>
+          </button>
           <button
             type="button"
             onClick={onClose}
-            className="w-full rounded-xl px-5 py-2 text-xs font-semibold uppercase tracking-widest text-slate-400 transition hover:text-slate-600 dark:hover:text-slate-300"
+            className="w-full cursor-pointer rounded-xl px-5 py-2 text-xs font-semibold uppercase tracking-widest text-slate-400 transition hover:text-slate-600 dark:hover:text-slate-300"
           >
             Maybe later
           </button>

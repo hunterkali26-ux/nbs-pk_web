@@ -44,6 +44,8 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   // Refs mirror latest values for use inside stable callbacks.
   const idsRef = useRef<string[]>([]);
   const userIdRef = useRef<string | null>(null);
+  const pendingRef = useRef<ReadonlySet<string>>(new Set());
+  const promptOpenRef = useRef(false);
 
   useEffect(() => {
     idsRef.current = ids;
@@ -51,6 +53,12 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     userIdRef.current = userId;
   }, [userId]);
+  useEffect(() => {
+    pendingRef.current = pendingIds;
+  }, [pendingIds]);
+  useEffect(() => {
+    promptOpenRef.current = promptOpen;
+  }, [promptOpen]);
 
   // Track auth identity live so hearts stay correct across sign-in/out.
   useEffect(() => {
@@ -59,7 +67,13 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUserId(session?.user?.id ?? null);
-      if (!session) setPromptOpen(false);
+      if (session) {
+        // A signed-in user should never be staring at the guest prompt (this
+        // can flash on production when the session resolves after a heart tap).
+        if (promptOpenRef.current) setPromptOpen(false);
+      } else {
+        setPromptOpen(false);
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -97,8 +111,13 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
           idsRef.current = [];
           setIds([]);
         } else {
-          const list = ((data ?? []) as { product_id: string }[]).map(
-            (row) => row.product_id,
+          // Fold in optimistic writes that are still in flight so a heart the
+          // user just tapped is never clobbered by the list fetch racing the
+          // insert (the row may not be visible to the SELECT yet).
+          const rows = (data ?? []) as { product_id: string }[];
+          const inFlight = idsRef.current.filter((id) => pendingRef.current.has(id));
+          const list = Array.from(
+            new Set([...rows.map((row) => row.product_id), ...inFlight]),
           );
           idsRef.current = list;
           setIds(list);
@@ -169,7 +188,35 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   const toggle = useCallback(
     (product: { id: string }) => {
       if (!userIdRef.current) {
-        promptSignIn();
+        // Identity may still be resolving on a fresh page load (Supabase
+        // restores the session asynchronously), even for signed-in users.
+        // Verify authoritatively with getUser() before showing the guest
+        // prompt so a logged-in user never sees the "sign in" modal.
+        void (async () => {
+          let resolvedUserId: string | null = null;
+          try {
+            const supabase = createClient();
+            const { data, error } = await supabase.auth.getUser();
+            if (!error && data.user) resolvedUserId = data.user.id;
+          } catch {
+            // Network/auth client failure — treat as guest below.
+          }
+
+          if (resolvedUserId) {
+            userIdRef.current = resolvedUserId;
+            setUserId(resolvedUserId); // triggers the saved-list loader
+            const saving = !idsRef.current.includes(product.id);
+            setIds((prev) =>
+              saving
+                ? [product.id, ...prev.filter((id) => id !== product.id)]
+                : prev.filter((id) => id !== product.id),
+            );
+            runWrite(product.id, saving);
+            return;
+          }
+
+          promptSignIn();
+        })();
         return;
       }
       const saving = !idsRef.current.includes(product.id);
