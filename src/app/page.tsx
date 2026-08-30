@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { InfiniteProductGrid } from "@/components/products/InfiniteProductGrid";
 import { createClient } from "@/lib/supabase/server";
-import type { Category, Product } from "@/types/database";
+import type { Category } from "@/types/database";
 
 export const dynamic = "force-dynamic";
 
@@ -37,15 +37,11 @@ const categoryStyles = [
 export default async function Home() {
   const supabase = await createClient();
 
-  // Real data from Supabase: categories for the cards, page 0 of the product
-  // feed is server-rendered so the home page always shows live inventory.
-  const [{ data: categoryRows }, { data: productRows }] = await Promise.all([
-    supabase.from("categories").select("*").order("name"),
-    supabase.from("products").select("*").order("created_at", { ascending: false }).limit(8),
-  ]);
+  // Real data from Supabase: category cards for the hero. The product feed
+  // below fetches its own pages client-side via InfiniteProductGrid.
+  const { data: categoryRows } = await supabase.from("categories").select("*").order("name");
 
   const categories = (categoryRows ?? []) as Category[];
-  const initialProducts = (productRows ?? []) as Product[];
   return (
     <>
       <Navbar />

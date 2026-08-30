@@ -56,7 +56,12 @@ export function InfiniteProductGrid({
 
   useEffect(() => {
     // Skip the first fetch when the server already supplied page 0.
-    if (!seeded) void loadMore();
+    // Deferred to a macrotask — loadMore() calls setState synchronously and
+    // an effect must not trigger a cascading render on mount.
+    if (!seeded) {
+      const initialTimer = setTimeout(() => void loadMore(), 0);
+      return () => clearTimeout(initialTimer);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

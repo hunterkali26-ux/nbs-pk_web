@@ -4,6 +4,7 @@ import "./globals.css";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { CartProvider } from "@/lib/cart-context";
 import { WishlistProvider } from "@/lib/wishlist-context";
+import { getSiteUrl } from "@/lib/site";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ThemeScript } from "@/components/layout/ThemeScript";
 
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
   // Site favicon — served from src/app/icon.png via the App Router file
   // convention. Next.js auto-generates <link rel="icon"> (plus touch icons)
   // from this file for every route; no manual icons entry needed here.
-  metadataBase: new URL("https://vexis.pk"),
+  // Canonical origin comes from NEXT_PUBLIC_SITE_URL (see src/lib/site.ts) so
+  // canonical/OG URLs follow the deployed domain instead of being hardcoded.
+  metadataBase: new URL(getSiteUrl()),
   title: "VEXIS pk — Premium watches, perfumes & shoes",
   description: "Luxury everyday essentials, delivered across Pakistan.",
 };

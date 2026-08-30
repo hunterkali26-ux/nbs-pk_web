@@ -70,12 +70,18 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
     if (!userId) {
       idsRef.current = [];
-      setIds([]);
-      setReady(true);
-      return;
+      // Deferred to a macrotask so the effect doesn't trigger a cascading
+      // synchronous render (react-hooks/set-state-in-effect).
+      const readyTimer = setTimeout(() => {
+        setIds([]);
+        setReady(true);
+      }, 0);
+      return () => clearTimeout(readyTimer);
     }
 
-    setReady(false);
+    const readyTimer = setTimeout(() => {
+      if (!cancelled) setReady(false);
+    }, 0);
     void (async () => {
       try {
         const supabase = createClient();
@@ -104,6 +110,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
     return () => {
       cancelled = true;
+      clearTimeout(readyTimer);
     };
   }, [userId]);
 
@@ -187,7 +194,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   const isWishlisted = useCallback(
     (productId: string) => idsRef.current.includes(productId),
-    [ids],
+    [],
   );
 
   const value = useMemo<WishlistContextType>(

@@ -658,10 +658,13 @@ export default function AccountOrdersPage() {
         .subscribe();
     })();
 
-    setHiddenIds(readHidden());
+    // Deferred to a macrotask — a synchronous setState in the effect body
+    // would trigger a cascading render on mount (react-hooks/set-state-in-effect).
+    const restoreTimer = setTimeout(() => setHiddenIds(readHidden()), 0);
 
     return () => {
       cancelled = true;
+      clearTimeout(restoreTimer);
       if (channel) {
         void createClient().removeChannel(channel);
       }

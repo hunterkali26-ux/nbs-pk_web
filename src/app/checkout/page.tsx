@@ -43,15 +43,20 @@ export default function CheckoutPage() {
 
   // Restore any shipping details typed before an auth detour, so nothing is
   // lost when the customer returns from /login?redirect=/checkout.
+  // Deferred to a macrotask so the effect doesn't trigger a cascading
+  // synchronous render (react-hooks/set-state-in-effect).
   useEffect(() => {
-    try {
-      const saved = sessionStorage.getItem(SHIPPING_KEY);
-      if (saved) {
-        setShipping((prev) => ({ ...prev, ...(JSON.parse(saved) as Partial<Shipping>) }));
+    const timer = setTimeout(() => {
+      try {
+        const saved = sessionStorage.getItem(SHIPPING_KEY);
+        if (saved) {
+          setShipping((prev) => ({ ...prev, ...(JSON.parse(saved) as Partial<Shipping>) }));
+        }
+      } catch {
+        /* ignore */
       }
-    } catch {
-      /* ignore */
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Track auth state and prefill from the profile once signed in.

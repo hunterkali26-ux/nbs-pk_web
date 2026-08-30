@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -88,14 +89,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
 export function DarkModeToggle() {
   const { theme, toggleTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
 
   // The real theme is only known after hydration (ThemeScript applies it
   // pre-paint), so render a size-stable placeholder on the server to avoid
-  // a Sun/Moon icon hydration mismatch.
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // a Sun/Moon icon hydration mismatch. useSyncExternalStore gives a
+  // hydration-safe "mounted" flag without a setState-in-effect cascade.
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   if (!mounted) {
     return (

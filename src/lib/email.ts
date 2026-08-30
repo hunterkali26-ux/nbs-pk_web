@@ -1,5 +1,6 @@
 "use server";
 
+import { getSiteUrl } from "@/lib/site";
 import type { ShippingAddress } from "@/types/database";
 
 /**
@@ -24,7 +25,7 @@ export interface OrderNotification {
 /** Recipient / sender overrides via env (with safe defaults). */
 const ADMIN_EMAIL = process.env.RESEND_ADMIN_TO ?? "hunterkali26@gmail.com";
 const FROM_EMAIL = process.env.RESEND_FROM ?? "VEXIS pk <onboarding@resend.dev>";
-const STORE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vexis.pk";
+const STORE_URL = getSiteUrl();
 
 /**
  * Dispatch an order-placed notification to the store admin through Resend.

@@ -26,7 +26,7 @@ export function SearchBar({
 }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const [navPending, startNav] = useTransition();
+  const [, startNav] = useTransition();
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -62,14 +62,20 @@ export function SearchBar({
   useEffect(() => {
     const trimmed = query.trim();
     if (!trimmed) {
-      setSuggestions([]);
-      setLoading(false);
-      closeDropdown();
-      return;
+      // Deferred to a macrotask — synchronous setState in an effect body
+      // causes a cascading render (react-hooks/set-state-in-effect).
+      const resetTimer = setTimeout(() => {
+        setSuggestions([]);
+        setLoading(false);
+        closeDropdown();
+      }, 0);
+      return () => clearTimeout(resetTimer);
     }
     const id = ++requestId.current;
-    setLoading(true);
+    // The spinner starts inside the debounced timer (async callback) so the
+    // effect body never calls setState synchronously.
     const timer = setTimeout(async () => {
+      setLoading(true);
       try {
         const result = await fetchSuggestions(trimmed);
         if (requestId.current !== id) return; // a newer keystroke won

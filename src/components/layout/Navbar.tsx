@@ -114,12 +114,14 @@ export function Navbar() {
 
     // Post-hydration only: if Supabase auth cookies exist on this device we are
     // very likely signed in — hold "loading" so the header doesn't flash the
-    // sign-in button while the session resolves from storage.
+    // sign-in button while the session resolves from storage. Deferred to a
+    // macrotask so the effect never triggers a cascading synchronous render.
+    let loadingTimer: ReturnType<typeof setTimeout> | undefined;
     if (typeof document !== "undefined") {
       const hasAuthCookie = document.cookie
         .split(";")
         .some((part) => part.trim().startsWith("sb-"));
-      if (hasAuthCookie) setSessionLoading(true);
+      if (hasAuthCookie) loadingTimer = setTimeout(() => setSessionLoading(true), 0);
     }
 
     const normalizeRole = (value: unknown): string =>
@@ -216,6 +218,7 @@ export function Navbar() {
 
     return () => {
       cancelled = true;
+      if (loadingTimer) clearTimeout(loadingTimer);
       subscription.unsubscribe();
     };
   }, []);

@@ -162,14 +162,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (userId === null) {
       const guestItems = readGuestCart();
       itemsRef.current = guestItems;
-      setItems(guestItems);
-      setReady(true);
-      return;
+      // Deferred to a macrotask so the effect doesn't trigger a cascading
+      // synchronous render (react-hooks/set-state-in-effect).
+      const readyTimer = setTimeout(() => {
+        setItems(guestItems);
+        setReady(true);
+      }, 0);
+      return () => clearTimeout(readyTimer);
     }
 
     let cancelled = false;
-    setReady(false);
     const guestItems = readGuestCart();
+    // Deferred to a macrotask so the effect doesn't trigger a cascading
+    // synchronous render (react-hooks/set-state-in-effect).
+    const readyTimer = setTimeout(() => {
+      if (!cancelled) setReady(false);
+    }, 0);
 
     (async () => {
       const dbItems = await getUserCart(userId);
@@ -197,6 +205,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     return () => {
       cancelled = true;
+      clearTimeout(readyTimer);
     };
   }, [userId]);
 
