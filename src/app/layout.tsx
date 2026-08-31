@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 import { BottomNav } from "@/components/layout/BottomNav";
@@ -42,6 +43,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </ThemeProvider>
         {/* Vercel Web Analytics — no-ops in local dev, active on deployments. */}
         <Analytics />
+        {/* Vercel Speed Insights — measures real-user Core Web Vitals on
+            deployments; inert locally. */}
+        <SpeedInsights />
       </body>
     </html>
   );
