@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 import { BottomNav } from "@/components/layout/BottomNav";
+import { WhatsAppFloat } from "@/components/common/WhatsAppFloat";
 import { CartProvider } from "@/lib/cart-context";
 import { WishlistProvider } from "@/lib/wishlist-context";
 import { getSiteUrl } from "@/lib/site";
@@ -34,6 +35,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                   so page content is never hidden behind it. */}
               <div className="pb-[68px] md:pb-0">{children}</div>
               <BottomNav />
+              {/* Floating WhatsApp chat widget — public storefront pages. */}
+              <WhatsAppFloat />
             </WishlistProvider>
           </CartProvider>
         </ThemeProvider>
