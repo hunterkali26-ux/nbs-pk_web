@@ -10,7 +10,7 @@ const HIDE_PREFIXES = ["/admin", "/login", "/signup"];
 // with a friendly pre-filled inquiry, ready to send.
 const WHATSAPP_NUMBER = "923208684757"; // 0320 8684757 in international format
 const PREFILL_MESSAGE =
-  "Hi, I am visiting VEXIS.pk and want to inquire about a product.";
+  "Hi, I am visiting vexis-pk.vercel.app and want to inquire about a product.";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   PREFILL_MESSAGE,
 )}`;
