@@ -17,7 +17,8 @@ const nextConfig: NextConfig = {
   },
 
   // Allow Next.js's image optimizer to fetch and process product/category
-  // photos stored in Supabase Storage (project-ref subdomains vary).
+  // photos stored in Supabase Storage (project-ref subdomains vary) and
+  // external domains like evoque.pk.
   images: {
     remotePatterns: [
       {
@@ -29,6 +30,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "**.supabase.in",
         pathname: "/storage/v1/object/public/**",
+      },
+      // Catch-all for all HTTPS image domains (evoique.pk, CDNs, etc.)
+      {
+        protocol: "https",
+        hostname: "**",
       },
     ],
   },

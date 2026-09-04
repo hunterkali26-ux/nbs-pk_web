@@ -5,6 +5,7 @@ import "./globals.css";
 
 import { BottomNav } from "@/components/layout/BottomNav";
 import { WhatsAppFloat } from "@/components/common/WhatsAppFloat";
+import { MobileAppBanner } from "@/components/MobileAppBanner";
 import { CartProvider } from "@/lib/cart-context";
 import { WishlistProvider } from "@/lib/wishlist-context";
 import { getSiteUrl } from "@/lib/site";
@@ -38,6 +39,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <BottomNav />
               {/* Floating WhatsApp chat widget — public storefront pages. */}
               <WhatsAppFloat />
+              {/* Mobile app promotion banner — visible only on mobile screens. */}
+              <MobileAppBanner />
             </WishlistProvider>
           </CartProvider>
         </ThemeProvider>
