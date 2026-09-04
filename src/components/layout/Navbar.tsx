@@ -36,7 +36,7 @@ const links = [
   ["Home", "/"],
   ["Shop", "/shop"],
   ["About", "/about"],
-  ["Categories", "/#categories"],
+  ["Categories", "/categories"],
 ] as const;
 
 /** Drawer navigation — mirrors the desktop links, with Categories pointing at
