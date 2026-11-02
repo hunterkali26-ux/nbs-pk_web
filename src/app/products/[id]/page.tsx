@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 // Static metadata (no extra DB round-trip) keeps first-byte time minimal.
 export const metadata: Metadata = {
-  title: "Product — VEXIS pk",
+  title: "Product — NBS-pk",
   description:
     "Authentic watches, perfumes and footwear with live pricing, specifications and verified buyer reviews.",
 };

@@ -99,7 +99,7 @@ export function SignInPromptModal({
           <button
             type="button"
             onClick={() => goTo(loginHref)}
-            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
+            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-amber-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-amber-800"
           >
             <LogIn className="size-4" />
             Sign in to continue
@@ -107,7 +107,7 @@ export function SignInPromptModal({
           <button
             type="button"
             onClick={() => goTo(signupHref)}
-            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
+            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-amber-600 hover:text-amber-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-amber-500 dark:hover:text-amber-400"
           >
             <UserRoundPlus className="size-4" />
             Create account

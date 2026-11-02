@@ -77,8 +77,8 @@ export function CategoryPills({ categories, activeSlug, subcategories, activeSub
             data-active={!activeSlug ? "true" : "false"}
             className={`inline-flex shrink-0 items-center rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 ${
               !activeSlug
-                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/25"
-                : "border border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-emerald-600 dark:hover:text-emerald-400"
+                ? "bg-amber-600 text-white shadow-md shadow-amber-600/25"
+                : "border border-slate-200 bg-white text-slate-600 hover:border-amber-300 hover:text-amber-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-amber-600 dark:hover:text-amber-400"
             }`}
           >
             All
@@ -90,8 +90,8 @@ export function CategoryPills({ categories, activeSlug, subcategories, activeSub
               data-active={activeSlug === cat.slug ? "true" : "false"}
               className={`inline-flex shrink-0 items-center rounded-full px-4 py-2 text-sm font-semibold capitalize transition-all duration-200 ${
                 activeSlug === cat.slug
-                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/25"
-                  : "border border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-emerald-600 dark:hover:text-emerald-400"
+                  ? "bg-amber-600 text-white shadow-md shadow-amber-600/25"
+                  : "border border-slate-200 bg-white text-slate-600 hover:border-amber-300 hover:text-amber-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-amber-600 dark:hover:text-amber-400"
               }`}
             >
               {cat.name}

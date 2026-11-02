@@ -14,9 +14,9 @@ import type { Category, Product } from "@/types/database";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Categories — VEXIS pk",
+  title: "Categories — NBS-pk",
   description:
-    "Browse every category at VEXIS pk — watches, perfumes, footwear and more, each with live products, real images and prices.",
+    "Browse every category at NBS-pk — leather shoes, boots, formal footwear and more, each with live products, real images and prices.",
 };
 
 /** Fallback glyph shown while a category has no uploaded cover photo yet. */
@@ -38,10 +38,10 @@ function CategoryCard({
   return (
     <Link
       href={`/categories/${category.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-50/20 dark:border-slate-800 dark:bg-slate-900 dark:hover:shadow-amber-900/20"
     >
       {/* Cover image with gradient overlay */}
-      <span className="relative block aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-emerald-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
+      <span className="relative block aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-amber-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
         {category.image_url ? (
           <Image
             src={category.image_url}
@@ -52,7 +52,7 @@ function CategoryCard({
           />
         ) : (
           <span className="absolute inset-0 grid place-items-center">
-            <FallbackIcon className="size-14 text-emerald-600/40 dark:text-emerald-300/40" strokeWidth={1.2} />
+            <FallbackIcon className="size-14 text-amber-600/40 dark:text-amber-300/40" strokeWidth={1.2} />
           </span>
         )}
         {/* Gradient overlay */}
@@ -160,7 +160,7 @@ export default async function CategoriesPage() {
         <section>
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-700 dark:text-emerald-400">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-amber-700 dark:text-amber-400">
                 Browse
               </p>
               <h1 className="mt-1 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl dark:text-white">
@@ -169,7 +169,7 @@ export default async function CategoriesPage() {
             </div>
             <Link
               href="/shop"
-              className="hidden items-center gap-1.5 text-sm font-bold text-emerald-700 transition hover:text-emerald-800 sm:inline-flex dark:text-emerald-400 dark:hover:text-emerald-300"
+              className="hidden items-center gap-1.5 text-sm font-bold text-amber-700 transition hover:text-amber-800 sm:inline-flex dark:text-amber-400 dark:hover:text-amber-300"
             >
               View all products
               <ArrowRight className="size-4" />
@@ -209,7 +209,7 @@ export default async function CategoriesPage() {
           />
           <ProductSection
             title="New Arrivals"
-            icon={<Sparkles className="size-6 text-emerald-600 dark:text-emerald-400" />}
+            icon={<Sparkles className="size-6 text-amber-600 dark:text-amber-400" />}
             products={newArrivalProducts}
           />
         </section>

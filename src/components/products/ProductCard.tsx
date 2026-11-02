@@ -29,7 +29,7 @@ export function ProductCard({ product }: { product: Product }) {
   const inStock = product.stock > 0;
 
   return (
-    <article className="group relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900 dark:hover:shadow-emerald-900/20">
+    <article className="group relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-50/20 dark:border-slate-800 dark:bg-slate-900 dark:hover:shadow-amber-900/20">
       {/* Image container */}
       <Link
         href={`/products/${product.id}`}
@@ -75,7 +75,7 @@ export function ProductCard({ product }: { product: Product }) {
               onLoad={() => setImgLoaded(true)}
             />
           ) : (
-            <div className="absolute inset-0 grid place-items-center bg-gradient-to-br from-emerald-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
+            <div className="absolute inset-0 grid place-items-center bg-gradient-to-br from-amber-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
               <ShoppingBag className="size-12 text-slate-300 dark:text-slate-600" strokeWidth={1.2} />
             </div>
           )}
@@ -101,7 +101,7 @@ export function ProductCard({ product }: { product: Product }) {
                   image_url: product.image_url ?? undefined,
                 });
               }}
-              className="flex w-full items-center justify-center gap-2 bg-emerald-600 py-3 text-xs font-bold text-white shadow-lg transition hover:bg-emerald-700 active:scale-[0.98]"
+              className="flex w-full items-center justify-center gap-2 bg-amber-600 py-3 text-xs font-bold text-white shadow-lg transition hover:bg-amber-700 active:scale-[0.98]"
             >
               <ShoppingBag className="size-3.5" />
               Add to Cart
@@ -113,14 +113,14 @@ export function ProductCard({ product }: { product: Product }) {
       {/* Info block */}
       <div className="flex flex-1 flex-col px-3.5 pb-4 pt-3">
         <h3 className="line-clamp-2 text-sm font-bold leading-snug text-slate-900 dark:text-white">
-          <Link href={`/products/${product.id}`} className="hover:text-emerald-700 dark:hover:text-emerald-400">
+          <Link href={`/products/${product.id}`} className="hover:text-amber-700 dark:hover:text-amber-400">
             {product.title}
           </Link>
         </h3>
 
         <div className="mt-auto pt-2">
           <div className="flex items-baseline gap-1.5">
-            <span className="text-base font-black text-emerald-700 dark:text-emerald-400">
+            <span className="text-base font-black text-amber-700 dark:text-amber-400">
               {formatPKR(product.price)}
             </span>
             {product.original_price && product.original_price > product.price && (

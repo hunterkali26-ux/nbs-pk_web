@@ -92,7 +92,7 @@ export function InfiniteProductGrid({
         {products.map((product) => (
           <article key={product.id} className="group min-w-0">
             <Link href={`/products/${product.id}`} prefetch={true} className="block">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-gradient-to-br from-emerald-100 to-slate-100 dark:from-slate-800 dark:to-slate-900">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-gradient-to-br from-amber-100 to-slate-100 dark:from-slate-800 dark:to-slate-900">
                 <div className="absolute inset-0 grid place-items-center">
                   {product.image_url ? (
                     <img
@@ -104,7 +104,7 @@ export function InfiniteProductGrid({
                     <PackageCheck className="size-20 text-slate-300 dark:text-slate-600" strokeWidth={1} />
                   )}
                 </div>
-                                <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold text-emerald-700 dark:bg-slate-900/90 dark:text-emerald-400">
+                                <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold text-amber-700 dark:bg-slate-900/90 dark:text-amber-400">
                   {product.category}
                 </span>
                 <WishlistButton productId={product.id} productTitle={product.title} />
@@ -121,7 +121,7 @@ export function InfiniteProductGrid({
                     });
                   }}
                   aria-label={`Add ${product.title} to cart`}
-                  className="absolute bottom-3 left-3 right-3 translate-y-2 cursor-pointer rounded-lg bg-white px-3 py-2.5 text-xs font-bold text-slate-900 opacity-0 shadow transition group-hover:translate-y-0 group-hover:opacity-100 hover:bg-emerald-50 active:bg-emerald-100 dark:bg-slate-100 dark:hover:bg-emerald-950 dark:active:bg-emerald-900"
+                  className="absolute bottom-3 left-3 right-3 translate-y-2 cursor-pointer rounded-lg bg-white px-3 py-2.5 text-xs font-bold text-slate-900 opacity-0 shadow transition group-hover:translate-y-0 group-hover:opacity-100 hover:bg-amber-50 active:bg-amber-100 dark:bg-slate-100 dark:hover:bg-amber-950 dark:active:bg-amber-900"
                 >
                   Add to cart
                 </button>
@@ -129,7 +129,7 @@ export function InfiniteProductGrid({
               <h3 className="mt-4 truncate text-sm font-bold text-slate-900 dark:text-white">
                 {product.title}
               </h3>
-              <p className="mt-1 text-lg font-black text-emerald-700 dark:text-emerald-400">
+              <p className="mt-1 text-lg font-black text-amber-700 dark:text-amber-400">
                 PKR {product.price.toLocaleString("en-PK")}
               </p>
             </Link>

@@ -37,7 +37,7 @@ export function EmptyState({
           <button
             type="button"
             onClick={onClearFilters}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-emerald-300 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-emerald-600 dark:hover:text-emerald-400"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-amber-300 hover:text-amber-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-amber-600 dark:hover:text-amber-400"
           >
             <SlidersHorizontal className="size-4" />
             Clear Filters
@@ -45,7 +45,7 @@ export function EmptyState({
         )}
         <Link
           href="/shop"
-          className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700 active:scale-95 dark:bg-emerald-600 dark:hover:bg-emerald-700"
+          className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-amber-700 active:scale-95 dark:bg-amber-600 dark:hover:bg-amber-700"
         >
           View All Products
           <ArrowRight className="size-4" />

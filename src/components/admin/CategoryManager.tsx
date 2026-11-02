@@ -69,7 +69,7 @@ function FieldsModal({
                   key={attribute.key}
                   className={`flex cursor-pointer items-center gap-2.5 rounded-lg border px-3 py-2.5 text-sm transition ${
                     checked
-                      ? "border-emerald-500 bg-emerald-50 text-emerald-900 dark:border-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-200"
+                      ? "border-amber-500 bg-amber-50 text-amber-900 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-200"
                       : "border-slate-200 text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:text-slate-300 dark:hover:border-slate-600"
                   }`}
                 >
@@ -79,7 +79,7 @@ function FieldsModal({
                     value={attribute.key}
                     checked={checked}
                     onChange={() => onToggle(attribute.key)}
-                    className="size-4 accent-emerald-600"
+                    className="size-4 accent-amber-600"
                   />
                   <span className="truncate font-medium">{attribute.label}</span>
                 </label>
@@ -92,7 +92,7 @@ function FieldsModal({
               No fields selected yet — sensible defaults will be inferred from the category name.
             </p>
           ) : (
-            <p className="mt-4 text-xs text-emerald-700 dark:text-emerald-400">
+            <p className="mt-4 text-xs text-amber-700 dark:text-amber-400">
               {selected.length} field{selected.length === 1 ? "" : "s"} enabled.
             </p>
           )}
@@ -189,7 +189,7 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
               onChange={(event) => setCreateImageName(event.target.files?.[0]?.name ?? "")}
             />
             {createImageName ? (
-              <span className="mt-2 inline-flex max-w-full items-center gap-1.5 rounded-full bg-emerald-400/10 px-3 py-1 text-[11px] font-semibold text-emerald-200">
+              <span className="mt-2 inline-flex max-w-full items-center gap-1.5 rounded-full bg-amber-400/10 px-3 py-1 text-[11px] font-semibold text-amber-200">
                 <Check className="size-3 shrink-0" />
                 <span className="truncate">{createImageName}</span>
               </span>
@@ -204,7 +204,7 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
           </button>
 
           {state.error ? <p className="mt-4 text-sm text-red-200">{state.error}</p> : null}
-          {state.success ? <p className="mt-4 text-sm text-emerald-200">{state.success}</p> : null}
+          {state.success ? <p className="mt-4 text-sm text-amber-200">{state.success}</p> : null}
         </form>
 
         {/* Existing categories ------------------------------------------- */}

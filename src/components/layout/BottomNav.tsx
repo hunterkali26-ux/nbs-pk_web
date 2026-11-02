@@ -45,14 +45,14 @@ export function BottomNav() {
             aria-current={active ? "page" : undefined}
             className={`flex flex-col items-center gap-1 py-2.5 text-[10px] font-semibold uppercase tracking-wide transition ${
               active
-                ? "text-emerald-700 dark:text-emerald-400"
+                ? "text-amber-700 dark:text-amber-400"
                 : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
           >
             <span className="relative">
               <Icon className="size-5" strokeWidth={1.8} />
               {typeof badge === "number" && badge > 0 ? (
-                <span className="absolute -right-2 -top-1.5 z-20 grid min-w-4 place-items-center rounded-full bg-emerald-600 px-1 text-[8px] font-bold leading-4 text-white">
+                <span className="absolute -right-2 -top-1.5 z-20 grid min-w-4 place-items-center rounded-full bg-amber-600 px-1 text-[8px] font-bold leading-4 text-white">
                   {badge > 9 ? "9+" : badge}
                 </span>
               ) : null}

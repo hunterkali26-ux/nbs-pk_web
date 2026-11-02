@@ -23,7 +23,7 @@ import type { Order } from "@/types/database";
 
 // Orders hidden from THIS browser's personal view only. Admin records in the
 // Supabase `orders` table are never touched (business permanence preserved).
-const HIDDEN_KEY = "vexis-hidden-orders";
+const HIDDEN_KEY = "nbs-hidden-orders";
 
 const readHidden = (): string[] => {
   try {
@@ -68,7 +68,7 @@ const courierTrackUrl = (trackingNumber: string) =>
   `https://www.tcs.com.pk/tracking-result?tc_no=${encodeURIComponent(trackingNumber)}`;
 
 const ORDER_INPUT_CLASS =
-  "mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-emerald-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-emerald-500";
+  "mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-amber-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-amber-500";
 
 /**
  * Inline delivery-details editor — mounted inside the customer's detail modal
@@ -96,7 +96,7 @@ function OrderEditForm({
   return (
     <form action={action} className="space-y-3">
       <input type="hidden" name="order_id" value={order.id} />
-      <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400">
+      <p className="text-[10px] font-bold uppercase tracking-widest text-amber-700 dark:text-amber-400">
         Editing delivery details
       </p>
 
@@ -155,7 +155,7 @@ function OrderEditForm({
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex items-center gap-2 rounded-lg bg-emerald-700 px-5 py-2 text-sm font-bold text-white transition hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-lg bg-amber-700 px-5 py-2 text-sm font-bold text-white transition hover:bg-amber-800 disabled:cursor-wait disabled:opacity-60"
         >
           {pending ? <LoaderCircle className="size-4 animate-spin" /> : null}
           {pending ? "Saving…" : "Save changes"}
@@ -199,9 +199,9 @@ function LockedOrderNotice({ onClose }: { onClose: () => void }) {
 
         <span
           aria-hidden="true"
-          className="mx-auto grid size-14 place-items-center rounded-full bg-emerald-50 dark:bg-emerald-950/40"
+          className="mx-auto grid size-14 place-items-center rounded-full bg-amber-50 dark:bg-amber-950/40"
         >
-          <Lock className="size-7 text-emerald-700 dark:text-emerald-400" />
+          <Lock className="size-7 text-amber-700 dark:text-amber-400" />
         </span>
 
         <h4
@@ -216,7 +216,7 @@ function LockedOrderNotice({ onClose }: { onClose: () => void }) {
 
         <a
           href="tel:03208684757"
-          className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
+          className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-amber-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-amber-800"
         >
           <Phone className="size-4" />
           Call 0320 8684757
@@ -267,9 +267,9 @@ function NotShippedNotice({ onClose }: { onClose: () => void }) {
 
         <span
           aria-hidden="true"
-          className="mx-auto grid size-14 place-items-center rounded-full bg-emerald-50 dark:bg-emerald-950/40"
+          className="mx-auto grid size-14 place-items-center rounded-full bg-amber-50 dark:bg-amber-950/40"
         >
-          <PackageSearch className="size-7 text-emerald-700 dark:text-emerald-400" />
+          <PackageSearch className="size-7 text-amber-700 dark:text-amber-400" />
         </span>
 
         <h4 id="not-shipped-title" className="mt-4 text-lg font-black text-slate-900 dark:text-white">
@@ -282,7 +282,7 @@ function NotShippedNotice({ onClose }: { onClose: () => void }) {
         <button
           type="button"
           onClick={onClose}
-          className="mt-5 w-full rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
+          className="mt-5 w-full rounded-xl bg-amber-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-amber-800"
         >
           Got it
         </button>
@@ -335,7 +335,7 @@ function OrderDetailModal({
       >
         <div className="sticky top-0 flex items-center justify-between border-b border-slate-200 bg-white/95 px-6 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-400">Your order</p>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-400">Your order</p>
             <h3 className="mt-1 font-mono text-lg font-bold text-slate-900 dark:text-white">#{order.id.slice(0, 8)}</h3>
           </div>
           <button
@@ -387,7 +387,7 @@ function OrderDetailModal({
                 <button
                   type="button"
                   onClick={() => setNotShippedNotice(true)}
-                  className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-emerald-200 px-3 py-1.5 text-xs font-bold text-emerald-700 transition hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-950/40"
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-amber-200 px-3 py-1.5 text-xs font-bold text-amber-700 transition hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-950/40"
                 >
                   <PackageSearch className="size-3.5" />
                   Track order
@@ -405,7 +405,7 @@ function OrderDetailModal({
                     className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                   >
                     {copied ? (
-                      <Check className="size-3.5 text-emerald-600" />
+                      <Check className="size-3.5 text-amber-600" />
                     ) : (
                       <Copy className="size-3.5" />
                     )}
@@ -415,7 +415,7 @@ function OrderDetailModal({
                     href={courierTrackUrl(trackingNumber)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-700 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-emerald-800"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-amber-700 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-amber-800"
                   >
                     <ExternalLink className="size-3.5" />
                     Track on Courier Website
@@ -457,7 +457,7 @@ function OrderDetailModal({
 
           <div className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800/60">
             <span className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Total</span>
-            <span className="text-lg font-black text-emerald-700 dark:text-emerald-400">
+            <span className="text-lg font-black text-amber-700 dark:text-amber-400">
               PKR {Number(order.total_amount || itemsTotal).toLocaleString("en-PK")}
             </span>
           </div>
@@ -492,7 +492,7 @@ function OrderDetailModal({
                 <button
                   type="button"
                   onClick={() => setEditing(true)}
-                  className="inline-flex items-center gap-2 rounded-lg border border-emerald-200 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-950/40"
+                  className="inline-flex items-center gap-2 rounded-lg border border-amber-200 px-4 py-2.5 text-sm font-semibold text-amber-700 transition hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-950/40"
                 >
                   <Pencil className="size-4" />
                   Edit details
@@ -697,7 +697,7 @@ export default function AccountOrdersPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <LoaderCircle className="size-8 animate-spin text-emerald-700" />
+        <LoaderCircle className="size-8 animate-spin text-amber-700" />
       </div>
     );
   }
@@ -731,7 +731,7 @@ export default function AccountOrdersPage() {
         <button
           type="button"
           onClick={restoreHidden}
-          className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-700 hover:text-emerald-800 dark:text-emerald-400"
+          className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-amber-700 hover:text-amber-800 dark:text-amber-400"
         >
           <RotateCcw className="size-3.5" />
           Restore {hiddenCount} hidden order{hiddenCount === 1 ? "" : "s"}
@@ -776,7 +776,7 @@ export default function AccountOrdersPage() {
                       <span
                         className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wider ${
                           status === "delivered"
-                            ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400"
+                            ? "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
                             : status === "shipped"
                               ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400"
                               : status === "cancelled"

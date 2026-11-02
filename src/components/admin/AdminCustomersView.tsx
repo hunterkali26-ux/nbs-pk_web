@@ -37,7 +37,7 @@ const formatDate = (iso: string) =>
 const statusTone = (status: string) => {
   const normalized = (status ?? "").toLowerCase();
   return normalized === "delivered"
-    ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400"
+    ? "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
     : normalized === "cancelled"
       ? "bg-red-50 text-red-700 dark:bg-red-950/60 dark:text-red-400"
       : "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400";
@@ -164,7 +164,7 @@ export function AdminCustomersView({ customers }: { customers: AdminCustomer[] }
                 </div>
                 <div className="rounded-xl border border-slate-200 px-4 py-3 dark:border-slate-800">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Total spent</p>
-                  <p className="mt-1 text-sm font-black text-emerald-700 dark:text-emerald-400">
+                  <p className="mt-1 text-sm font-black text-amber-700 dark:text-amber-400">
                     {formatPKR(detail.totalSpend)}
                   </p>
                 </div>
@@ -194,7 +194,7 @@ export function AdminCustomersView({ customers }: { customers: AdminCustomer[] }
                           </p>
                         </div>
                         <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${statusTone(order.status)}`}>{order.status}</span>
-                        <span className="font-bold text-emerald-700 dark:text-emerald-400">{formatPKR(order.total_amount)}</span>
+                        <span className="font-bold text-amber-700 dark:text-amber-400">{formatPKR(order.total_amount)}</span>
                       </div>
                     ))}
                   </div>

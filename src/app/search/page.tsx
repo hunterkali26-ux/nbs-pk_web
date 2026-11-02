@@ -17,9 +17,9 @@ import type { Product } from "@/types/database";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Search — VEXIS pk",
+  title: "Search — NBS-pk",
   description:
-    "Search watches, perfumes and footwear at VEXIS pk — ranked by relevance, popularity and newest arrivals.",
+    "Search watches, perfumes and footwear at NBS-pk — ranked by relevance, popularity and newest arrivals.",
 };
 
 const formatPKR = (value: number) => `PKR ${Number(value || 0).toLocaleString("en-PK")}`;
@@ -72,7 +72,7 @@ export default async function SearchPage({
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-emerald-700 dark:text-emerald-400">
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-amber-700 dark:text-amber-400">
           <Search className="size-4" />
           Search
         </p>
@@ -112,7 +112,7 @@ export default async function SearchPage({
             <Link
               href="/shop"
               prefetch={true}
-              className="mt-6 inline-flex items-center justify-center rounded-lg bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
+              className="mt-6 inline-flex items-center justify-center rounded-lg bg-amber-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-amber-800"
             >
               Browse everything
             </Link>
@@ -130,7 +130,7 @@ export default async function SearchPage({
             <Link
               href="/shop"
               prefetch={true}
-              className="mt-6 inline-flex items-center justify-center rounded-lg bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
+              className="mt-6 inline-flex items-center justify-center rounded-lg bg-amber-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-amber-800"
             >
               Browse all products
             </Link>
@@ -140,7 +140,7 @@ export default async function SearchPage({
           <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {products.map((product) => (
               <Link key={product.id} href={`/products/${product.id}`} prefetch={true} className="group min-w-0">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-gradient-to-br from-emerald-100 to-slate-100 dark:from-slate-800 dark:to-slate-900">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-gradient-to-br from-amber-100 to-slate-100 dark:from-slate-800 dark:to-slate-900">
                   {product.image_url ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
@@ -164,7 +164,7 @@ export default async function SearchPage({
                 <h2 className="mt-3 truncate text-sm font-bold capitalize text-slate-900 dark:text-white">
                   {product.title}
                 </h2>
-                <p className="mt-1 text-base font-black text-emerald-700 dark:text-emerald-400">
+                <p className="mt-1 text-base font-black text-amber-700 dark:text-amber-400">
                   {formatPKR(product.price)}
                 </p>
               </Link>

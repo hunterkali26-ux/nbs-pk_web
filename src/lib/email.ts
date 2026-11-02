@@ -24,7 +24,7 @@ export interface OrderNotification {
 
 /** Recipient / sender overrides via env (with safe defaults). */
 const ADMIN_EMAIL = process.env.RESEND_ADMIN_TO ?? "hunterkali26@gmail.com";
-const FROM_EMAIL = process.env.RESEND_FROM ?? "VEXIS pk <onboarding@resend.dev>";
+const FROM_EMAIL = process.env.RESEND_FROM ?? "NBS-pk <onboarding@resend.dev>";
 const STORE_URL = getSiteUrl();
 
 /**
@@ -58,7 +58,7 @@ export async function sendOrderNotification(notification: OrderNotification): Pr
   );
 
   const text = [
-    `New VEXIS pk order #${shortId} — ${notification.status}`,
+    `New NBS-pk order #${shortId} — ${notification.status}`,
     "",
     "Customer:",
     full_name,
@@ -75,7 +75,7 @@ export async function sendOrderNotification(notification: OrderNotification): Pr
 
   const html = `
     <div style="font-family:system-ui, sans-serif; line-height:1.5">
-      <h2 style="margin:.5rem 0">New VEXIS pk order #${shortId}</h2>
+      <h2 style="margin:.5rem 0">New NBS-pk order #${shortId}</h2>
       <p style="margin:.25rem 0"><strong>Status:</strong> ${notification.status}</p>
       <p style="margin:.25rem 0"><strong>Customer:</strong> ${full_name}</p>
       <p style="margin:.25rem 0"><strong>Phone:</strong> ${phone ?? "—"}</p>
@@ -111,7 +111,7 @@ export async function sendOrderNotification(notification: OrderNotification): Pr
       body: JSON.stringify({
         from: FROM_EMAIL,
         to: ADMIN_EMAIL,
-        subject: `New VEXIS pk order #${shortId} — PKR ${total.toLocaleString(currency)}`,
+        subject: `New NBS-pk order #${shortId} — PKR ${total.toLocaleString(currency)}`,
         text,
         html,
       }),

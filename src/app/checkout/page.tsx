@@ -10,10 +10,10 @@ import { useCart } from "@/lib/cart-context";
 import { placeOrder } from "@/app/checkout/actions";
 import { createClient } from "@/lib/supabase/client";
 
-const inputClass = "mt-2 w-full border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-emerald-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100";
+const inputClass = "mt-2 w-full border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-amber-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100";
 const labelClass = "block text-xs font-semibold uppercase tracking-widest text-slate-600 dark:text-slate-300";
 
-const SHIPPING_KEY = "vexis-checkout-shipping";
+const SHIPPING_KEY = "nbs-checkout-shipping";
 
 type Shipping = {
   full_name: string;
@@ -140,15 +140,15 @@ export default function CheckoutPage() {
       <>
         <Navbar />
         <main className="mx-auto max-w-2xl px-4 py-20 text-center">
-          <PackageCheck className="mx-auto size-16 text-emerald-700" strokeWidth={1} />
+          <PackageCheck className="mx-auto size-16 text-amber-700" strokeWidth={1} />
           <h1 className="mt-6 text-3xl font-black text-slate-900 dark:text-white">Order placed!</h1>
           <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
-            Thank you for shopping with <span className="font-semibold">VEXIS pk</span>. Your order{" "}
+            Thank you for shopping with <span className="font-semibold">NBS-pk</span>. Your order{" "}
             <span className="font-mono text-xs">#{placedOrderId.slice(0, 8)}</span> is confirmed and pending.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/" className="rounded-lg bg-emerald-700 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800">Continue shopping</Link>
-            <Link href="/account/orders" className="rounded-lg border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-slate-700 dark:text-slate-200">View orders</Link>
+            <Link href="/" className="rounded-lg bg-amber-700 px-5 py-3 text-sm font-bold text-white hover:bg-amber-800">Continue shopping</Link>
+            <Link href="/account/orders" className="rounded-lg border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-amber-600 hover:text-amber-700 dark:border-slate-700 dark:text-slate-200">View orders</Link>
           </div>
         </main>
         <Footer />
@@ -160,7 +160,7 @@ export default function CheckoutPage() {
     return (
       <div className="grid min-h-screen place-items-center bg-slate-50 dark:bg-slate-950">
         <div
-          className="size-8 animate-spin rounded-full border-2 border-slate-300 border-t-emerald-600 dark:border-slate-700 dark:border-t-emerald-400"
+          className="size-8 animate-spin rounded-full border-2 border-slate-300 border-t-amber-600 dark:border-slate-700 dark:border-t-amber-400"
           role="status"
           aria-label="Loading checkout"
         />
@@ -175,8 +175,8 @@ export default function CheckoutPage() {
       <>
         <Navbar />
         <main className="mx-auto flex min-h-[60vh] max-w-lg flex-col items-center justify-center px-4 py-20 text-center">
-          <span className="grid size-14 place-items-center rounded-full bg-emerald-50 dark:bg-emerald-950/60">
-            <LockKeyhole className="size-6 text-emerald-700 dark:text-emerald-400" />
+          <span className="grid size-14 place-items-center rounded-full bg-amber-50 dark:bg-amber-950/60">
+            <LockKeyhole className="size-6 text-amber-700 dark:text-amber-400" />
           </span>
           <h1 className="mt-6 text-2xl font-bold text-slate-900 dark:text-white">Sign in to check out</h1>
           <p className="mt-2 max-w-sm text-sm text-slate-500 dark:text-slate-400">
@@ -186,13 +186,13 @@ export default function CheckoutPage() {
           <div className="mt-8 grid w-full gap-3 sm:grid-cols-2">
             <Link
               href="/login?redirect=%2Fcheckout"
-              className="rounded-lg bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
+              className="rounded-lg bg-amber-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-amber-800"
             >
               Sign in
             </Link>
             <Link
               href="/signup?redirect=%2Fcheckout"
-              className="rounded-lg border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-slate-700 dark:text-slate-200"
+              className="rounded-lg border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-amber-600 hover:text-amber-700 dark:border-slate-700 dark:text-slate-200"
             >
               Create account
             </Link>
@@ -216,7 +216,7 @@ export default function CheckoutPage() {
           <div className="mx-auto max-w-md py-16 text-center">
             <PackageCheck className="mx-auto size-12 text-slate-300 dark:text-slate-600" strokeWidth={1} />
             <h2 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">Your cart is empty</h2>
-            <Link href="/" className="mt-4 inline-block text-sm font-semibold text-emerald-700 hover:text-emerald-800 dark:text-emerald-400">Head back to the shop</Link>
+            <Link href="/" className="mt-4 inline-block text-sm font-semibold text-amber-700 hover:text-amber-800 dark:text-amber-400">Head back to the shop</Link>
           </div>
         )}
 
@@ -261,7 +261,7 @@ export default function CheckoutPage() {
                 as the checkout default without inviting other methods. */}
             <div className="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
               <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300">Payment method</h2>
-              <label className="mt-4 flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3.5 dark:border-emerald-900 dark:bg-emerald-950/40">
+              <label className="mt-4 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3.5 dark:border-amber-900 dark:bg-amber-950/40">
                 <input
                   type="radio"
                   name="payment_method"
@@ -269,7 +269,7 @@ export default function CheckoutPage() {
                   defaultChecked
                   disabled
                   aria-label="Cash on Delivery (COD)"
-                  className="mt-1 size-4 accent-emerald-700"
+                  className="mt-1 size-4 accent-amber-700"
                 />
                 <span className="block text-sm">
                   <span className="block font-bold text-slate-900 dark:text-white">Cash on Delivery (COD)</span>
@@ -289,15 +289,15 @@ export default function CheckoutPage() {
                 {items.map((item) => (
                   <div key={item.productId} className="flex justify-between text-slate-600 dark:text-slate-400">
                     <span className="min-w-0 truncate">{item.title} × {item.quantity}</span>
-                    <span className="font-semibold text-emerald-700 dark:text-emerald-400">PKR {item.price.toLocaleString("en-PK")}</span>
+                    <span className="font-semibold text-amber-700 dark:text-amber-400">PKR {item.price.toLocaleString("en-PK")}</span>
                   </div>
                 ))}
               </div>
               <div className="mt-4 flex justify-between border-t border-slate-100 pt-4 text-base dark:border-slate-800">
                 <span className="font-bold text-slate-900 dark:text-white">Total ({count} {count === 1 ? "item" : "items"})</span>
-                <span className="font-black text-emerald-700 dark:text-emerald-400">PKR {total.toLocaleString("en-PK")}</span>
+                <span className="font-black text-amber-700 dark:text-amber-400">PKR {total.toLocaleString("en-PK")}</span>
               </div>
-              <button type="submit" disabled={pending} className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-5 py-3.5 text-sm font-bold text-white hover:bg-emerald-800 disabled:opacity-60">
+              <button type="submit" disabled={pending} className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-amber-700 px-5 py-3.5 text-sm font-bold text-white hover:bg-amber-800 disabled:opacity-60">
                 {pending ? "Placing order..." : "Place order"}
               </button>
             </div>

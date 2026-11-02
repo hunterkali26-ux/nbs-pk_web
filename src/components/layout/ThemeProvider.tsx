@@ -20,10 +20,10 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-const STORAGE_KEY = "vexis-theme";
+const STORAGE_KEY = "nbs-theme";
 
 function getSystemTheme(): Theme {
-  if (typeof window === "undefined") return "light";
+  if (typeof window === "undefined") return "dark";
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
@@ -65,7 +65,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       document.documentElement.classList.contains("dark")
         ? "dark"
         : undefined;
-    return onDom ?? readSavedTheme() ?? getSystemTheme();
+    return onDom ?? readSavedTheme() ?? "dark";
   });
 
   useEffect(() => {

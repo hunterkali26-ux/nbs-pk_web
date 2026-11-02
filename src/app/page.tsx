@@ -12,24 +12,24 @@ import type { Category } from "@/types/database";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "VEXIS pk — Authentic Watches, Perfumes & Footwear in Pakistan",
+  title: "NBS-pk — Pure Leather Shoes & Footwear in Pakistan",
   description:
-    "Shop authentic watches, custom-packaged perfumes, and premium footwear at VEXIS pk — Pakistan's premier e-commerce destination for genuine timepieces, quality fragrances, and premium shoes with nationwide delivery.",
+    "Shop authentic pure leather shoes and footwear at NBS-pk — New Brand Shoes Multan's premier e-commerce destination for premium leather footwear with nationwide delivery.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "VEXIS pk — Authentic Watches, Perfumes & Footwear in Pakistan",
+    title: "NBS-pk — Pure Leather Shoes & Footwear in Pakistan",
     description:
-      "Discover authentic watches, custom-packaged perfumes, and premium footwear. VEXIS pk is Pakistan's premier e-commerce store for exclusive collections, guaranteed quality, and nationwide delivery.",
+      "Discover pure leather shoes, handcrafted since 2015, and premium footwear. NBS-pk is Pakistan's premier e-commerce store for exclusive leather collections, guaranteed quality, and nationwide delivery.",
     type: "website",
-    siteName: "VEXIS pk",
+    siteName: "NBS-pk",
     locale: "en_PK",
   },
 };
 
 const categoryStyles = [
-  { icon: Watch, gradient: "from-emerald-50 to-teal-100 dark:from-emerald-950/60 dark:to-teal-950/60" },
+  { icon: Watch, gradient: "from-amber-50 to-teal-100 dark:from-amber-950/60 dark:to-teal-950/60" },
   { icon: Sparkles, gradient: "from-amber-50 to-orange-100 dark:from-amber-950/60 dark:to-orange-950/60" },
   { icon: Footprints, gradient: "from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900" },
 ] as const;
@@ -49,28 +49,28 @@ export default async function Home() {
         <section className="relative overflow-hidden bg-slate-50 dark:bg-slate-950">
           <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-14 sm:px-6 md:min-h-[560px] md:grid-cols-2 lg:px-8">
             <div className="relative z-10">
-              <p className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-emerald-700 dark:text-emerald-400">
+              <p className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-amber-700 dark:text-amber-400">
                 <Gem className="size-4" />
-                Premium essentials · Pakistan
+                Pure leather · Crafted since 2015 · Multan
               </p>
               <h1 className="max-w-xl text-5xl font-black tracking-tight text-slate-900 sm:text-6xl lg:text-7xl dark:text-white">
-                Watches, scents &amp; <span className="text-emerald-700 dark:text-emerald-400">footwear.</span>
+                Premium leather footwear &amp; <span className="text-amber-700 dark:text-amber-400">shoes.</span>
               </h1>
               <p className="mt-6 max-w-md text-base leading-7 text-slate-500 dark:text-slate-400">
-                Shop authentic watches, perfumes, and shoes from our live collection — delivered across Pakistan.
+                Shop pure, premium leather shoes handcrafted in-house at New Brand Shoes Multan — delivered across Pakistan.
               </p>
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-row gap-2 sm:gap-4 text-xs sm:text-sm px-3 py-2 sm:px-6 sm:py-3">
                 <Link
                   href="/shop"
-                  className="inline-flex items-center gap-2 rounded-lg bg-emerald-700 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-700/20 hover:bg-emerald-800"
+                  className="inline-flex items-center gap-2 rounded-lg bg-amber-700 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-amber-700/20 hover:bg-amber-800"
                 >
-                  Shop now <ArrowRight className="size-4" />
+                  Shop Leather Shoes <ArrowRight className="size-4" />
                 </Link>
                 <Link
                   href="/categories"
-                  className="rounded-lg border border-slate-300 bg-white px-5 py-3.5 text-sm font-bold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
+                  className="rounded-lg border border-slate-300 bg-white px-5 py-3.5 text-sm font-bold text-slate-700 transition hover:border-amber-600 hover:text-amber-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-amber-500 dark:hover:text-amber-400"
                 >
-                  Explore categories
+                  Browse Collections
                 </Link>
               </div>
             </div>
@@ -106,10 +106,11 @@ export default async function Home() {
                               fill
                               sizes="(max-width: 767px) 31vw, 200px"
                               className="object-cover transition duration-300 group-hover:scale-105"
+                              
                             />
                           ) : (
                             <span className="absolute inset-0 grid place-items-center">
-                              <Icon className="size-7 text-emerald-600/70 dark:text-emerald-300/70" strokeWidth={1.5} />
+                              <Icon className="size-7 text-amber-600/70 dark:text-amber-300/70" strokeWidth={1.5} />
                             </span>
                           )}
                         </span>
@@ -126,13 +127,13 @@ export default async function Home() {
                 compact categories grid above takes its place). */}
             <div className="relative mx-auto hidden w-full max-w-xl lg:block">
               <Image
-                src="/images/hero-branding.jpeg"
-                alt="VEXIS pk — premium watches, perfumes and footwear"
+                src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/hero-branding.png"
+                alt="NBS-pk — premium watches, perfumes and footwear"
                 width={1024}
                 height={683}
                 priority
                 sizes="(min-width: 1024px) 40vw, 576px"
-                className="h-auto w-full rounded-[2rem] object-cover shadow-2xl shadow-emerald-900/30 ring-1 ring-slate-900/10 dark:ring-white/10"
+                className="h-auto w-full rounded-[2rem] object-cover shadow-2xl shadow-amber-900/30 ring-1 ring-slate-900/10 dark:ring-white/10"
               />
             </div>
           </div>
@@ -145,10 +146,10 @@ export default async function Home() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-end justify-between">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-400">Fresh arrivals</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-400">Fresh arrivals</p>
                 <h2 className="mt-2 text-3xl font-black text-slate-900 dark:text-white">Featured products.</h2>
               </div>
-              <span className="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">Live inventory</span>
+              <span className="rounded-full bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-700 dark:bg-amber-950/60 dark:text-amber-400">Live inventory</span>
             </div>
             <div className="mt-7">
               <InfiniteProductGrid initialLimit={8} />
@@ -159,10 +160,10 @@ export default async function Home() {
         <section id="categories" className="mx-auto hidden max-w-7xl px-4 py-14 sm:px-6 md:block lg:px-8">
           <div className="flex items-end justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-400">Shop by category</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-400">Shop by category</p>
               <h2 className="mt-2 text-3xl font-black text-slate-900 dark:text-white">Find your signature.</h2>
             </div>
-            <Link href="#featured" className="hidden text-sm font-bold text-emerald-700 sm:block dark:text-emerald-400">
+            <Link href="#featured" className="hidden text-sm font-bold text-amber-700 sm:block dark:text-amber-400">
               View all <ArrowRight className="ml-1 inline size-4" />
             </Link>
           </div>
@@ -192,7 +193,7 @@ export default async function Home() {
                         />
                       ) : (
                         <span className="absolute inset-0 grid place-items-center">
-                          <Icon className="size-10 text-emerald-600/60 dark:text-emerald-300/60" strokeWidth={1.25} />
+                          <Icon className="size-10 text-amber-600/60 dark:text-amber-300/60" strokeWidth={1.25} />
                         </span>
                       )}
                     </span>
@@ -211,22 +212,22 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="border-y border-emerald-100 bg-emerald-50 dark:border-emerald-900/40 dark:bg-emerald-950/20">
+        <section className="border-y border-amber-100 bg-amber-50 dark:border-amber-900/40 dark:bg-amber-950/20">
           <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:grid-cols-3 sm:px-6 lg:px-8">
             <div>
-              <PackageCheck className="size-5 text-emerald-700 dark:text-emerald-400" />
-              <p className="mt-2 text-sm font-bold text-slate-900 dark:text-white">Authentic quality</p>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Selected with care.</p>
+              <PackageCheck className="size-5 text-amber-700 dark:text-amber-400" />
+              <p className="mt-2 text-sm font-bold text-slate-900 dark:text-white">Pure leather quality</p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Crafted in-house since 2015.</p>
             </div>
             <div>
-              <PackageCheck className="size-5 text-emerald-700 dark:text-emerald-400" />
+              <PackageCheck className="size-5 text-amber-700 dark:text-amber-400" />
               <p className="mt-2 text-sm font-bold text-slate-900 dark:text-white">Delivery across Pakistan</p>
               <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Your order, on its way.</p>
             </div>
             <div>
-              <Sparkles className="size-5 text-emerald-700 dark:text-emerald-400" />
-              <p className="mt-2 text-sm font-bold text-slate-900 dark:text-white">Easy support</p>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">We are here to help.</p>
+              <Sparkles className="size-5 text-amber-700 dark:text-amber-400" />
+              <p className="mt-2 text-sm font-bold text-slate-900 dark:text-white">Lifetime durability</p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Built to last a lifetime.</p>
             </div>
           </div>
         </section>

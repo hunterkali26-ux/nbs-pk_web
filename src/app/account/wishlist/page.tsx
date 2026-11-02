@@ -7,7 +7,7 @@ import type { Product, Wishlist } from "@/types/database";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "My wishlist — VEXIS pk",
+  title: "My wishlist — NBS-pk",
 };
 
 export default async function WishlistPage() {
@@ -42,7 +42,7 @@ export default async function WishlistPage() {
 
   return (
     <div>
-      <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-400">
+      <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-400">
         Saved for later
       </p>
       <h1 className="mt-2 text-3xl font-black text-slate-900 dark:text-white">

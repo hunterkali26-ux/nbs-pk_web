@@ -60,11 +60,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="mb-4 flex items-center gap-1.5 text-sm" aria-label="Breadcrumb">
-          <Link href="/" className="text-slate-400 transition hover:text-emerald-600 dark:hover:text-emerald-400">
+          <Link href="/" className="text-slate-400 transition hover:text-amber-600 dark:hover:text-amber-400">
             Home
           </Link>
           <ChevronRight className="size-3.5 text-slate-300 dark:text-slate-600" />
-          <Link href="/categories" className="text-slate-400 transition hover:text-emerald-600 dark:hover:text-emerald-400">
+          <Link href="/categories" className="text-slate-400 transition hover:text-amber-600 dark:hover:text-amber-400">
             Categories
           </Link>
           <ChevronRight className="size-3.5 text-slate-300 dark:text-slate-600" />

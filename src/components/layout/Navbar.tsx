@@ -52,7 +52,7 @@ const mobileNavItems = [
 const drawerLinkClass = (active: boolean) =>
   `flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition ${
     active
-      ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
+      ? "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
       : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/70 dark:hover:text-white"
   }`;
 
@@ -66,7 +66,7 @@ type NavSession = {
 };
 
 const dropdownItemClass =
-  "flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-emerald-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-emerald-400";
+  "flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-amber-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-amber-400";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -253,15 +253,17 @@ export function Navbar() {
         >
           {mobileOpen ? <X /> : <Menu />}
         </button>
-        <Link href="/" aria-label="VEXIS pk — home" className="shrink-0 -ml-2">
-          <Image
-            src="/images/brand-logo.png"
-            alt="VEXIS pk"
-            width={732}
-            height={218}
-            priority
-            className="h-12 sm:h-14 md:h-16 lg:h-20 w-auto max-w-[100px] sm:max-w-none object-contain"
-          />
+        <Link href="/" aria-label="NBS-pk — home" className="shrink-0 -ml-2">
+          <div className="inline-block bg-black/5 dark:bg-white/5 backdrop-blur-md rounded-xl p-1.5 transition-colors">
+            <Image
+              src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/brand-logo.png"
+              alt="NBS-pk"
+              width={732}
+              height={218}
+              priority
+              className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-[180px] sm:max-w-none object-contain"
+            />
+          </div>
         </Link>
         <div className="hidden items-center gap-5 lg:flex">
           {links.map(([label, href]) => (
@@ -270,7 +272,7 @@ export function Navbar() {
               href={href}
               prefetch={true}
               onMouseEnter={() => prefetchRoute(href)}
-              className="text-sm font-medium text-slate-600 transition hover:text-emerald-700 dark:text-slate-300 dark:hover:text-emerald-400"
+              className="text-sm font-medium text-slate-600 transition hover:text-amber-700 dark:text-slate-300 dark:hover:text-amber-400"
             >
               {label}
             </Link>
@@ -298,7 +300,7 @@ export function Navbar() {
           >
             <ShoppingBag className="size-5" />
             {count > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 z-20 grid size-4 place-items-center rounded-full bg-emerald-600 text-[9px] font-bold text-white">
+              <span className="absolute -right-0.5 -top-0.5 z-20 grid size-4 place-items-center rounded-full bg-amber-600 text-[9px] font-bold text-white">
                 {count > 9 ? "9+" : count}
               </span>
             )}
@@ -312,7 +314,7 @@ export function Navbar() {
             <Link
               href="/login"
               aria-label="Sign in"
-              className="flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
+              className="flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-amber-600 hover:text-amber-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-amber-500 dark:hover:text-amber-400"
             >
               <UserRound className="size-3.5 shrink-0" />
               <span className="hidden sm:inline">Sign in</span>
@@ -324,7 +326,7 @@ export function Navbar() {
                 onClick={() => setMenuOpen((open) => !open)}
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
-                className="hidden items-center gap-2 rounded-lg border border-slate-200 px-2.5 py-1.5 transition hover:border-emerald-600 md:flex dark:border-slate-700 dark:hover:border-emerald-500"
+                className="hidden items-center gap-2 rounded-lg border border-slate-200 px-2.5 py-1.5 transition hover:border-amber-600 md:flex dark:border-slate-700 dark:hover:border-amber-500"
               >
                 {session.avatarUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -334,7 +336,7 @@ export function Navbar() {
                     className="size-7 rounded-full object-cover"
                   />
                 ) : (
-                  <span className="grid size-7 place-items-center rounded-full bg-emerald-700 text-[11px] font-bold text-white">
+                  <span className="grid size-7 place-items-center rounded-full bg-amber-700 text-[11px] font-bold text-white">
                     {initials}
                   </span>
                 )}
@@ -360,7 +362,7 @@ export function Navbar() {
                   <div className="border-b border-slate-100 px-4 pb-3 pt-1 dark:border-slate-800">
                     <p className="truncate text-sm font-bold text-slate-900 dark:text-white">{session.fullName}</p>
                     <p className="mt-0.5 text-xs uppercase tracking-widest text-slate-400">
-                      {session.isAdmin ? "Administrator" : "VEXIS pk member"}
+                      {session.isAdmin ? "Administrator" : "NBS-pk member"}
                     </p>
                   </div>
                   <div className="py-1.5">
@@ -387,7 +389,7 @@ export function Navbar() {
                         href="/admin"
                         role="menuitem"
                         onClick={() => setMenuOpen(false)}
-                        className="mt-1 flex items-center gap-3 border-t border-slate-100 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-800 dark:border-slate-800 dark:text-emerald-400 dark:hover:bg-emerald-950/60 dark:hover:text-emerald-300"
+                        className="mt-1 flex items-center gap-3 border-t border-slate-100 px-4 py-2.5 text-sm font-semibold text-amber-700 transition hover:bg-amber-50 hover:text-amber-800 dark:border-slate-800 dark:text-amber-400 dark:hover:bg-amber-950/60 dark:hover:text-amber-300"
                       >
                         <LayoutDashboard className="size-4" />
                         Admin dashboard
@@ -454,16 +456,18 @@ export function Navbar() {
             <Link
               href="/"
               onClick={() => setMobileOpen(false)}
-              aria-label="VEXIS pk — home"
+              aria-label="NBS-pk — home"
               className="flex shrink-0 px-1"
             >
-              <Image
-                src="/images/brand-logo.png"
-                alt="VEXIS pk"
-                width={446}
-                height={131}
-                className="h-10 w-auto object-contain"
-              />
+              <div className="inline-block bg-white/80 dark:bg-slate-900/60 backdrop-blur-sm rounded-xl p-1 shadow-sm border border-white/50 dark:border-slate-800/50 shadow-gray-200/50 dark:shadow-none transition-colors">
+                <Image
+                  src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/brand-logo.png"
+                  alt="NBS-pk"
+                  width={446}
+                  height={131}
+                  className="h-12 w-auto object-contain"
+                />
+              </div>
             </Link>
             <button
               type="button"
@@ -492,7 +496,7 @@ export function Navbar() {
                     <Icon className="size-[18px]" strokeWidth={1.8} />
                     <span>{label}</span>
                     {isActive(href) ? (
-                      <span className="ml-auto size-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+                      <span className="ml-auto size-1.5 rounded-full bg-amber-500" aria-hidden="true" />
                     ) : null}
                   </Link>
                 </li>
@@ -594,7 +598,7 @@ export function Navbar() {
           {/* Leftover space stays clean — just a subtle branding strip */}
           <div className="mt-auto shrink-0 border-t border-slate-100 px-5 py-4 dark:border-slate-800">
             <p className="text-[11px] font-medium tracking-wide text-slate-400 dark:text-slate-500">
-              © 2026 VEXIS pk
+              © 2026 NBS-pk
             </p>
           </div>
         </aside>

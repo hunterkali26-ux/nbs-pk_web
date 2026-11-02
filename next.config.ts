@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ['192.168.1.16', '192.168.11.161', '192.168.100.24', 'localhost:3000', 'cavalry-unbridle-displace.ngrok-free.dev'],
+  allowedDevOrigins: ['192.168.1.12', '192.168.1.16', '192.168.11.161', '192.168.100.24', 'localhost:3000', 'cavalry-unbridle-displace.ngrok-free.dev'],
   
   // Yahan par devIndicators add kar do
   devIndicators: false,
@@ -21,6 +21,11 @@ const nextConfig: NextConfig = {
   // external domains like evoque.pk.
   images: {
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "4upsg7iazjf61bbi.public.blob.vercel-storage.com",
+        pathname: "/**",
+      },
       {
         protocol: "https",
         hostname: "**.supabase.co",

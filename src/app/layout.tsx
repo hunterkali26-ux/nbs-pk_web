@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 import { BottomNav } from "@/components/layout/BottomNav";
+import { PageLoading } from "@/components/layout/PageLoading";
 import { WhatsAppFloat } from "@/components/common/WhatsAppFloat";
 import { MobileAppBanner } from "@/components/MobileAppBanner";
 import { CartProvider } from "@/lib/cart-context";
@@ -13,14 +14,13 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ThemeScript } from "@/components/layout/ThemeScript";
 
 export const metadata: Metadata = {
-  // Site favicon — served from src/app/icon.png via the App Router file
-  // convention. Next.js auto-generates <link rel="icon"> (plus touch icons)
-  // from this file for every route; no manual icons entry needed here.
-  // Canonical origin comes from NEXT_PUBLIC_SITE_URL (see src/lib/site.ts) so
-  // canonical/OG URLs follow the deployed domain instead of being hardcoded.
+  // Site favicon — served from Vercel Blob CDN
   metadataBase: new URL(getSiteUrl()),
-  title: "VEXIS pk — Premium watches, perfumes & shoes",
-  description: "Luxury everyday essentials, delivered across Pakistan.",
+  icons: {
+    icon: "https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/icon.png",
+  },
+  title: "NBS-pk — Premium Leather Shoes from Multan",
+  description: "New Brand Shoes Multan — Pure leather footwear crafted since 2015.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <ThemeScript />
       </head>
-      <body className="bg-white text-slate-900 antialiased transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100">
+      <body className="bg-white text-slate-900 antialiased transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100" suppressHydrationWarning>
         <ThemeProvider>
           <CartProvider>
             <WishlistProvider>
@@ -44,6 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </WishlistProvider>
           </CartProvider>
         </ThemeProvider>
+        <PageLoading />
         {/* Vercel Web Analytics — no-ops in local dev, active on deployments. */}
         <Analytics />
         {/* Vercel Speed Insights — measures real-user Core Web Vitals on

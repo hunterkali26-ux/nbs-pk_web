@@ -6,12 +6,18 @@
  *
  * Resolution order:
  *   1. `NEXT_PUBLIC_SITE_URL`  — set per-environment (Vercel dashboard / .env.local)
- *   2. `https://vexis-pk.vercel.app` — the production deployment domain
+ *   2. `https://nbs-pk.vercel.app` — the production deployment domain (fallback)
+ *   3. `https://vexis-pk.vercel.app` — legacy domain (still supported)
  *
  * A trailing slash is stripped so callers can safely append `/path` segments.
  */
 export function getSiteUrl(): string {
   const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  const url = raw && raw.length > 0 ? raw : "https://vexis-pk.vercel.app";
+  const url =
+    raw && raw.length > 0
+      ? raw
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "https://nbs-pk.vercel.app";
   return url.replace(/\/+$/, "");
 }

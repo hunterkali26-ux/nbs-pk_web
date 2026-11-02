@@ -62,7 +62,7 @@ export async function signUp(
   const redirectTo = safeRedirectPath(String(formData.get("redirect") ?? ""));
 
   if (!fullName || !email || !password || !phoneNumber || !address) {
-    return { error: "Complete every field to create your VEXIS pk account." };
+    return { error: "Complete every field to create your NBS-pk account." };
   }
 
   if (password.length < 8) {

@@ -150,7 +150,7 @@ function AdminEditForm({
       </div>
 
       {state.success ? (
-        <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">{state.success}</p>
+        <p className="text-sm font-semibold text-amber-700 dark:text-amber-400">{state.success}</p>
       ) : null}
       {state.error ? (
         <p className="text-sm font-semibold text-red-600 dark:text-red-400">{state.error}</p>
@@ -197,7 +197,7 @@ function StatusSelect({ orderId, value }: { orderId: string; value: string }) {
       }}
       className={`cursor-pointer rounded-md border px-2 py-1.5 text-xs capitalize outline-none transition ${
         current === "delivered"
-          ? "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
+          ? "border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
           : current === "shipped"
             ? "border-blue-300 bg-blue-50 text-blue-800 dark:border-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
             : current === "cancelled"
@@ -328,7 +328,7 @@ function OrderDetailModal({
 
           <div className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800/60">
             <span className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Total</span>
-            <span className="text-lg font-black text-emerald-700 dark:text-emerald-400">{formatPKR(itemsTotal)}</span>
+            <span className="text-lg font-black text-amber-700 dark:text-amber-400">{formatPKR(itemsTotal)}</span>
           </div>
 
           {error ? <p className="text-sm font-semibold text-red-600 dark:text-red-400">{error}</p> : null}
@@ -503,7 +503,7 @@ export function AdminOrdersView({ rows }: { rows: AdminOrderRow[] }) {
                   <td className="hidden whitespace-nowrap px-3 py-4 text-xs text-black/50 lg:table-cell xl:px-4 dark:text-slate-400">
                     {formatDateTime(order.created_at)}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 font-bold text-emerald-700 xl:px-4 dark:text-emerald-400">
+                  <td className="whitespace-nowrap px-3 py-4 font-bold text-amber-700 xl:px-4 dark:text-amber-400">
                     {formatPKR(order.total_amount)}
                   </td>
                   <td className="hidden whitespace-nowrap px-3 py-4 text-black/55 xl:table-cell xl:px-4 dark:text-slate-300">

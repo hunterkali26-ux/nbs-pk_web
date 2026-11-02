@@ -6,11 +6,11 @@ import { usePathname } from "next/navigation";
 // workspace and on the auth screens so those flows stay focused.
 const HIDE_PREFIXES = ["/admin", "/login", "/signup"];
 
-// Official wa.me deep link: lands directly in the VEXIS.pk WhatsApp inbox
+// Official wa.me deep link: lands directly in the NBS-pk WhatsApp inbox
 // with a friendly pre-filled inquiry, ready to send.
 const WHATSAPP_NUMBER = "923208684757"; // 0320 8684757 in international format
 const PREFILL_MESSAGE =
-  "Hi, I am visiting vexis-pk.vercel.app and want to inquire about a product.";
+  "Hi, I am visiting nbs-pk.vercel.app and want to inquire about leather shoes.";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   PREFILL_MESSAGE,
 )}`;
@@ -25,7 +25,7 @@ export function WhatsAppFloat() {
       href={WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat with VEXIS pk on WhatsApp (opens in a new tab)"
+      aria-label="Chat with NBS-pk on WhatsApp (opens in a new tab)"
       title="Chat with us on WhatsApp"
       // z-40 matches the sticky header / mobile bottom nav rail: above every
       // page + footer layer, but below modals (z-50), drawers (z-[100]) and

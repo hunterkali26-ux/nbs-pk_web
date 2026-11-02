@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 const GITHUB_APK_URL =
-  "https://github.com/hunterkali26-ux/vexis-pk_web/releases/latest/download/vexis-pk.apk";
+  "https://github.com/hunterkali26-ux/vexis-pk_web/releases/latest/download/nbs-pk.apk";
 
 type Platform = "android" | "ios";
 
@@ -28,7 +28,7 @@ export default function DownloadAppPage() {
       <main className="mx-auto min-h-screen max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center">
-          <div className="mx-auto mb-6 grid size-20 place-items-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg shadow-emerald-500/25">
+          <div className="mx-auto mb-6 grid size-20 place-items-center rounded-2xl bg-gradient-to-br from-amber-500 to-teal-600 shadow-lg shadow-amber-500/25">
             <Smartphone className="size-10 text-white" strokeWidth={1.8} />
           </div>
           <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl dark:text-white">
@@ -48,7 +48,7 @@ export default function DownloadAppPage() {
               aria-pressed={activePlatform === "android"}
               className={`flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition ${
                 activePlatform === "android"
-                  ? "bg-emerald-600 text-white shadow-sm dark:bg-emerald-600"
+                  ? "bg-amber-600 text-white shadow-sm dark:bg-amber-600"
                   : "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
               }`}
             >
@@ -61,7 +61,7 @@ export default function DownloadAppPage() {
               aria-pressed={activePlatform === "ios"}
               className={`flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition ${
                 activePlatform === "ios"
-                  ? "bg-emerald-600 text-white shadow-sm dark:bg-emerald-600"
+                  ? "bg-amber-600 text-white shadow-sm dark:bg-amber-600"
                   : "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
               }`}
             >
@@ -84,7 +84,7 @@ export default function DownloadAppPage() {
         <div className="mt-12 text-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400"
+            className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-amber-700 dark:text-slate-400 dark:hover:text-amber-400"
           >
             <ArrowRight className="size-4 rotate-180" />
             Back to Vexis
@@ -130,7 +130,7 @@ function AndroidSection({ apkUrl }: { apkUrl: string }) {
         href={apkUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-emerald-600 px-6 py-4 text-lg font-bold text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-700 active:scale-[0.98] dark:bg-emerald-600 dark:hover:bg-emerald-700"
+        className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-amber-600 px-6 py-4 text-lg font-bold text-white shadow-lg shadow-amber-600/25 transition hover:bg-amber-700 active:scale-[0.98] dark:bg-amber-600 dark:hover:bg-amber-700"
       >
         <Download className="size-5 transition-transform group-hover:-translate-y-0.5" />
         Download APK for Android
@@ -156,11 +156,11 @@ function AndroidSection({ apkUrl }: { apkUrl: string }) {
                 className="flex w-full items-center gap-4 p-4 text-left transition hover:bg-slate-50 dark:hover:bg-slate-700/50"
               >
                 {/* Step number badge */}
-                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-emerald-100 text-sm font-bold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400">
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-amber-100 text-sm font-bold text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
                   {step.number}
                 </span>
                 {/* Step icon */}
-                <Icon className="size-5 shrink-0 text-emerald-600 dark:text-emerald-400" strokeWidth={1.8} />
+                <Icon className="size-5 shrink-0 text-amber-600 dark:text-amber-400" strokeWidth={1.8} />
                 {/* Step title */}
                 <span className="flex-1 text-sm font-semibold text-slate-900 dark:text-white">
                   {step.title}
@@ -211,10 +211,10 @@ function IOSSection() {
   const steps = [
     {
       number: 1,
-      title: "Open vexis.pk in Safari",
+      title: "Open nbs-pk in Safari",
       icon: Smartphone,
       detail:
-        'Launch Safari on your iPhone and navigate to vexis.pk. Note: this process requires Safari — other browsers on iOS do not support "Add to Home Screen".',
+        'Launch Safari on your iPhone and navigate to nbs-pk. Note: this process requires Safari — other browsers on iOS do not support "Add to Home Screen".',
     },
     {
       number: 2,
@@ -271,11 +271,11 @@ function IOSSection() {
                 className="flex w-full items-center gap-4 p-4 text-left transition hover:bg-slate-50 dark:hover:bg-slate-700/50"
               >
                 {/* Step number badge */}
-                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-emerald-100 text-sm font-bold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400">
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-amber-100 text-sm font-bold text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
                   {step.number}
                 </span>
                 {/* Step icon */}
-                <Icon className="size-5 shrink-0 text-emerald-600 dark:text-emerald-400" strokeWidth={1.8} />
+                <Icon className="size-5 shrink-0 text-amber-600 dark:text-amber-400" strokeWidth={1.8} />
                 {/* Step title */}
                 <span className="flex-1 text-sm font-semibold text-slate-900 dark:text-white">
                   {step.title}
@@ -305,9 +305,9 @@ function IOSSection() {
       </div>
 
       {/* Done note */}
-      <div className="flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-900/40 dark:bg-emerald-950/20">
-        <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
-        <p className="text-sm leading-relaxed text-emerald-800 dark:text-emerald-300">
+      <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/40 dark:bg-amber-950/20">
+        <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-amber-600 dark:text-amber-400" />
+        <p className="text-sm leading-relaxed text-amber-800 dark:text-amber-300">
           <strong className="font-bold">You&apos;re all set!</strong> The Vexis
           icon will now appear on your home screen. Tap it to open the app in
           full-screen mode — just like a native app.

@@ -146,7 +146,7 @@ export function SearchBar({
           Search products
         </label>
         <div
-          className={`flex items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50 transition focus-within:border-emerald-600 dark:border-slate-700 dark:bg-slate-900 ${
+          className={`flex items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50 transition focus-within:border-amber-600 dark:border-slate-700 dark:bg-slate-900 ${
             variant === "mobile" ? "px-3 py-3" : ""
           }`}
         >
@@ -169,7 +169,7 @@ export function SearchBar({
             }`}
           />
           {loading ? (
-            <LoaderCircle className="mr-3 size-4 shrink-0 animate-spin text-emerald-600 dark:text-emerald-400" />
+            <LoaderCircle className="mr-3 size-4 shrink-0 animate-spin text-amber-600 dark:text-amber-400" />
           ) : query ? (
             <button
               type="button"
@@ -216,7 +216,7 @@ export function SearchBar({
                   onMouseEnter={() => setHighlighted(index)}
                   className={`flex items-center gap-3 px-3 py-2.5 transition ${
                     highlighted === index
-                      ? "bg-emerald-50 dark:bg-emerald-950/50"
+                      ? "bg-amber-50 dark:bg-amber-950/50"
                       : "hover:bg-slate-50 dark:hover:bg-slate-800/60"
                   }`}
                 >
@@ -235,7 +235,7 @@ export function SearchBar({
                     <span className="block truncate text-sm font-semibold capitalize text-slate-900 dark:text-white">
                       {product.title}
                     </span>
-                    <span className="mt-0.5 block text-xs font-bold text-emerald-700 dark:text-emerald-400">
+                    <span className="mt-0.5 block text-xs font-bold text-amber-700 dark:text-amber-400">
                       {formatPKR(product.price)}
                     </span>
                   </span>
@@ -250,7 +250,7 @@ export function SearchBar({
               type="button"
               onMouseDown={(event) => event.preventDefault()}
               onClick={goToResults}
-              className="flex w-full items-center justify-center gap-2 border-t border-slate-100 px-4 py-3 text-xs font-bold uppercase tracking-widest text-emerald-700 transition hover:bg-emerald-50 dark:border-slate-800 dark:text-emerald-400 dark:hover:bg-emerald-950/40"
+              className="flex w-full items-center justify-center gap-2 border-t border-slate-100 px-4 py-3 text-xs font-bold uppercase tracking-widest text-amber-700 transition hover:bg-amber-50 dark:border-slate-800 dark:text-amber-400 dark:hover:bg-amber-950/40"
             >
               See all results for “{query.trim()}”
             </button>

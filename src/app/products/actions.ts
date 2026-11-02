@@ -57,7 +57,7 @@ export async function addProductReview(
     (typeof user.user_metadata?.full_name === "string"
       ? user.user_metadata.full_name
       : null) ||
-    "VEXIS pk buyer";
+    "NBS-pk buyer";
 
   const payload: ProductReviewInsert = {
     product_id: productId,

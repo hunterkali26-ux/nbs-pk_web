@@ -41,10 +41,10 @@ export default function CartPage() {
           </p>
           <Link
             href="/#featured"
-            className="mt-8 inline-flex items-center gap-2 rounded-lg bg-emerald-700 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800"
+            className="mt-8 inline-flex items-center gap-2 rounded-lg bg-amber-700 px-5 py-3 text-sm font-bold text-white hover:bg-amber-800"
           >
             <ShoppingBag className="size-4" />
-            Shop VEXIS pk
+            Shop NBS-pk
           </Link>
         </main>
         <Footer />
@@ -58,10 +58,10 @@ export default function CartPage() {
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">Review your items</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">Review your items</p>
             <h1 className="mt-2 text-3xl font-black text-slate-900 dark:text-slate-100">Shopping bag</h1>
           </div>
-          <span className="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 dark:bg-emerald-950">
+          <span className="rounded-full bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-700 dark:bg-amber-950">
             {count} {count === 1 ? "item" : "items"}
           </span>
         </div>
@@ -70,7 +70,7 @@ export default function CartPage() {
           <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-900">
             {items.map((item) => (
               <div key={item.productId} className="flex gap-4 px-4 py-5 sm:px-6">
-                <div className="relative size-24 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-emerald-100 to-slate-100 dark:from-slate-800 dark:to-slate-800">
+                <div className="relative size-24 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-amber-100 to-slate-100 dark:from-slate-800 dark:to-slate-800">
                   {item.image_url ? (
                     <img
                       src={item.image_url}
@@ -86,7 +86,7 @@ export default function CartPage() {
                 <div className="flex min-w-0 flex-1 flex-col justify-between">
                   <div>
                     <h3 className="truncate text-sm font-bold text-slate-900 dark:text-slate-100">{item.title}</h3>
-                    <p className="mt-1 text-lg font-black text-emerald-700">
+                    <p className="mt-1 text-lg font-black text-amber-700">
                       PKR {item.price.toLocaleString("en-PK")}
                     </p>
                   </div>
@@ -139,14 +139,14 @@ export default function CartPage() {
             <div className="mt-5 border-t border-slate-100 pt-5 dark:border-slate-800">
               <div className="flex justify-between text-base">
                 <span className="font-bold text-slate-900 dark:text-slate-100">Estimated total</span>
-                <span className="font-black text-emerald-700">PKR {total.toLocaleString("en-PK")}</span>
+                <span className="font-black text-amber-700">PKR {total.toLocaleString("en-PK")}</span>
               </div>
             </div>
             <button
               type="button"
               onClick={handleProceedToCheckout}
               disabled={pendingAuth || navPending}
-              className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60"
+              className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-amber-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-amber-800 disabled:cursor-wait disabled:opacity-60"
             >
               {pendingAuth || navPending ? (
                 <LoaderCircle className="size-4 animate-spin" />
@@ -155,7 +155,7 @@ export default function CartPage() {
             </button>
             <Link
               href="/#featured"
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 hover:border-emerald-600 hover:text-emerald-700 dark:border-slate-700 dark:text-slate-200"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 hover:border-amber-600 hover:text-amber-700 dark:border-slate-700 dark:text-slate-200"
             >
               Continue shopping
             </Link>

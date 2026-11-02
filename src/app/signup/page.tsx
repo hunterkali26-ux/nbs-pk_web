@@ -17,7 +17,7 @@ export default async function SignupPage({ searchParams }: { searchParams: Searc
   return (
     <AuthShell
       eyebrow="Create your account"
-      title="Join VEXIS pk."
+      title="Join NBS-pk."
       description="One account for faster checkout, live order tracking, and members-only drops."
       footer={
         <>

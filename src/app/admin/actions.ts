@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { resolveCategoryFields } from "@/lib/product-attributes";
 import { removeFromBucket, uploadToBucket, uploadVideoToBucket } from "@/lib/upload-image";
+import { uploadToBlob, removeFromBlob } from "@/lib/blob-upload";
 import type { CategoryInsert, Product, ProductInsert, Profile } from "@/types/database";
 
 export type ProductActionState = {
@@ -396,11 +397,14 @@ export async function updateProduct(
       const existingImages = (
         (existingRow as { images?: string[] | null } | null)?.images ?? []
       ) as string[];
+      const removedImages = existingImages.filter((url) => !images.includes(url));
       await removeFromBucket(
         supabase,
         "products",
-        existingImages.filter((url) => !images.includes(url)),
+        removedImages,
       );
+      // Also clean up Vercel Blob images
+      await removeFromBlob(removedImages);
     }
 
     revalidatePath("/");
@@ -435,7 +439,7 @@ export async function addCategory(_state: ProductActionState, formData: FormData
     const image = formData.get("image");
     if (image instanceof File && image.size > 0) {
       try {
-        imageUrl = await uploadToBucket(supabase, "categories", image);
+        imageUrl = (await uploadToBlob(image, "categories")).url;
       } catch (uploadError) {
         console.error("Category image upload failed:", uploadError);
         return {
@@ -485,7 +489,7 @@ export async function updateCategory(_state: ProductActionState, formData: FormD
     const image = formData.get("image");
     if (image instanceof File && image.size > 0) {
       try {
-        imageUrl = await uploadToBucket(supabase, "categories", image);
+        imageUrl = (await uploadToBlob(image, "categories")).url;
       } catch (uploadError) {
         console.error("Category image upload failed:", uploadError);
         return {
@@ -512,11 +516,11 @@ export async function updateCategory(_state: ProductActionState, formData: FormD
       const payload = { name, slug, fields, image_url: imageUrl };
       const { error } = await supabase.from("categories").update(payload as never).eq("id", id);
       if (error) {
-        await removeFromBucket(supabase, "categories", [imageUrl]);
+        await removeFromBlob([imageUrl]);
         return { error: "The category could not be updated." };
       }
       if (oldImage && oldImage !== imageUrl) {
-        await removeFromBucket(supabase, "categories", [oldImage]);
+        await removeFromBlob([oldImage]);
       }
     } else {
       const payload = { name, slug, fields };

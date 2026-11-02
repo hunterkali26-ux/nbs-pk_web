@@ -275,9 +275,9 @@ export function ProductDetail({
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-          <Link href="/" className="transition hover:text-emerald-700 dark:hover:text-emerald-400">Home</Link>
+          <Link href="/" className="transition hover:text-amber-700 dark:hover:text-amber-400">Home</Link>
           <span>/</span>
-          <Link href={`/categories/${categorySlug}`} className="capitalize transition hover:text-emerald-700 dark:hover:text-emerald-400">
+          <Link href={`/categories/${categorySlug}`} className="capitalize transition hover:text-amber-700 dark:hover:text-amber-400">
             {product.category}
           </Link>
           <span>/</span>
@@ -290,7 +290,7 @@ export function ProductDetail({
             <button
               type="button"
               onClick={() => setLightboxIndex(activeMedia)}
-              className="group relative block w-full overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-100 to-slate-100 dark:from-slate-800 dark:to-slate-900"
+              className="group relative block w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-100 to-slate-100 dark:from-slate-800 dark:to-slate-900"
               aria-label={`Open slide ${activeMedia + 1} in fullscreen viewer`}
             >
               {media[activeMedia]?.type === "video" ? (
@@ -329,7 +329,7 @@ export function ProductDetail({
                     type="button"
                     onClick={() => setActiveMedia(idx)}
                     className={`relative size-16 shrink-0 overflow-hidden rounded-lg border-2 transition sm:size-20 ${
-                      idx === activeMedia ? "border-emerald-600" : "border-transparent opacity-70 hover:opacity-100"
+                      idx === activeMedia ? "border-amber-600" : "border-transparent opacity-70 hover:opacity-100"
                     }`}
                     aria-label={`View slide ${idx + 1}`}
                   >
@@ -357,7 +357,7 @@ export function ProductDetail({
                 { icon: RotateCcw, label: "7-day easy returns" },
               ].map(({ icon: Icon, label }) => (
                 <div key={label} className="rounded-xl border border-slate-100 px-2 py-3 dark:border-slate-800">
-                  <Icon className="mx-auto size-4 text-emerald-600 dark:text-emerald-400" />
+                  <Icon className="mx-auto size-4 text-amber-600 dark:text-amber-400" />
                   <p className="mt-1.5 text-[11px] leading-tight text-slate-500 dark:text-slate-400">{label}</p>
                 </div>
               ))}
@@ -366,7 +366,7 @@ export function ProductDetail({
 
           {/* Buy box ------------------------------------------------------- */}
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-400">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-400">
               {product.category}
             </p>
             <h1 className="mt-2 text-3xl font-black leading-tight text-slate-900 dark:text-slate-50 sm:text-4xl">
@@ -377,7 +377,7 @@ export function ProductDetail({
             <p className="mt-2.5 text-sm text-slate-600 dark:text-slate-300">
               Brand:{" "}
               <span className="font-bold capitalize text-slate-900 dark:text-white">
-                {product.brand || "VEXIS pk"}
+                {product.brand || "NBS-pk"}
               </span>
             </p>
 
@@ -392,7 +392,7 @@ export function ProductDetail({
 
             {/* Price block with strikethrough / discount ------------------ */}
             <div className="mt-5 flex flex-wrap items-end gap-x-3 gap-y-1">
-              <span className="text-3xl font-black text-emerald-700 dark:text-emerald-400 sm:text-4xl">
+              <span className="text-3xl font-black text-amber-700 dark:text-amber-400 sm:text-4xl">
                 {formatPKR(product.price)}
               </span>
               {discountPercent ? (
@@ -409,17 +409,17 @@ export function ProductDetail({
 
             <p
               className={`mt-2 text-sm font-semibold ${
-                product.stock > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
+                product.stock > 0 ? "text-amber-600 dark:text-amber-400" : "text-red-600 dark:text-red-400"
               }`}
             >
               {product.stock > 0 ? `In stock — ${product.stock} available` : "Out of stock"}
             </p>
 
             <p className="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300">
-              {product.description || "A considered essential from the VEXIS pk collection."}
+              {product.description || "A premium leather essential from the NBS-pk collection."}
             </p>
 
-            {/* Color family selector ------------------------------------- */}
+            {/* Color family selector */}
             {product.color_family ? (
               <div className="mt-6">
                 <p className="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300">
@@ -435,7 +435,7 @@ export function ProductDetail({
                       title={color}
                       className={`flex items-center gap-2 rounded-full border-2 py-1 pl-1 pr-3 text-xs font-semibold transition ${
                         selectedColor === color
-                          ? "border-emerald-600 text-emerald-800 dark:border-emerald-400 dark:text-emerald-300"
+                          ? "border-amber-600 text-amber-800 dark:border-amber-400 dark:text-amber-300"
                           : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"
                       }`}
                     >
@@ -493,7 +493,7 @@ export function ProductDetail({
                 type="button"
                 onClick={addToCart}
                 disabled={product.stock === 0 || navPending}
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-700 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-700/20 transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-amber-700 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-amber-700/20 transition hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <ShoppingBag className="size-4" />
                 {navPending ? "Adding…" : "Add to Cart"}
@@ -502,7 +502,7 @@ export function ProductDetail({
                 type="button"
                 onClick={buyNow}
                 disabled={product.stock === 0 || navPending}
-                className="inline-flex flex-1 items-center justify-center rounded-xl border-2 border-emerald-700 px-6 py-4 text-sm font-bold text-emerald-700 transition hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-500 dark:text-emerald-400 dark:hover:bg-emerald-950/40"
+                className="inline-flex flex-1 items-center justify-center rounded-xl border-2 border-amber-700 px-6 py-4 text-sm font-bold text-amber-700 transition hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-amber-500 dark:text-amber-400 dark:hover:bg-amber-950/40"
               >
                 {navPending ? (
                   <LoaderCircle className="size-4 animate-spin" />
@@ -515,6 +515,13 @@ export function ProductDetail({
                 productTitle={product.title}
                 variant="detail"
               />
+            </div>
+
+            <div className="mt-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/40">
+              <p className="flex items-center gap-2 text-sm text-amber-800 dark:text-amber-200">
+                <span className="size-4">💬</span>
+                Have questions about this product? Contact us instantly via the floating WhatsApp button for personalized assistance!
+              </p>
             </div>
 
             <p className="mt-3 text-center text-xs text-slate-400 dark:text-slate-500 sm:text-left">
@@ -564,12 +571,13 @@ export function ProductDetail({
             <h2 className="text-xl font-black text-slate-900 dark:text-slate-100">Product details</h2>
             <div className="mt-4 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
               <p className="text-sm leading-7 text-slate-600 dark:text-slate-300">
-                {product.description || "A considered essential from the VEXIS pk collection."}
+                {product.description ||
+                  "A premium leather essential from the NBS-pk collection."}
               </p>
 
               <ul className="space-y-2.5 border-t border-slate-100 pt-4 text-sm dark:border-slate-800">
                 {[
-                  `Brand: ${product.brand || "VEXIS pk"}`,
+                  `Brand: ${product.brand || "NBS-pk"}`,
                   product.color_family ? `Color family: ${product.color_family}` : "",
                   product.original_price && product.original_price > product.price
                     ? `You save ${formatPKR(product.original_price - product.price)} versus the original price of ${formatPKR(product.original_price)}.`
@@ -580,7 +588,7 @@ export function ProductDetail({
                   .filter(Boolean)
                   .map((line) => (
                     <li key={line} className="flex gap-2.5 text-slate-600 dark:text-slate-300">
-                      <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-emerald-500" aria-hidden="true" />
+                      <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-amber-500" aria-hidden="true" />
                       {line}
                     </li>
                   ))}
@@ -597,14 +605,14 @@ export function ProductDetail({
         {/* Related products --------------------------------------------- */}
         {related.length > 0 ? (
           <section className="mt-16 border-t border-slate-100 pt-10 dark:border-slate-800">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-400">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-400">
               You may also like
             </p>
             <h2 className="mt-2 text-2xl font-black text-slate-900 dark:text-slate-100">Related products</h2>
             <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
               {related.map((item) => (
                 <Link key={item.id} href={`/products/${item.id}`} className="group min-w-0">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-gradient-to-br from-emerald-100 to-slate-100 dark:from-slate-800 dark:to-slate-900">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-gradient-to-br from-amber-100 to-slate-100 dark:from-slate-800 dark:to-slate-900">
                     {item.image_url ? (
                       /* eslint-disable-next-line @next/next/no-img-element */
                       <img
@@ -623,7 +631,7 @@ export function ProductDetail({
                     )}
                   </div>
                   <h3 className="mt-4 truncate text-sm font-bold text-slate-900 dark:text-slate-100">{item.title}</h3>
-                  <p className="mt-1 text-base font-black text-emerald-700 dark:text-emerald-400">
+                  <p className="mt-1 text-base font-black text-amber-700 dark:text-amber-400">
                     {formatPKR(item.price)}
                   </p>
                 </Link>

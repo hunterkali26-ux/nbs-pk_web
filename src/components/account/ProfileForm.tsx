@@ -7,7 +7,7 @@ import { CheckCircle, ExternalLink, LoaderCircle } from "lucide-react";
 import { updateProfile } from "@/app/account/actions";
 
 const inputClass =
-  "mt-2 w-full border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-emerald-600 disabled:cursor-not-allowed disabled:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:disabled:bg-slate-800 dark:disabled:text-slate-500";
+  "mt-2 w-full border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-amber-600 disabled:cursor-not-allowed disabled:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:disabled:bg-slate-800 dark:disabled:text-slate-500";
 const labelClass =
   "block text-xs font-semibold uppercase tracking-widest text-slate-600 dark:text-slate-400";
 
@@ -96,7 +96,7 @@ export function ProfileForm({
         )}
 
         {state.success && (
-          <p role="status" className="flex items-center gap-2 border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300">
+          <p role="status" className="flex items-center gap-2 border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
             <CheckCircle className="size-4 shrink-0" />
             Your profile has been updated.
           </p>
@@ -106,14 +106,14 @@ export function ProfileForm({
           <button
             type="submit"
             disabled={pending}
-            className="flex items-center gap-2 rounded-lg bg-emerald-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-800 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg bg-amber-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-amber-800 disabled:opacity-50"
           >
             {pending ? <LoaderCircle className="size-4 animate-spin" /> : null}
             {pending ? "Saving..." : "Save changes"}
           </button>
           <Link
             href="/account/orders"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800 dark:text-emerald-400"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-700 hover:text-amber-800 dark:text-amber-400"
           >
             View order history <ExternalLink className="size-3.5" />
           </Link>

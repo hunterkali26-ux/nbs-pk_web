@@ -1,4 +1,4 @@
-const code = `(function(){try{var t=localStorage.getItem('vexis-theme');var r=document.documentElement;function apply(d){r.classList[d?'add':'remove']('dark');r.setAttribute('data-theme',d?'dark':'light')}if(t==='dark'||t==='light'){apply(t==='dark')}else{apply(window.matchMedia('(prefers-color-scheme: dark)').matches}}}catch(e){}})();`;
+const code = `(function(){try{var t=localStorage.getItem('nbs-theme');var r=document.documentElement;function apply(d){r.classList[d?'add':'remove']('dark');r.setAttribute('data-theme',d?'dark':'light')}if(t==='dark'||t==='light'){apply(t==='dark')}else{apply(true)}}catch(e){document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-theme','dark')}})();`;
 
 /**
  * Server component (no "use client"): renders the pre-hydration theme
@@ -8,7 +8,7 @@ const code = `(function(){try{var t=localStorage.getItem('vexis-theme');var r=do
 export function ThemeScript() {
   return (
     <script
-      id="vexis-theme-script"
+      id="nbs-theme-script"
       dangerouslySetInnerHTML={{ __html: code }}
     />
   );

@@ -67,7 +67,7 @@ export function WishlistView({ entries }: { entries: WishlistEntry[] }) {
         <Link
           href="/shop"
           prefetch={true}
-          className="mt-6 inline-flex items-center justify-center rounded-lg bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
+          className="mt-6 inline-flex items-center justify-center rounded-lg bg-amber-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-amber-800"
         >
           Browse everything
         </Link>
@@ -78,7 +78,7 @@ export function WishlistView({ entries }: { entries: WishlistEntry[] }) {
   return (
     <>
       <p className="mt-1 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-        <PackageCheck className="size-4 text-emerald-600 dark:text-emerald-400" />
+        <PackageCheck className="size-4 text-amber-600 dark:text-amber-400" />
         {visible.length} saved {visible.length === 1 ? "item" : "items"}
       </p>
 
@@ -88,7 +88,7 @@ export function WishlistView({ entries }: { entries: WishlistEntry[] }) {
           return (
             <li key={product.id} className="flex items-center gap-3 px-3 py-3 sm:px-4">
               <Link href={`/products/${product.id}`} prefetch={true} aria-label={product.title} className="shrink-0">
-                <span className="flex size-16 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-emerald-100 to-slate-100 sm:size-20 dark:from-slate-800 dark:to-slate-900">
+                <span className="flex size-16 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-amber-100 to-slate-100 sm:size-20 dark:from-slate-800 dark:to-slate-900">
                   {product.image_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={product.image_url} alt={product.title} loading="lazy" className="size-full object-cover" />
@@ -104,7 +104,7 @@ export function WishlistView({ entries }: { entries: WishlistEntry[] }) {
                     {product.title}
                   </h3>
                 </Link>
-                <p className="mt-0.5 text-sm font-black text-emerald-700 dark:text-emerald-400">
+                <p className="mt-0.5 text-sm font-black text-amber-700 dark:text-amber-400">
                   PKR {Number(product.price).toLocaleString("en-PK")}
                 </p>
                 <p className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">Saved {formatDate(savedAt)}</p>
@@ -114,8 +114,8 @@ export function WishlistView({ entries }: { entries: WishlistEntry[] }) {
                     onClick={() => handleAddToCart(product)}
                     className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition ${
                       isAdded
-                        ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
-                        : "bg-emerald-700 text-white hover:bg-emerald-800"
+                        ? "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
+                        : "bg-amber-700 text-white hover:bg-amber-800"
                     }`}
                   >
                     {isAdded ? <Check className="size-3.5" aria-hidden="true" /> : <ShoppingBag className="size-3.5" aria-hidden="true" />}

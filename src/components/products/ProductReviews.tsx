@@ -7,7 +7,7 @@ import { addProductReview } from "@/app/products/actions";
 import type { ProductReview } from "@/types/database";
 
 const fieldClass =
-  "mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100";
+  "mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-amber-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100";
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-PK", {
@@ -86,7 +86,7 @@ export function ProductReviews({
 
   return (
     <section id="reviews" className="scroll-mt-24 border-t border-slate-100 pt-10 dark:border-slate-800">
-      <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-400">
+      <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-400">
         Ratings &amp; reviews
       </p>
       <h2 className="mt-2 text-2xl font-black text-slate-900 dark:text-slate-100">
@@ -137,12 +137,12 @@ export function ProductReviews({
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2.5">
-                      <span className="grid size-9 place-items-center rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                      <span className="grid size-9 place-items-center rounded-full bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
                         <UserRound className="size-4" />
                       </span>
                       <div>
                         <p className="text-sm font-bold text-slate-900 dark:text-white">
-                          {review.author_name || "VEXIS pk buyer"}
+                          {review.author_name || "NBS-pk customer"}
                         </p>
                         <p className="text-[11px] text-slate-400 dark:text-slate-500">
                           {formatDate(review.created_at)}
@@ -205,7 +205,7 @@ export function ProductReviews({
               </p>
             ) : null}
             {state.success ? (
-              <p role="status" className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300">
+              <p role="status" className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
                 {state.success}
               </p>
             ) : null}
@@ -213,7 +213,7 @@ export function ProductReviews({
             <button
               type="submit"
               disabled={pending || rating === 0}
-              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-amber-700 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               {pending ? <LoaderCircle className="size-4 animate-spin" /> : null}
               {pending ? "Publishing…" : "Submit review"}

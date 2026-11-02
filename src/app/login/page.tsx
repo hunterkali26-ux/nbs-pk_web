@@ -22,7 +22,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Search
       description="Sign in to track orders, check out faster, and keep your essentials close."
       footer={
         <>
-          New to VEXIS pk?{" "}
+          New to NBS-pk?{" "}
           <Link href={signupHref} className="font-semibold text-[#d4b06a] hover:text-[#8d6928]">
             Create an account
           </Link>

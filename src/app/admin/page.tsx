@@ -48,7 +48,7 @@ export default async function AdminOverview() {
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#d4b06a]">Command centre</p>
         <h1 className="mt-3 font-serif font-black text-4xl sm:text-5xl">Overview</h1>
         <p className="mt-4 max-w-lg text-sm leading-6 text-black/50 dark:text-slate-400">
-          A clear view of the VEXIS pk storefront, from the day&apos;s orders to the pieces in rotation.
+          A clear view of the NBS-pk storefront, from the day's orders to the pieces in rotation.
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map(([label, value, Icon]) => (

@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, ImagePlus, LoaderCircle, Plus, Tag } from "lucide-react";
-import { useActionState, useMemo, useState, type FormEvent } from "react";
+import { useActionState, useMemo, useState, type FormEvent, useTransition } from "react";
 
 import { addProduct } from "@/app/admin/actions";
 import { createClient } from "@/lib/supabase/client";
@@ -12,12 +12,13 @@ import {
   validateImageFile,
   validateVideoFile,
 } from "@/lib/upload-image";
+import { uploadToBlob, uploadVideoToBlob } from "@/lib/blob-upload";
 import { defByKey, resolveCategoryFields } from "@/lib/product-attributes";
 import type { AttributeDef } from "@/lib/product-attributes";
 import type { Category } from "@/types/database";
 
 const fieldClassName =
-  "mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-600";
+  "mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-amber-600";
 
 const labelClassName =
   "text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50";
@@ -41,6 +42,7 @@ function DiscountPreview({ price, original }: { price: string; original: string 
 
 export function AddProductForm({ categories }: { categories: Category[] }) {
   const [state, action, pending] = useActionState(addProduct, {});
+  const [isPending, startTransition] = useTransition();
   const [categoryName, setCategoryName] = useState("");
   const [selectedCount, setSelectedCount] = useState(0);
   const [selectedVideos, setSelectedVideos] = useState(0);
@@ -97,22 +99,23 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
     const uploaded: string[] = [];
     setUploading(true);
     try {
-      const supabase = createClient();
       const total = imageFiles.length + videoFiles.length;
       let done = 0;
 
       const images: string[] = [];
       for (const file of imageFiles) {
         setUploadNote(`Uploading photo ${++done} of ${total}…`);
-        images.push(await uploadToBucket(supabase, "products", file));
-        uploaded.push(images[images.length - 1]);
+        const result = await uploadToBlob(file, "products");
+        images.push(result.url);
+        uploaded.push(result.url);
       }
 
       const videos: string[] = [];
       for (const file of videoFiles) {
         setUploadNote(`Uploading video ${++done} of ${total}…`);
-        videos.push(await uploadVideoToBucket(supabase, "products", file));
-        uploaded.push(videos[videos.length - 1]);
+        const result = await uploadVideoToBlob(file, "products");
+        videos.push(result.url);
+        uploaded.push(result.url);
       }
 
       if (total > 0) setUploadNote("Media uploaded — saving product…");
@@ -128,7 +131,9 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
         formData.append("uploaded_videos", JSON.stringify(videos));
       }
 
-      action(formData);
+startTransition(() => {
+        action(formData);
+      });
     } catch (uploadError) {
       // Roll back whatever already reached Storage so no orphans linger.
       try {
@@ -262,7 +267,7 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
           />
         </label>
         {selectedCount > 0 ? (
-          <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200">
+          <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-amber-400/10 px-3 py-1 text-xs font-semibold text-amber-200">
             <Check className="size-3.5" />
             {selectedCount} photo{selectedCount === 1 ? "" : "s"} ready to upload
           </span>
@@ -299,7 +304,7 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
           />
         </label>
         {selectedVideos > 0 ? (
-          <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200">
+          <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-amber-400/10 px-3 py-1 text-xs font-semibold text-amber-200">
             <Check className="size-3.5" />
             {selectedVideos} video{selectedVideos === 1 ? "" : "s"} ready to upload
           </span>
@@ -350,12 +355,12 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
         </p>
       ) : null}
       {state.error ? <p role="alert" className="border border-red-300/20 bg-red-400/10 px-4 py-3 text-sm text-red-200">{state.error}</p> : null}
-      {state.success ? <p role="status" className="border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{state.success}</p> : null}
+      {state.success ? <p role="status" className="border border-amber-300/20 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">{state.success}</p> : null}
 
       <button
         type="submit"
         disabled={pending || uploading}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-5 py-4 text-sm font-semibold text-white transition hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-700 px-5 py-4 text-sm font-semibold text-white transition hover:bg-amber-800 disabled:cursor-wait disabled:opacity-60"
       >
         {uploading || pending ? <LoaderCircle className="size-4 animate-spin" /> : <Plus className="size-4" />}
         {uploading

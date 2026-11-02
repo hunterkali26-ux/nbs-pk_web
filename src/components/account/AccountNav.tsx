@@ -14,7 +14,7 @@ export function AccountNav({ isAdmin }: { isAdmin: boolean }) {
   const desktopLink = (active: boolean) =>
     `flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold transition ${
       active
-        ? "bg-emerald-700 text-white"
+        ? "bg-amber-700 text-white"
         : "text-slate-700 hover:bg-slate-200 dark:text-slate-200 dark:hover:bg-slate-800"
     }`;
 
@@ -27,7 +27,7 @@ export function AccountNav({ isAdmin }: { isAdmin: boolean }) {
           aria-current={profileActive ? "page" : undefined}
           className={`flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition ${
             profileActive
-              ? "bg-emerald-700 text-white shadow-sm"
+              ? "bg-amber-700 text-white shadow-sm"
               : "text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700"
           }`}
         >
@@ -38,7 +38,7 @@ export function AccountNav({ isAdmin }: { isAdmin: boolean }) {
           aria-current={wishlistActive ? "page" : undefined}
           className={`flex items-center justify-center gap-2 rounded-md px-3 py-2.5 text-sm font-semibold transition ${
             wishlistActive
-              ? "bg-emerald-700 text-white shadow-sm"
+              ? "bg-amber-700 text-white shadow-sm"
               : "text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700"
           }`}
         >
@@ -49,7 +49,7 @@ export function AccountNav({ isAdmin }: { isAdmin: boolean }) {
           aria-current={ordersActive ? "page" : undefined}
           className={`flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition ${
             ordersActive
-              ? "bg-emerald-700 text-white shadow-sm"
+              ? "bg-amber-700 text-white shadow-sm"
               : "text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700"
           }`}
         >
@@ -71,7 +71,7 @@ export function AccountNav({ isAdmin }: { isAdmin: boolean }) {
         {isAdmin ? (
           <Link
             href="/admin"
-            className="mt-4 flex items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-100 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/40"
+            className="mt-4 flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800 transition hover:bg-amber-100 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300 dark:hover:bg-amber-900/40"
           >
             <LayoutDashboard className="size-4" /> Admin dashboard
           </Link>

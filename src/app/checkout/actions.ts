@@ -99,7 +99,7 @@ export async function placeOrder(prevState: CheckoutState, formData: FormData): 
   // `status` is omitted on purpose — the DB default ('Pending') applies.
   const orderPayload: OrderInsert = {
     user_id: userData.user.id,
-    customer_name: full_name || "VEXIS pk Customer",
+    customer_name: full_name || "NBS-pk Customer",
     customer_phone: phone || "00000000000",
     shipping_address: shippingAddressText,
     city: city || "Multan",

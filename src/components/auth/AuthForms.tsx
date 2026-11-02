@@ -7,13 +7,13 @@ import { useActionState } from "react";
 import { signIn, signUp } from "@/app/auth/actions";
 
 const inputClassName =
-  "mt-2 w-full border-b border-slate-200 bg-transparent px-0 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-600 dark:border-slate-700 dark:text-slate-100 dark:placeholder:text-slate-500";
+  "mt-2 w-full border-b border-slate-200 bg-transparent px-0 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-amber-600 dark:border-slate-700 dark:text-slate-100 dark:placeholder:text-slate-500";
 
 function SubmitButton({ label }: { label: string }) {
   return (
     <button
       type="submit"
-      className="group mt-8 flex w-full items-center justify-center gap-3 rounded-lg bg-emerald-700 px-5 py-4 text-sm font-semibold text-white transition hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60"
+      className="group mt-8 flex w-full items-center justify-center gap-3 rounded-lg bg-amber-700 px-5 py-4 text-sm font-semibold text-white transition hover:bg-amber-800 disabled:cursor-wait disabled:opacity-60"
     >
       <span>{label}</span>
       <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -36,12 +36,12 @@ function Field({
 }) {
   return (
     <label
-      suppressHydrationWarning
+      
       className="block text-xs font-semibold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300"
     >
       {label}
       <input
-        suppressHydrationWarning
+        
         className={inputClassName}
         name={name}
         type={type}
@@ -64,7 +64,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
   const [state, action, pending] = useActionState(signIn, {});
 
   return (
-    <form suppressHydrationWarning action={action}>
+    <form  action={action}>
       <input type="hidden" name="redirect" value={redirectTo} />
       <div className="space-y-6">
         <Field name="email" label="Email address" type="email" placeholder="you@example.com" />
@@ -72,11 +72,11 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
       </div>
       <ActionError message={state.error} />
       <div className="flex justify-end pt-3">
-        <Link href="/signup" className="text-xs font-semibold uppercase tracking-[0.12em] text-emerald-700 hover:text-emerald-800">
+        <Link href="/signup" className="text-xs font-semibold uppercase tracking-[0.12em] text-amber-700 hover:text-amber-800">
           Create an account
         </Link>
       </div>
-      {pending ? <LoaderCircle className="mx-auto mt-8 size-5 animate-spin text-emerald-700" /> : <SubmitButton label="Sign in" />}
+      {pending ? <LoaderCircle className="mx-auto mt-8 size-5 animate-spin text-amber-700" /> : <SubmitButton label="Sign in" />}
     </form>
   );
 }
@@ -85,7 +85,7 @@ export function SignupForm({ redirectTo }: { redirectTo: string }) {
   const [state, action, pending] = useActionState(signUp, {});
 
   return (
-    <form suppressHydrationWarning action={action}>
+    <form  action={action}>
       <input type="hidden" name="redirect" value={redirectTo} />
       <div className="space-y-6">
         <Field name="full_name" label="Full name" placeholder="Your name" />
@@ -93,12 +93,12 @@ export function SignupForm({ redirectTo }: { redirectTo: string }) {
         <Field name="password" label="Password" type="password" placeholder="At least 8 characters" />
         <Field name="phone_number" label="Phone number" type="tel" placeholder="+92 300 0000000" />
         <label
-          suppressHydrationWarning
+          
           className="block text-xs font-semibold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300"
         >
           Delivery address
           <textarea
-            suppressHydrationWarning
+            
             className={`${inputClassName} min-h-20 resize-y`}
             name="address"
             placeholder="Street, city, Pakistan"
@@ -108,9 +108,9 @@ export function SignupForm({ redirectTo }: { redirectTo: string }) {
       </div>
       <ActionError message={state.error} />
       <div className="mt-6 text-center text-xs leading-5 text-black/45 dark:text-slate-500">
-        By creating an account, you agree to shop with VEXIS pk.
+        By creating an account, you agree to shop with NBS-pk.
       </div>
-      {pending ? <LoaderCircle className="mx-auto mt-8 size-5 animate-spin text-emerald-700" /> : <SubmitButton label="Create account" />}
+      {pending ? <LoaderCircle className="mx-auto mt-8 size-5 animate-spin text-amber-700" /> : <SubmitButton label="Create account" />}
     </form>
   );
 }

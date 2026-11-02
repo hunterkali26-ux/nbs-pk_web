@@ -43,7 +43,7 @@ function SidebarNav({
         <Link
           href="/admin"
           onClick={onClose}
-          aria-label="VEXIS pk admin dashboard"
+          aria-label="NBS-pk admin dashboard"
           className={`flex items-center ${isCollapsed ? "justify-center" : ""}`}
         >
           {isCollapsed ? (
@@ -51,16 +51,16 @@ function SidebarNav({
                20px rail, rendered cleanly in both light and dark themes
                (transparent background) so it reads at a glance. */
             <Image
-              src="/images/admin-icon.png"
-              alt="VEXIS pk"
+              src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/admin-icon.png"
+              alt="NBS-pk"
               width={32}
               height={32}
               className="size-8 object-contain"
             />
           ) : (
             <Image
-              src="/images/brand-logo.png"
-              alt="VEXIS pk"
+              src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/brand-logo.png"
+              alt="NBS-pk"
               width={732}
               height={218}
               className="h-10 w-auto object-contain"
@@ -92,7 +92,7 @@ function SidebarNav({
               title={isCollapsed ? label : undefined}
               className={`flex items-center gap-3 px-3 py-3 text-xs font-semibold uppercase tracking-[0.13em] transition ${
                 isCollapsed ? "w-11 justify-center" : "w-full"
-              } ${active ? "bg-emerald-600 text-white" : "text-white/50 hover:bg-white/8 hover:text-white"}`}
+              } ${active ? "bg-amber-600 text-white" : "text-white/50 hover:bg-white/8 hover:text-white"}`}
             >
               <Icon className="size-4 shrink-0" />
               {!isCollapsed ? (
