@@ -254,16 +254,14 @@ export function Navbar() {
           {mobileOpen ? <X /> : <Menu />}
         </button>
         <Link href="/" aria-label="NBS-pk — home" className="shrink-0 -ml-2">
-          <div className="inline-block bg-black/5 dark:bg-white/5 backdrop-blur-md rounded-xl p-1.5 transition-colors">
-            <Image
-              src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/brand-logo.png"
-              alt="NBS-pk"
-              width={732}
-              height={218}
-              priority
-              className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-[180px] sm:max-w-none object-contain"
-            />
-          </div>
+          <Image
+            src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/Polished_Gold_NBS_Logo_on_Black-removebg-preview.png"
+            alt="NBS-pk"
+            width={732}
+            height={218}
+            priority
+            className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-[180px] sm:max-w-none object-contain"
+          />
         </Link>
         <div className="hidden items-center gap-5 lg:flex">
           {links.map(([label, href]) => (
@@ -459,15 +457,13 @@ export function Navbar() {
               aria-label="NBS-pk — home"
               className="flex shrink-0 px-1"
             >
-              <div className="inline-block bg-white/80 dark:bg-slate-900/60 backdrop-blur-sm rounded-xl p-1 shadow-sm border border-white/50 dark:border-slate-800/50 shadow-gray-200/50 dark:shadow-none transition-colors">
-                <Image
-                  src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/brand-logo.png"
-                  alt="NBS-pk"
-                  width={446}
-                  height={131}
-                  className="h-12 w-auto object-contain"
-                />
-              </div>
+              <Image
+                src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/Polished_Gold_NBS_Logo_on_Black-removebg-preview.png"
+                alt="NBS-pk"
+                width={446}
+                height={131}
+                className="h-12 w-auto object-contain"
+              />
             </Link>
             <button
               type="button"

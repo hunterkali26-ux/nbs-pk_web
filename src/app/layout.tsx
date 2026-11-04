@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   // Site favicon — served from Vercel Blob CDN
   metadataBase: new URL(getSiteUrl()),
   icons: {
-    icon: "https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/icon.png",
+    icon: "https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/Untitled%20design%282%29.png",
   },
   title: "NBS-pk — Premium Leather Shoes from Multan",
   description: "New Brand Shoes Multan — Pure leather footwear crafted since 2015.",

@@ -51,7 +51,7 @@ function SidebarNav({
                20px rail, rendered cleanly in both light and dark themes
                (transparent background) so it reads at a glance. */
             <Image
-              src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/admin-icon.png"
+              src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/Untitled%20design%282%29.png"
               alt="NBS-pk"
               width={32}
               height={32}
@@ -59,7 +59,7 @@ function SidebarNav({
             />
           ) : (
             <Image
-              src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/brand-logo.png"
+              src="https://4upsg7iazjf61bbi.public.blob.vercel-storage.com/assets/Polished_Gold_NBS_Logo_on_Black-removebg-preview.png"
               alt="NBS-pk"
               width={732}
               height={218}
