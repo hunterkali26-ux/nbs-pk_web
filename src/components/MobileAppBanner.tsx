@@ -8,6 +8,13 @@ const DISMISS_KEY = "nbs-app-banner-dismissed";
 const DISMISS_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 export function MobileAppBanner() {
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // MOBILE APP DOWNLOAD PROMPT — TEMPORARILY DISABLED
+  // Set ENABLE_APP_PROMPT to true to re-enable the mobile app download prompt banner.
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const ENABLE_APP_PROMPT = false;
+  if (!ENABLE_APP_PROMPT) return null;
+
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
