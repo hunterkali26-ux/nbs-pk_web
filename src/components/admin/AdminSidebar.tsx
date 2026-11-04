@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -35,6 +36,14 @@ function SidebarNav({
   isCollapsed: boolean;
   onClose?: () => void;
 }) {
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const handleNavClick = useCallback(() => {
+    setIsNavigating(true);
+    if (onClose) onClose();
+    // Reset after a short delay to prevent stuck loading
+    setTimeout(() => setIsNavigating(false), 300);
+  }, [onClose]);
   return (
     <>
       {/* Fixed header height matches the main workspace header (h-16) so the

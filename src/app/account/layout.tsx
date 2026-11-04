@@ -4,6 +4,7 @@ import { AccountNav } from "@/components/account/AccountNav";
 import { createClient } from "@/lib/supabase/server";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { PageTransitionLoader } from "@/components/layout/PageTransitionLoader";
 
 export default async function AccountLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -27,7 +28,9 @@ export default async function AccountLayout({ children }: { children: React.Reac
       <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
           <AccountNav isAdmin={isAdmin} />
-          <main className="min-w-0">{children}</main>
+          <main className="min-w-0">
+            <PageTransitionLoader>{children}</PageTransitionLoader>
+          </main>
         </div>
       </div>
       <Footer />

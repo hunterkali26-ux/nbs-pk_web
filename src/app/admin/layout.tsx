@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/types/database";
+import { PageTransitionLoader } from "@/components/layout/PageTransitionLoader";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -11,5 +12,5 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const { data: profileData } = await supabase.from("profiles").select("role").eq("id", userData.user.id).maybeSingle();
   const profile = profileData as Pick<Profile, "role"> | null;
   if (profile?.role !== "admin") redirect("/");
-  return <AdminShell>{children}</AdminShell>;
+  return <AdminShell><PageTransitionLoader>{children}</PageTransitionLoader></AdminShell>;
 }

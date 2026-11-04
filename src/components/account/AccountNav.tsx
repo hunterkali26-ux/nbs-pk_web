@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Heart, LayoutDashboard, ShoppingBag, UserRound } from "lucide-react";
+import { useState, useCallback } from "react";
 
 export function AccountNav({ isAdmin }: { isAdmin: boolean }) {
   const pathname = usePathname();
+  const [isNavigating, setIsNavigating] = useState(false);
 
-  const profileActive = pathname === "/account";
+const profileActive = pathname === "/account";
   const ordersActive = pathname.startsWith("/account/orders");
   const wishlistActive = pathname.startsWith("/account/wishlist");
 
@@ -24,6 +26,7 @@ export function AccountNav({ isAdmin }: { isAdmin: boolean }) {
       <div className="grid grid-cols-3 gap-1 rounded-lg bg-slate-100 p-1 lg:hidden dark:bg-slate-800">
         <Link
           href="/account"
+          onClick={() => setIsNavigating(true)}
           aria-current={profileActive ? "page" : undefined}
           className={`flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition ${
             profileActive
@@ -35,6 +38,7 @@ export function AccountNav({ isAdmin }: { isAdmin: boolean }) {
         </Link>
         <Link
           href="/account/wishlist"
+          onClick={() => setIsNavigating(true)}
           aria-current={wishlistActive ? "page" : undefined}
           className={`flex items-center justify-center gap-2 rounded-md px-3 py-2.5 text-sm font-semibold transition ${
             wishlistActive
@@ -46,6 +50,7 @@ export function AccountNav({ isAdmin }: { isAdmin: boolean }) {
         </Link>
         <Link
           href="/account/orders"
+          onClick={() => setIsNavigating(true)}
           aria-current={ordersActive ? "page" : undefined}
           className={`flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition ${
             ordersActive
@@ -59,13 +64,13 @@ export function AccountNav({ isAdmin }: { isAdmin: boolean }) {
 
       {/* Desktop sidebar — vertical, with active highlighting. */}
       <aside className="hidden lg:flex lg:flex-col lg:space-y-1">
-        <Link href="/account" aria-current={profileActive ? "page" : undefined} className={desktopLink(profileActive)}>
+        <Link href="/account" onClick={() => setIsNavigating(true)} aria-current={profileActive ? "page" : undefined} className={desktopLink(profileActive)}>
           <UserRound className="size-4 text-slate-500 dark:text-slate-400" /> Profile details
         </Link>
-        <Link href="/account/orders" aria-current={ordersActive ? "page" : undefined} className={desktopLink(ordersActive)}>
+        <Link href="/account/orders" onClick={() => setIsNavigating(true)} aria-current={ordersActive ? "page" : undefined} className={desktopLink(ordersActive)}>
           <ShoppingBag className="size-4 text-slate-500 dark:text-slate-400" /> Order history
         </Link>
-        <Link href="/account/wishlist" aria-current={wishlistActive ? "page" : undefined} className={desktopLink(wishlistActive)}>
+        <Link href="/account/wishlist" onClick={() => setIsNavigating(true)} aria-current={wishlistActive ? "page" : undefined} className={desktopLink(wishlistActive)}>
           <Heart className="size-4 text-slate-500 dark:text-slate-400" /> My wishlist
         </Link>
         {isAdmin ? (
