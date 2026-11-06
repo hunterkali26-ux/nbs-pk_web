@@ -27,7 +27,7 @@ export function Footer() {
               <Instagram className="size-4" />
             </a>
             <a
-              href="https://facebook.com/nbs.pk"
+              href="https://facebook.com/share/18q9SFsahk/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="NBS-pk on Facebook (opens in a new tab)"
